@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roteiro da Lara — Inglês para Malta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#FFF7FB;
+  --ink-2:#FFF0F6;
+  --card:#FFFFFF;
+  --card-hover:#FFE8F2;
+  --sand:#5A3346;
+  --sand-dim:#946A7E;
+  --azure:#D85C93;
+  --azure-dim:#B83E78;
+  --gold:#F4A7C4;
+  --brick:#C94F70;
+  --line:rgba(149,76,108,0.14);
+  --line-strong:rgba(149,76,108,0.28);
+  --radius:18px;
+  --font-display:'Fraunces', serif;
+  --font-body:'Work Sans', sans-serif;
+  --font-mono:'IBM Plex Mono', monospace;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 8% 8%,rgba(255,199,224,.5),transparent 27%),
+    radial-gradient(circle at 92% 38%,rgba(229,195,255,.32),transparent 29%),
+    var(--ink);
+  color:var(--sand);
+  font-family:var(--font-body);
+  line-height:1.6;
+  padding:0 0 4rem;
+}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px;}
+
+/* ===== HEADER: boarding pass ===== */
+.pass{
+  margin-top:28px;
+  background:var(--ink-2);
+  border:1px solid var(--line-strong);
+  border-radius:var(--radius);
+  position:relative;
+  overflow:hidden;
+}
+.pass::after{
+  content:'♡';position:absolute;right:22px;bottom:9px;color:var(--gold);font-size:34px;opacity:.55;pointer-events:none;
+}
+.pass-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding:26px 28px 22px;
+  gap:20px;
+  flex-wrap:wrap;
+}
+.pass-eyebrow{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--azure);
+  margin:0 0 8px;
+}
+.pass-title{
+  font-family:var(--font-display);
+  font-weight:600;
+  font-size:clamp(26px,4vw,38px);
+  margin:0;
+  color:var(--sand);
+}
+.pass-sub{
+  font-size:14px;
+  color:var(--sand-dim);
+  margin:8px 0 0;
+  max-width:44ch;
+}
+.pass-countdown{
+  text-align:right;
+  min-width:150px;
+}
+.countdown-num{
+  font-family:var(--font-mono);
+  font-size:44px;
+  font-weight:500;
+  color:var(--gold);
+  line-height:1;
+}
+.countdown-label{
+  font-size:11px;
+  color:var(--sand-dim);
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  margin-top:6px;
+}
+.perforation{
+  height:0;
+  border-top:1px dashed var(--line-strong);
+  position:relative;
+  margin:0 0;
+}
+.perforation::before,.perforation::after{
+  content:'';
+  position:absolute;
+  top:-11px;
+  width:22px;height:22px;
+  border-radius:50%;
+  background:var(--ink);
+}
+.perforation::before{left:-11px;}
+.perforation::after{right:-11px;}
+.pass-bottom{
+  padding:20px 28px 26px;
+}
+.progress-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  margin-bottom:10px;
+  font-size:13px;
+  color:var(--sand-dim);
+}
+.progress-pct{
+  font-family:var(--font-mono);
+  font-size:20px;
+  color:var(--sand);
+  font-weight:500;
+}
+.progress-track{
+  height:8px;
+  background:rgba(149,76,108,0.1);
+  border-radius:4px;
+  overflow:hidden;
+  position:relative;
+}
+.progress-fill{
+  height:100%;
+  background:linear-gradient(90deg, var(--azure-dim), var(--azure));
+  border-radius:4px;
+  transition:width .5s ease;
+  width:0%;
+}
+.progress-meta{
+  display:flex;
+  justify-content:space-between;
+  margin-top:8px;
+  font-size:12px;
+  color:var(--sand-dim);
+  font-family:var(--font-mono);
+}
+
+/* ===== WEEKS ===== */
+.weeks{margin-top:34px;}
+.section-label{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--azure);
+  margin:0 0 14px;
+}
+.week{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  margin-bottom:14px;
+  overflow:hidden;
+}
+.week-head{
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:18px 22px;
+  background:transparent;
+  border:none;
+  cursor:pointer;
+  text-align:left;
+  color:inherit;
+  font-family:inherit;
+}
+.week-head:hover{background:var(--card-hover);}
+.week-gate{
+  font-family:var(--font-mono);
+  font-size:12px;
+  color:var(--gold);
+  border:1px solid var(--gold);
+  border-radius:20px;
+  padding:4px 12px;
+  white-space:nowrap;
+}
+.week-head-text{flex:1;min-width:0;}
+.week-name{
+  font-family:var(--font-display);
+  font-size:19px;
+  font-weight:600;
+  margin:0 0 3px;
+  color:var(--sand);
+}
+.week-dates{
+  font-size:12.5px;
+  color:var(--sand-dim);
+  font-family:var(--font-mono);
+}
+.week-ring{
+  width:38px;height:38px;
+  flex-shrink:0;
+  position:relative;
+}
+.week-ring svg{transform:rotate(-90deg);}
+.week-ring-bg{fill:none;stroke:rgba(149,76,108,0.12);stroke-width:3;}
+.week-ring-fg{fill:none;stroke:var(--azure);stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset .4s ease;}
+.week-ring-txt{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:10px;color:var(--sand-dim);
+}
+.chevron{
+  width:16px;height:16px;
+  flex-shrink:0;
+  transition:transform .25s ease;
+  color:var(--sand-dim);
+}
+.week.open .chevron{transform:rotate(180deg);}
+.week-body{
+  display:none;
+  padding:4px 22px 24px;
+  border-top:1px solid var(--line);
+}
+.week.open .week-body{display:block;}
+
+.block-title{
+  font-family:var(--font-mono);
+  font-size:11px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--azure);
+  margin:22px 0 10px;
+}
+.grammar-card{
+  background:rgba(149,76,108,0.05);
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:16px 18px;
+}
+.grammar-name{
+  font-family:var(--font-display);
+  font-size:16px;
+  font-weight:600;
+  color:var(--gold);
+  margin:0 0 6px;
+}
+.grammar-exp{font-size:14px;color:var(--sand-dim);margin:0 0 10px;}
+.grammar-ex{
+  list-style:none;padding:0;margin:0;
+  font-family:var(--font-mono);
+  font-size:12.5px;
+}
+.grammar-ex li{
+  padding:6px 0 6px 16px;
+  border-left:2px solid var(--azure-dim);
+  margin-bottom:6px;
+  color:var(--sand);
+}
+.resources{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.resource-item{
+  display:flex;
+  gap:10px;
+  align-items:baseline;
+  font-size:13.5px;
+  padding:10px 14px;
+  background:rgba(149,76,108,0.04);
+  border-radius:8px;
+  border:1px solid var(--line);
+}
+.resource-name{color:var(--sand);font-weight:500;white-space:nowrap;}
+.resource-desc{color:var(--sand-dim);}
+
+.vocab-toggle{
+  background:transparent;
+  border:1px solid var(--line-strong);
+  color:var(--sand);
+  font-family:var(--font-mono);
+  font-size:12px;
+  padding:9px 16px;
+  border-radius:20px;
+  cursor:pointer;
+}
+.vocab-toggle:hover{border-color:var(--azure);color:var(--azure);}
+.vocab-grid{
+  display:none;
+  grid-template-columns:repeat(auto-fit, minmax(190px,1fr));
+  gap:6px 16px;
+  margin-top:14px;
+  max-height:340px;
+  overflow-y:auto;
+  padding-right:6px;
+}
+.vocab-grid.open{display:grid;}
+.vocab-item{
+  font-size:12.5px;
+  padding:5px 0;
+  border-bottom:1px solid var(--line);
+  color:var(--sand-dim);
+}
+.vocab-item b{color:var(--sand);font-weight:500;}
+
+.days-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:8px;
+  margin-top:12px;
+}
+.day-btn{
+  background:rgba(149,76,108,0.04);
+  border:1px solid var(--line-strong);
+  border-radius:10px;
+  padding:10px 4px 8px;
+  cursor:pointer;
+  text-align:center;
+  color:var(--sand);
+  font-family:inherit;
+}
+.day-btn:hover{border-color:var(--azure);}
+.day-btn.selected{border-color:var(--azure);background:rgba(216,92,147,0.12);}
+.day-btn.done{border-color:var(--gold);background:rgba(244,167,196,0.18);}
+.day-dow{
+  font-family:var(--font-mono);
+  font-size:9.5px;
+  text-transform:uppercase;
+  color:var(--sand-dim);
+  letter-spacing:0.06em;
+}
+.day-num{font-family:var(--font-mono);font-size:15px;margin:4px 0;}
+.day-stamp{
+  width:18px;height:18px;
+  margin:0 auto;
+  border-radius:50%;
+  border:1.5px solid var(--sand-dim);
+  display:flex;align-items:center;justify-content:center;
+}
+.day-btn.done .day-stamp{border-color:var(--gold);color:var(--gold);}
+.day-stamp svg{width:10px;height:10px;display:none;}
+.day-btn.done .day-stamp svg{display:block;}
+
+.day-detail{
+  display:none;
+  margin-top:14px;
+  background:rgba(149,76,108,0.05);
+  border:1px solid var(--line-strong);
+  border-radius:10px;
+  padding:18px 20px;
+}
+.day-detail.open{display:block;}
+.day-detail-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:12px;
+}
+.day-detail-title{
+  font-family:var(--font-display);
+  font-size:17px;
+  font-weight:600;
+  color:var(--sand);
+  margin:0 0 4px;
+}
+.day-detail-date{
+  font-family:var(--font-mono);
+  font-size:11.5px;
+  color:var(--sand-dim);
+}
+.day-meta-row{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+  font-size:12.5px;
+  color:var(--sand-dim);
+  margin-bottom:12px;
+  font-family:var(--font-mono);
+}
+.day-meta-row span b{color:var(--azure);font-weight:500;}
+.day-activity{font-size:14px;color:var(--sand);margin:0 0 16px;}
+.check-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding-top:12px;
+  border-top:1px solid var(--line);
+}
+.check-row input{width:18px;height:18px;accent-color:var(--gold);cursor:pointer;}
+.check-row label{font-size:13.5px;color:var(--sand-dim);cursor:pointer;}
+
+.footer-note{
+  margin-top:40px;
+  text-align:center;
+  font-size:12.5px;
+  color:var(--sand-dim);
+  font-family:var(--font-mono);
+}
+
+@media (max-width:640px){
+  .days-grid{grid-template-columns:repeat(4,1fr);}
+  .pass-top{flex-direction:column;}
+  .pass-countdown{text-align:left;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="pass">
+    <div class="pass-top">
+      <div>
+        <p class="pass-eyebrow">Roteiro da Lara · rumo à fluência ♡</p>
+        <h1 class="pass-title">Inglês para Malta</h1>
+        <p class="pass-sub">De A2.2 a B1 falando com confiança — 74 dias de imersão antes do embarque.</p>
+      </div>
+      <div class="pass-countdown">
+        <div class="countdown-num" id="countdownNum">74</div>
+        <div class="countdown-label">dias até Malta</div>
+      </div>
+    </div>
+    <div class="perforation"></div>
+    <div class="pass-bottom">
+      <div class="progress-row">
+        <span>Progresso geral do roteiro</span>
+        <span class="progress-pct" id="progressPct">0%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-meta">
+        <span id="progressDone">0 de 74 dias concluídos</span>
+        <span id="progressRemain">74 dias restantes</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="weeks">
+    <p class="section-label">Roteiro semana a semana</p>
+    <div id="weeksContainer"></div>
+  </div>
+
+  <p class="footer-note">Clique em cada dia para abrir o plano de estudo · marque como concluído para carimbar seu progresso</p>
+</div>
+
+<script>
+const START_DATE = new Date(2026,7,17); // 17 ago 2026, segunda-feira
+const DOW = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+const DOW_FULL = ['Segunda','Terça','Quarta','Quinta','Sexta','Sábado','Domingo'];
+
+function fmtDate(d){
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  return dd+'/'+mm;
+}
+function dateForDay(globalIndex){
+  const d = new Date(START_DATE);
+  d.setDate(d.getDate() + (globalIndex-1));
+  return d;
+}
+
+const WEEK_DEFS = [
+{
+  title:"Apresentação pessoal e small talk",
+  grammar:{name:"Presente Simples e Verbo To Be", exp:"Usado para se apresentar, falar de fatos permanentes e rotinas. Estrutura: I am / You are / He-She-It is + resto da frase. Verbos de ação levam -s na 3ª pessoa (he works, she lives).",
+    examples:["I am a student.","She works at a hospital.","Where do you live?"]},
+  resources:[
+    {name:"English with Lucy",desc:"YouTube — pronúncia e expressões do dia a dia"},
+    {name:"BBC Learning English",desc:"YouTube/site — lições curtas de conversação"},
+    {name:"Speak English With Vanessa",desc:"YouTube — small talk e conversação natural"}
+  ],
+  vocab:["hello – olá","hi – oi","good morning – bom dia","good afternoon – boa tarde","good evening – boa noite (chegando)","goodbye – tchau","see you later – até mais","nice to meet you – prazer em conhecer você","how are you – como você está","I'm fine, thanks – estou bem, obrigado(a)","and you – e você","what's your name – qual é o seu nome","my name is – meu nome é","where are you from – de onde você é","I'm from Brazil – eu sou do Brasil","how old are you – quantos anos você tem","I'm 25 years old – eu tenho 25 anos","what do you do – o que você faz (profissão)","I'm a student – eu sou estudante","I work as – eu trabalho como","nice weather today – tempo bom hoje","it's hot – está quente","it's cold – está frio","how's it going – como estão as coisas","long time no see – há quanto tempo","I'm new here – sou novo(a) aqui","where do you live – onde você mora","I live in – eu moro em","what languages do you speak – quais idiomas você fala","I speak a little English – eu falo um pouco de inglês","can you repeat that – você pode repetir isso","could you speak slower – você poderia falar mais devagar","I don't understand – eu não entendo","what does that mean – o que isso significa","how do you say – como se diz","excuse me – com licença","sorry – desculpa","no problem – sem problema","thank you very much – muito obrigado(a)","you're welcome – de nada","have a good day – tenha um bom dia","take care – se cuida","talk to you soon – falo com você em breve","I'm excited – estou animado(a)","I'm nervous – estou nervoso(a)","I'm tired – estou cansado(a)","I'm happy – estou feliz","I'm looking forward to – estou ansioso(a) por","married – casado(a)","single – solteiro(a)","friend – amigo(a)","family – família","sibling – irmão/irmã (genérico)","hobby – hobby / passatempo","favorite – favorito","I like – eu gosto","I love – eu adoro","I don't like – eu não gosto","what about you – e você (retornar pergunta)","that's interesting – isso é interessante","really? – sério?","me too – eu também","me neither – eu também não","by the way – a propósito","actually – na verdade","to introduce – apresentar","to chat – bater papo","conversation – conversa","stranger – estranho/desconhecido","acquaintance – conhecido(a)","personality – personalidade","outgoing – extrovertido(a)","shy – tímido(a)","funny – engraçado(a)","kind – gentil","curious – curioso(a)","hometown – cidade natal","nationality – nacionalidade","occupation – ocupação/profissão","age – idade","marital status – estado civil","to introduce yourself – se apresentar","handshake – aperto de mão","eye contact – contato visual","small talk – conversa fiada/bate-papo leve","weather – clima","traffic – trânsito","weekend plans – planos de fim de semana","what are you up to – o que você anda fazendo","nothing much – nada demais","same here – aqui também/mesma coisa","catch up – colocar em dia (conversa)","keep in touch – manter contato","I should go – eu preciso ir","it was nice talking to you – foi bom falar com você","see you around – nos vemos por aí","have fun – se divirta","good luck – boa sorte","welcome – bem-vindo(a)","make yourself at home – sinta-se em casa"],
+  mon:{title:"Cumprimentos e primeira impressão", resource:"English with Lucy", scenario:"uma primeira conversa se apresentando a um novo colega de curso"},
+  tue:{title:"Perguntas pessoais (nome, idade, origem)", resource:"BBC Learning English"},
+  wed:{title:"Falando sobre profissão e rotina", resource:"Speak English With Vanessa", scenario:"alguém perguntando o que você faz e como é sua rotina"},
+  thu:{title:"Small talk sobre clima e fim de semana", resource:"English with Lucy", task:"planejar em voz alta o que vai fazer no fim de semana"}
+},
+{
+  title:"Aeroporto e viagem",
+  grammar:{name:"Futuro (Going to / Will) e preposições de tempo", exp:"'Going to' para planos já decididos (como sua viagem), 'will' para decisões espontâneas ou previsões. Preposições de tempo: at (hora), on (dia), in (mês/ano).",
+    examples:["I'm going to travel to Malta.","The flight will depart at 6pm.","My flight is on Thursday."]},
+  resources:[
+    {name:"Kara and Nate",desc:"YouTube — vlogs de viagem, vocabulário real de aeroporto"},
+    {name:"Drew Binsky",desc:"YouTube — vlogs internacionais, situações de imigração"},
+    {name:"Culips English Podcast",desc:"conversas naturais sobre viagens"}
+  ],
+  vocab:["airport – aeroporto","flight – voo","ticket – passagem","boarding pass – cartão de embarque","passport – passaporte","check-in – check-in","luggage – bagagem","suitcase – mala","carry-on bag – bagagem de mão","baggage claim – esteira de bagagem","departure – partida","arrival – chegada","gate – portão de embarque","terminal – terminal","security check – controle de segurança","customs – alfândega","immigration – imigração","visa – visto","boarding time – horário de embarque","delayed – atrasado","cancelled – cancelado","on time – no horário","connecting flight – voo de conexão","layover – escala","direct flight – voo direto","window seat – assento na janela","aisle seat – assento no corredor","seatbelt – cinto de segurança","overhead bin – compartimento superior","flight attendant – comissário(a) de bordo","pilot – piloto","takeoff – decolagem","landing – pouso","turbulence – turbulência","duty-free – loja livre de impostos","excess baggage – excesso de bagagem","to declare – declarar (na alfândega)","nothing to declare – nada a declarar","purpose of visit – motivo da visita","how long will you stay – quanto tempo você vai ficar","I'm here to study – estou aqui para estudar","return ticket – passagem de volta","one-way ticket – passagem só de ida","round trip – ida e volta","to board – embarcar","to land – pousar/aterrissar","to check bags – despachar malas","boarding pass scanner – leitor de cartão de embarque","departure board – painel de partidas","lost luggage – bagagem extraviada","to miss a flight – perder um voo","to catch a flight – pegar um voo","currency exchange – câmbio","SIM card – chip de celular","Wi-Fi – wi-fi","taxi stand – ponto de táxi","shuttle bus – ônibus de conexão","rental car – carro alugado","where is the restroom – onde fica o banheiro","where is gate B12 – onde fica o portão B12","is this seat taken – este assento está ocupado","could I have some water – eu poderia ter um pouco de água","I need help – eu preciso de ajuda","I lost my passport – eu perdi meu passaporte","emergency exit – saída de emergência","life jacket – colete salva-vidas","fasten your seatbelt – aperte seu cinto","please remain seated – por favor permaneça sentado","final call – última chamada","now boarding – embarque iniciado","economy class – classe econômica","business class – classe executiva","boarding group – grupo de embarque","travel insurance – seguro viagem","jet lag – jet lag (fuso horário)","time zone – fuso horário","to pack – fazer as malas","to unpack – desfazer as malas","souvenir – lembrancinha","destination – destino","itinerary – itinerário/roteiro","to book a flight – reservar um voo","confirmation number – número de confirmação","student visa – visto de estudante","accommodation – acomodação/hospedagem","host family – família anfitriã","arrival card – cartão de desembarque","luggage tag – etiqueta de bagagem","metal detector – detector de metais","to scan – escanear","to remove your shoes – tirar os sapatos","liquids – líquidos","electronics – eletrônicos","boarding zone – zona de embarque","first time traveling – primeira vez viajando","nervous flyer – pessoa que tem medo de voar","safe travels – boa viagem","welcome to Malta – bem-vindo(a) a Malta","exchange student – estudante de intercâmbio","to settle in – se ajustar/se instalar"],
+  mon:{title:"Check-in e despacho de bagagem", resource:"Kara and Nate", scenario:"fazer check-in no balcão da companhia aérea"},
+  tue:{title:"Segurança e imigração", resource:"Drew Binsky"},
+  wed:{title:"Embarque e durante o voo", resource:"Culips English Podcast", scenario:"conversar com o comissário de bordo durante o voo"},
+  thu:{title:"Pedindo ajuda no aeroporto", resource:"Kara and Nate", task:"perguntar em voz alta onde fica o portão de embarque"}
+},
+{
+  title:"Casa e convivência",
+  grammar:{name:"There is / There are e preposições de lugar", exp:"'There is' (singular) e 'there are' (plural) descrevem o que existe em um lugar. Preposições de lugar: in, on, under, next to, between.",
+    examples:["There is a fridge in the kitchen.","There are two beds in my room.","The key is next to the door."]},
+  resources:[
+    {name:"Vlogs \"day in my life\"",desc:"YouTube — rotina doméstica narrada"},
+    {name:"Jenn Im",desc:"YouTube — vlogs de casa e rotina"},
+    {name:"Vlogs \"clean with me\"",desc:"YouTube — tarefas domésticas narradas"}
+  ],
+  vocab:["house – casa","apartment – apartamento","room – quarto","bedroom – quarto de dormir","bathroom – banheiro","kitchen – cozinha","living room – sala de estar","roommate – colega de quarto/casa","host family – família anfitriã","landlord – proprietário(a)","rent – aluguel","bills – contas","to share – dividir/compartilhar","to move in – se mudar para","to move out – se mudar de","furniture – móveis","bed – cama","wardrobe – guarda-roupa","desk – escrivaninha","chair – cadeira","fridge – geladeira","stove – fogão","microwave – micro-ondas","washing machine – máquina de lavar","towel – toalha","sheets – lençóis","pillow – travesseiro","blanket – cobertor","key – chave","lock – fechadura","Wi-Fi password – senha do wi-fi","house rules – regras da casa","curfew – horário de recolher","chores – tarefas domésticas","to clean up – limpar/arrumar","to do the dishes – lavar a louça","to do laundry – lavar roupa","to take out the trash – tirar o lixo","to make the bed – arrumar a cama","to vacuum – aspirar","to sweep – varrer","to tidy up – organizar/arrumar","mess – bagunça","neat – arrumado","grocery shopping – compras de mercado","to cook – cozinhar","to set the table – pôr a mesa","leftovers – sobras","guest – convidado(a)","to invite – convidar","quiet hours – horário de silêncio","to make noise – fazer barulho","neighbor – vizinho(a)","shared space – espaço compartilhado","personal space – espaço pessoal","to feel at home – se sentir em casa","to get used to – se acostumar com","daily routine – rotina diária","to wake up – acordar","to get dressed – se vestir","to have breakfast – tomar café da manhã","to leave the house – sair de casa","to come back home – voltar para casa","to relax – relaxar","to rest – descansar","to go to bed – ir para a cama","comfortable – confortável","cozy – aconchegante","spacious – espaçoso","messy – bagunçado","clean – limpo","dirty – sujo","to borrow – pedir emprestado","to lend – emprestar","can I use the kitchen – posso usar a cozinha","is it okay if I – tudo bem se eu","do you mind if I – você se importa se eu","sorry to bother you – desculpa incomodar","I'll clean it up – eu vou limpar isso","thanks for having me – obrigado(a) por me receber","make yourself comfortable – fique à vontade","house key – chave da casa","utility bill – conta de consumo (água/luz)","internet router – roteador de internet","to adjust – se adaptar","homesick – com saudade de casa","to miss home – sentir falta de casa","daily schedule – cronograma diário","to share expenses – dividir despesas","to split the bill – dividir a conta","respectful – respeitoso","considerate – atencioso/considerado","to knock on the door – bater na porta","to lock the door – trancar a porta","spare key – chave reserva","emergency contact – contato de emergência","curtains – cortinas","balcony – varanda","backyard – quintal","to settle into a routine – se estabelecer em uma rotina"],
+  mon:{title:"Cômodos e objetos da casa", resource:"Vlogs \"day in my life\"", scenario:"pedir para usar algo na casa/apê compartilhado"},
+  tue:{title:"Tarefas domésticas e organização", resource:"Vlogs \"clean with me\""},
+  wed:{title:"Regras da casa e convivência", resource:"Jenn Im", scenario:"combinar regras da casa com um novo colega de quarto"},
+  thu:{title:"Rotina diária em casa", resource:"Vlogs \"day in my life\"", task:"narrar em voz alta sua manhã em casa"}
+},
+{
+  title:"Cidade, direções e transporte",
+  grammar:{name:"Imperativo e preposições de movimento", exp:"O imperativo dá instruções e direções (verbo sem sujeito). Preposições de movimento: to, from, through, across, along.",
+    examples:["Turn left at the corner.","Go straight through the square.","Walk across the street."]},
+  resources:[
+    {name:"Rick Steves' Europe",desc:"YouTube — viagens e orientação em cidades europeias"},
+    {name:"Drew Binsky",desc:"YouTube — explorando cidades, transporte local"},
+    {name:"Culips English Podcast",desc:"conversas sobre passeios e cidade"}
+  ],
+  vocab:["street – rua","avenue – avenida","corner – esquina","block – quarteirão","map – mapa","GPS – GPS","directions – direções","to turn left – virar à esquerda","to turn right – virar à direita","to go straight – seguir em frente","to cross the street – atravessar a rua","traffic light – semáforo","crosswalk – faixa de pedestres","sidewalk – calçada","roundabout – rotatória","intersection – cruzamento","nearby – perto","far from – longe de","next to – ao lado de","across from – em frente a","between – entre","behind – atrás de","in front of – na frente de","how do I get to – como eu chego até","is it walking distance – dá para ir a pé","how far is it – qual a distância","it's five minutes away – fica a cinco minutos","bus stop – ponto de ônibus","bus – ônibus","train – trem","subway/metro – metrô","ferry – balsa","taxi – táxi","ride-share app – aplicativo de transporte","to take the bus – pegar o ônibus","to get off – descer (do transporte)","to get on – subir (no transporte)","fare – tarifa","ticket machine – máquina de bilhetes","timetable/schedule – horário","platform – plataforma","route – rota/trajeto","one-way street – rua de mão única","pedestrian – pedestre","traffic jam – engarrafamento","rush hour – horário de pico","to be lost – estar perdido","landmark – ponto de referência","town square – praça central","downtown – centro da cidade","neighborhood – bairro","tourist information – informações turísticas","walking tour – passeio a pé","sightseeing – turismo/passeio","attraction – atração turística","museum – museu","church – igreja","park – parque","beach – praia","harbor – porto","old town – centro histórico","to explore – explorar","to wander around – passear sem rumo","to get around – se locomover","public transportation – transporte público","bike rental – aluguel de bicicleta","to rent a bike – alugar uma bicicleta","helmet – capacete","traffic sign – placa de trânsito","speed limit – limite de velocidade","pedestrian crossing – travessia de pedestres","no entry – proibida entrada","dead end – rua sem saída","excuse me, where is – com licença, onde fica","could you show me on the map – você poderia me mostrar no mapa","I'm looking for – estou procurando","keep going – continue seguindo","it's on your left – fica à sua esquerda","it's on your right – fica à sua direita","you can't miss it – você não vai errar","take the second street – pegue a segunda rua","opposite side – lado oposto","traffic police – policial de trânsito","street sign – placa de rua","city center – centro da cidade","suburb – subúrbio","village – vilarejo","coastline – litoral","island – ilha","ferry terminal – terminal de balsa","boarding the ferry – embarcando na balsa","scenic route – rota cênica","shortcut – atalho","to take a shortcut – pegar um atalho","walking distance – distância a pé","estimated time – tempo estimado","arrival time – horário de chegada","departure time – horário de partida","local – morador local","tourist – turista"],
+  mon:{title:"Perguntando e dando direções", resource:"Rick Steves' Europe", scenario:"pedir informação de como chegar a um lugar na rua"},
+  tue:{title:"Transporte público", resource:"Drew Binsky"},
+  wed:{title:"Estando perdido na cidade", resource:"Culips English Podcast", scenario:"estar perdido e pedir ajuda a um estranho"},
+  thu:{title:"Pontos turísticos e passeios", resource:"Rick Steves' Europe", task:"narrar em voz alta um passeio pela cidade"}
+},
+{
+  title:"Compras, dinheiro e restaurante",
+  grammar:{name:"Contáveis/incontáveis e some/any/how much/how many", exp:"Contáveis têm plural (an apple/apples); incontáveis não (water, bread). 'Some' em afirmativas, 'any' em negativas/perguntas. 'How much' para incontáveis, 'how many' para contáveis.",
+    examples:["How much does this cost?","I'd like some water.","How many apples do you have?"]},
+  resources:[
+    {name:"English with Lucy",desc:"YouTube — vocabulário de compras e restaurante"},
+    {name:"BBC Learning English",desc:"vídeos sobre \"at the restaurant\""},
+    {name:"Vlogs de mercado/food tour",desc:"YouTube — buscar \"grocery shopping vlog\""}
+  ],
+  vocab:["supermarket – supermercado","grocery store – mercado","shopping list – lista de compras","cart – carrinho","basket – cesta","cashier – caixa (pessoa)","checkout – caixa (local)","receipt – recibo/nota","price – preço","discount – desconto","sale – promoção","to pay – pagar","cash – dinheiro em espécie","credit card – cartão de crédito","debit card – cartão de débito","change – troco","to cost – custar","how much is this – quanto custa isso","expensive – caro","cheap – barato","affordable – acessível (preço)","free of charge – gratuito","to try on – experimentar (roupa)","fitting room – provador","size – tamanho","refund – reembolso","to return – devolver","to exchange – trocar","store hours – horário de funcionamento","open – aberto","closed – fechado","aisle – corredor (loja)","fresh – fresco","frozen – congelado","fruit – fruta","vegetables – legumes/verduras","bread – pão","milk – leite","eggs – ovos","meat – carne","water bottle – garrafa de água","snack – lanche","to weigh – pesar","bag – sacola","reusable bag – sacola reutilizável","restaurant – restaurante","menu – cardápio","waiter/waitress – garçom/garçonete","table for two – mesa para dois","reservation – reserva","to order – pedir (pedido)","starter/appetizer – entrada","main course – prato principal","dessert – sobremesa","drink – bebida","the bill/check – a conta","tip – gorjeta","to split the bill – dividir a conta","I'd like – eu gostaria","could I have the menu – poderia me trazer o cardápio","what do you recommend – o que você recomenda","I'm allergic to – eu sou alérgico(a) a","vegetarian – vegetariano","vegan – vegano","gluten-free – sem glúten","spicy – apimentado","sweet – doce","sour – azedo","salty – salgado","delicious – delicioso","to taste – provar","well done (meat) – bem passado","medium – ao ponto","rare – mal passado","to be full – estar satisfeito (comida)","to be hungry – estar com fome","to be thirsty – estar com sede","takeaway/to go – para levar","delivery – entrega","to book a table – reservar uma mesa","cash only – somente dinheiro","card accepted – aceita cartão","currency – moeda","euro – euro","to exchange money – trocar dinheiro","ATM – caixa eletrônico","budget – orçamento","to save money – economizar dinheiro","to spend money – gastar dinheiro","receipt required – recibo necessário","loyalty card – cartão fidelidade","coupon – cupom","bill (invoice) – fatura","quantity – quantidade","a dozen – uma dúzia","a bit of – um pouco de","a lot of – muito de","enough – suficiente","out of stock – fora de estoque","customer service – atendimento ao cliente"],
+  mon:{title:"No supermercado", resource:"Vlogs de mercado/food tour", scenario:"fazer compras e perguntar preços no mercado"},
+  tue:{title:"Formas de pagamento", resource:"English with Lucy"},
+  wed:{title:"No restaurante, pedindo comida", resource:"BBC Learning English", scenario:"pedir comida em um restaurante, incluindo restrições alimentares"},
+  thu:{title:"Preferências alimentares e alergias", resource:"English with Lucy", task:"descrever em voz alta o que você gosta e não gosta de comer"}
+},
+{
+  title:"Saúde, emergências e farmácia",
+  grammar:{name:"Verbos modais: should, must, have to", exp:"'Should' expressa conselho, 'must/have to' expressam obrigação ou necessidade. Essenciais para descrever sintomas e pedir ajuda médica.",
+    examples:["You should see a doctor.","I have to take this medicine.","You must rest."]},
+  resources:[
+    {name:"BBC Learning English",desc:"vocabulário de saúde"},
+    {name:"\"At the doctor\" roleplay videos",desc:"YouTube — simulações de consulta médica"},
+    {name:"Medical English vocabulary",desc:"YouTube — buscar o termo"}
+  ],
+  vocab:["doctor – médico(a)","nurse – enfermeiro(a)","pharmacy – farmácia","pharmacist – farmacêutico(a)","hospital – hospital","clinic – clínica","emergency room – pronto-socorro","appointment – consulta/agendamento","to feel sick – se sentir mal","to feel dizzy – sentir tontura","headache – dor de cabeça","stomachache – dor de estômago","sore throat – dor de garganta","fever – febre","cold (illness) – resfriado","flu – gripe","cough – tosse","to sneeze – espirrar","allergy – alergia","pain – dor","injury – lesão","to hurt – doer","to break a bone – quebrar um osso","to twist an ankle – torcer o tornozelo","bandage – curativo/atadura","medicine – remédio","pill – comprimido","prescription – receita médica","dose – dose","painkiller – analgésico","side effects – efeitos colaterais","to take medicine – tomar remédio","symptoms – sintomas","diagnosis – diagnóstico","treatment – tratamento","to feel better – se sentir melhor","to feel worse – se sentir pior","insurance card – cartão do seguro","health insurance – plano de saúde","emergency number – número de emergência","ambulance – ambulância","to call an ambulance – chamar uma ambulância","it's an emergency – é uma emergência","I need a doctor – eu preciso de um médico","I feel unwell – eu não estou me sentindo bem","I have a fever – eu estou com febre","I have a headache – eu estou com dor de cabeça","where's the nearest pharmacy – onde fica a farmácia mais próxima","do you have something for – você tem algo para","upset stomach – estômago embrulhado","nausea – náusea","dizzy – tonto(a)","to throw up – vomitar","rash – erupção na pele","insect bite – picada de inseto","sunburn – queimadura de sol","sunscreen – protetor solar","first aid kit – kit de primeiros socorros","band-aid – curativo adesivo","antiseptic – antisséptico","fracture – fratura","to sprain – torcer (lesão)","x-ray – raio-x","to faint – desmaiar","chest pain – dor no peito","to breathe – respirar","to have trouble breathing – ter dificuldade para respirar","allergic reaction – reação alérgica","to be allergic to peanuts – ser alérgico a amendoim","medical history – histórico médico","chronic condition – condição crônica","to take a break – fazer uma pausa","to rest – descansar","stress – estresse","anxiety – ansiedade","to feel overwhelmed – se sentir sobrecarregado","mental health – saúde mental","to see a therapist – consultar um terapeuta","dentist – dentista","toothache – dor de dente","eye doctor – oftalmologista","glasses – óculos","contact lenses – lentes de contato","to make an appointment – marcar uma consulta","to cancel an appointment – cancelar uma consulta","waiting room – sala de espera","receptionist – recepcionista","test results – resultado de exames","blood pressure – pressão arterial","temperature (body) – temperatura (corporal)","vaccine – vacina","to get vaccinated – se vacinar","pharmacy hours – horário da farmácia","over-the-counter medicine – remédio sem receita","antibiotics – antibióticos","to recover – se recuperar","recovery – recuperação","police station – delegacia de polícia","lost and found – achados e perdidos","emergency contact number – número de contato de emergência"],
+  mon:{title:"Sintomas e dor", resource:"\"At the doctor\" roleplay videos", scenario:"ir à farmácia descrever sintomas para o farmacêutico"},
+  tue:{title:"Consulta médica", resource:"BBC Learning English"},
+  wed:{title:"Emergência e chamando ajuda", resource:"Medical English vocabulary", scenario:"ligar pedindo ajuda em uma emergência"},
+  thu:{title:"Remédios e farmácia", resource:"BBC Learning English", task:"narrar em voz alta como você está se sentindo hoje"}
+},
+{
+  title:"Escola de inglês e vida acadêmica",
+  grammar:{name:"Presente Contínuo vs Presente Simples", exp:"Contínuo (am/is/are + verbo-ing) para ações acontecendo agora ou temporárias; simples para rotinas e fatos.",
+    examples:["I'm studying English right now.","I study every day.","She's taking notes."]},
+  resources:[
+    {name:"English with Lucy",desc:"frases de sala de aula"},
+    {name:"EnglishClass101",desc:"YouTube — vida acadêmica e estudo"},
+    {name:"Study vlogs",desc:"YouTube — buscar \"study with me english\""}
+  ],
+  vocab:["classroom – sala de aula","teacher – professor(a)","classmate – colega de classe","lesson – aula/lição","homework – tarefa de casa","to attend class – frequentar aula","to raise your hand – levantar a mão","to take notes – fazer anotações","whiteboard – quadro branco","textbook – livro didático","workbook – livro de exercícios","assignment – trabalho/tarefa","to hand in – entregar (trabalho)","deadline – prazo","exam – prova","quiz – teste rápido","grade – nota","to pass – passar (aprovado)","to fail – reprovar","to study – estudar","to review – revisar","to practice – praticar","level test – teste de nivelamento","placement – nivelamento/colocação","beginner – iniciante","intermediate – intermediário","advanced – avançado","fluent – fluente","to improve – melhorar","progress – progresso","group work – trabalho em grupo","pair work – trabalho em dupla","discussion – discussão","presentation – apresentação","to present – apresentar","speaking practice – prática de fala","listening exercise – exercício de escuta","pronunciation – pronúncia","grammar – gramática","vocabulary – vocabulário","spelling – ortografia","to spell – soletrar","could you explain that – você poderia explicar isso","I have a question – eu tenho uma pergunta","what does this word mean – o que essa palavra significa","can you give an example – você pode dar um exemplo","I'm not sure – eu não tenho certeza","to make a mistake – cometer um erro","to correct – corrigir","feedback – feedback/retorno","to participate – participar","to volunteer (in class) – se voluntariar","break time – intervalo","schedule – horário/grade","timetable – grade de horários","course – curso","semester – semestre","term – período letivo","tuition – mensalidade/taxa","scholarship – bolsa de estudos","exchange program – programa de intercâmbio","certificate – certificado","diploma – diploma","campus – campus","library – biblioteca","study group – grupo de estudos","to borrow a book – pegar um livro emprestado","due date – data de vencimento","fine (late fee) – multa (atraso)","to focus – se concentrar","to pay attention – prestar atenção","distracted – distraído","to fall behind – ficar para trás","to catch up – colocar em dia","to keep up – acompanhar","confused – confuso","to clarify – esclarecer","in other words – em outras palavras","for example – por exemplo","to sum up – resumindo","self-study – autoestudo","online class – aula online","in-person class – aula presencial","native speaker – falante nativo","second language – segunda língua","mother tongue – língua materna","to make progress – progredir","goal – meta/objetivo","milestone – marco/etapa importante","challenge – desafio","achievement – conquista","motivation – motivação","to stay motivated – se manter motivado","comfort zone – zona de conforto","to step out of – sair de (zona de conforto)","mistake is okay – errar é normal","practice makes perfect – a prática leva à perfeição","to ask for help – pedir ajuda","study buddy – parceiro(a) de estudos","end of course – fim do curso"],
+  mon:{title:"Primeiro dia de aula", resource:"English with Lucy", scenario:"se apresentar para a turma no primeiro dia"},
+  tue:{title:"Pedindo ajuda ao professor", resource:"EnglishClass101"},
+  wed:{title:"Trabalho em grupo e em dupla", resource:"Study vlogs", scenario:"discutir um tópico com um colega de classe"},
+  thu:{title:"Fazendo perguntas em sala", resource:"EnglishClass101", task:"narrar em voz alta o que você está estudando hoje"}
+},
+{
+  title:"Trabalho e entrevista de emprego",
+  grammar:{name:"Passado Simples", exp:"Usado para falar de experiências e eventos concluídos — essencial para responder perguntas de entrevista tipo 'tell me about a time...'. Verbos regulares levam -ed, irregulares têm forma própria.",
+    examples:["I worked as a cashier for two years.","I solved a difficult problem at my last job.","Did you enjoy it?"]},
+  resources:[
+    {name:"Linda Raynier",desc:"YouTube — dicas de entrevista e carreira"},
+    {name:"Self Made Millennial",desc:"YouTube — mock interviews"},
+    {name:"Business English Pod",desc:"podcast — inglês profissional"}
+  ],
+  vocab:["job – emprego","part-time job – trabalho de meio período","full-time job – trabalho de tempo integral","résumé/CV – currículo","cover letter – carta de apresentação","job interview – entrevista de emprego","interviewer – entrevistador(a)","candidate – candidato(a)","position – cargo/posição","vacancy – vaga","to apply for a job – se candidatar a uma vaga","application – candidatura","to hire – contratar","to be hired – ser contratado","employer – empregador","employee – funcionário(a)","coworker – colega de trabalho","boss/manager – chefe/gerente","experience – experiência","skills – habilidades","strengths – pontos fortes","weaknesses – pontos fracos","qualifications – qualificações","tell me about yourself – fale sobre você","why do you want this job – por que você quer este emprego","what are your strengths – quais são seus pontos fortes","where do you see yourself in five years – onde você se vê em cinco anos","tell me about a time when – me conte sobre uma vez em que","I'm a fast learner – eu aprendo rápido","I'm a team player – eu trabalho bem em equipe","I'm hardworking – eu sou trabalhador(a)","responsible – responsável","punctual – pontual","reliable – confiável","available – disponível","to start immediately – começar imediatamente","salary – salário","wage – salário (por hora)","minimum wage – salário mínimo","hourly rate – valor por hora","shift – turno","morning shift – turno da manhã","night shift – turno da noite","schedule flexibility – flexibilidade de horário","to work overtime – fazer hora extra","day off – folga","vacation days – dias de férias","sick leave – licença médica","contract – contrato","permanent contract – contrato permanente","temporary job – trabalho temporário","seasonal job – trabalho sazonal","to train – treinar","training – treinamento","to be trained – ser treinado","task – tarefa","responsibility – responsabilidade","to handle – lidar com","to deal with customers – lidar com clientes","customer service – atendimento ao cliente","teamwork – trabalho em equipe","leadership – liderança","communication skills – habilidades de comunicação","problem-solving – resolução de problemas","to solve a problem – resolver um problema","deadline – prazo","to meet a deadline – cumprir um prazo","to multitask – fazer várias tarefas ao mesmo tempo","work experience – experiência profissional","internship – estágio","volunteer work – trabalho voluntário","reference – referência (profissional)","to follow up – dar continuidade/retornar contato","thank-you email – e-mail de agradecimento","job offer – oferta de emprego","to accept an offer – aceitar uma oferta","to decline an offer – recusar uma oferta","workplace – ambiente de trabalho","dress code – código de vestimenta","uniform – uniforme","break room – sala de descanso","to clock in – bater ponto (entrada)","to clock out – bater ponto (saída)","payslip – contracheque","bank account – conta bancária","to open a bank account – abrir uma conta bancária","tax number – número de identificação fiscal","work permit – autorização de trabalho","student job – trabalho para estudante","flexible hours – horário flexível","to gain experience – ganhar experiência","opportunity – oportunidade","career – carreira","goal-oriented – orientado a metas","to network – fazer networking","professional – profissional","confident – confiante","to prepare for an interview – se preparar para uma entrevista","mock interview – entrevista simulada","follow-up question – pergunta de acompanhamento"],
+  mon:{title:"Perguntas comuns de entrevista", resource:"Linda Raynier", scenario:"uma entrevista de emprego completa para um trabalho part-time"},
+  tue:{title:"Falando sobre experiência e habilidades", resource:"Self Made Millennial"},
+  wed:{title:"Disponibilidade, salário e horários", resource:"Business English Pod", scenario:"negociar horário e disponibilidade em uma entrevista"},
+  thu:{title:"E-mail de agradecimento e follow-up", resource:"Linda Raynier", task:"escrever em voz alta as ideias de um e-mail de agradecimento após a entrevista"}
+},
+{
+  title:"Socialização, amizades e lazer",
+  grammar:{name:"Sugestões e convites (would you like / let's / shall we / how about)", exp:"Formas educadas de convidar e sugerir atividades sociais — essenciais para fazer amigos e se socializar em Malta.",
+    examples:["Would you like to grab a coffee?","Let's go to the beach.","How about watching a movie tonight?"]},
+  resources:[
+    {name:"Culips English Podcast",desc:"conversas naturais sobre lazer e amizades"},
+    {name:"Vlogs de amigos/hangout",desc:"YouTube — buscar \"friends hangout vlog\""},
+    {name:"Vlogs de festas/eventos",desc:"YouTube — buscar \"party vlog english\""}
+  ],
+  vocab:["to make friends – fazer amigos","to hang out – sair com amigos/curtir","to get along with – se dar bem com","party – festa","to throw a party – dar uma festa","to invite – convidar","invitation – convite","to accept an invitation – aceitar um convite","to turn down an invitation – recusar um convite","would you like to – você gostaria de","do you want to – você quer","let's – vamos (sugestão)","how about – que tal","shall we – vamos (sugestão formal)","sounds good – parece bom","I'm in – topo/estou dentro","I can't make it – eu não vou poder ir","maybe next time – talvez na próxima","free time – tempo livre","weekend plans – planos de fim de semana","to go out – sair","nightlife – vida noturna","bar – bar","club – balada/clube","concert – show","movie theater – cinema","to watch a movie – assistir a um filme","to go for a walk – dar uma caminhada","to go for a drink – tomar uma bebida","to grab a coffee – tomar um café","to catch up – colocar o papo em dia","board game – jogo de tabuleiro","to play games – jogar","sports – esportes","to play sports – praticar esportes","gym – academia","to work out – malhar","beach day – dia de praia","picnic – piquenique","barbecue – churrasco","to celebrate – comemorar","birthday – aniversário","congratulations – parabéns","to have fun – se divertir","to enjoy – aproveitar","memorable – memorável","close friend – amigo(a) próximo(a)","best friend – melhor amigo(a)","to become friends – se tornar amigos","to lose touch – perder contato","to reconnect – reconectar","social circle – círculo social","introvert – introvertido(a)","extrovert – extrovertido(a)","to feel comfortable – se sentir à vontade","icebreaker – quebra-gelo (atividade social)","to break the ice – quebrar o gelo","common interests – interesses em comum","in common – em comum","to bond – criar vínculo","trustworthy – confiável (pessoa)","loyal – leal","supportive – solidário/apoiador","to support – apoiar","to trust – confiar","inside joke – piada interna","to joke around – brincar/fazer piada","sense of humor – senso de humor","to tease – provocar (de brincadeira)","awkward – estranho/constrangedor","to feel left out – se sentir excluído","to include – incluir","group chat – grupo de conversa","to text – mandar mensagem","to call – ligar","to video call – fazer chamada de vídeo","social media – redes sociais","to tag someone – marcar alguém","to follow – seguir (redes sociais)","to post – postar","event – evento","to organize an event – organizar um evento","potluck – festa em que cada um traz um prato","karaoke – karaokê","dance floor – pista de dança","to dance – dançar","live music – música ao vivo","festival – festival","local event – evento local","cultural exchange – intercâmbio cultural","to get to know someone – conhecer alguém melhor","first impression – primeira impressão","to click with someone – se identificar com alguém","to have a lot in common – ter muito em comum","roommate bonding – criar vínculo com colega de quarto","study break – pausa nos estudos","spontaneous – espontâneo","plans fell through – os planos não deram certo","rain check – deixar para outra vez","unforgettable – inesquecível"],
+  mon:{title:"Convites e sugestões", resource:"Culips English Podcast", scenario:"convidar um novo amigo para sair"},
+  tue:{title:"Conhecendo pessoas novas", resource:"Vlogs de amigos/hangout"},
+  wed:{title:"Conversas em festas e eventos", resource:"Vlogs de festas/eventos", scenario:"puxar papo em uma festa com desconhecidos"},
+  thu:{title:"Compartilhando planos de fim de semana", resource:"Culips English Podcast", task:"narrar em voz alta seus planos para o fim de semana"}
+},
+{
+  title:"Imprevistos, reclamações e resolução de problemas",
+  grammar:{name:"Primeiro e Segundo Condicional", exp:"1º condicional (if + presente, will + infinitivo) para situações reais/prováveis; 2º condicional (if + passado, would + infinitivo) para hipóteses. Muito usado em reclamações educadas e situações de \"e se\".",
+    examples:["If this happens again, I will ask for a refund.","If I were you, I would speak to the manager.","I would like a refund, please."]},
+  resources:[
+    {name:"BBC Learning English",desc:"frases para reclamações educadas"},
+    {name:"Customer service roleplay videos",desc:"YouTube — buscar \"customer service role play english\""},
+    {name:"Problem-solving phrases",desc:"YouTube — buscar o termo"}
+  ],
+  vocab:["problem – problema","issue – questão/problema","to have a problem with – ter um problema com","complaint – reclamação","to complain – reclamar","to file a complaint – registrar uma reclamação","I'm sorry to say this, but – sinto dizer isso, mas","I'm not satisfied with – eu não estou satisfeito(a) com","this is not what I ordered – isso não é o que eu pedi","could you fix this – você poderia consertar isso","it's broken – está quebrado","it doesn't work – não está funcionando","out of order – fora de funcionamento","to malfunction – funcionar mal","refund – reembolso","to request a refund – solicitar um reembolso","to exchange – trocar (produto)","warranty – garantia","receipt – recibo","to lose something – perder algo","I lost my key – eu perdi minha chave","I can't find – eu não consigo encontrar","to leave something behind – esquecer algo em algum lugar","lost and found – achados e perdidos","to be stolen – ser roubado","my wallet was stolen – minha carteira foi roubada","to report – reportar/denunciar","police report – boletim de ocorrência","misunderstanding – mal-entendido","to misunderstand – entender errado","that's not what I meant – não foi isso que eu quis dizer","let me explain – deixa eu explicar","to apologize – se desculpar","my apologies – minhas desculpas","it's not a big deal – não é grande coisa","don't worry about it – não se preocupe com isso","to make things right – consertar/corrigir a situação","inconvenience – inconveniente/transtorno","I'm sorry for the inconvenience – desculpe pelo transtorno","delay – atraso","to be delayed – estar atrasado","unexpected – inesperado","emergency – emergência","to run out of – ficar sem","I ran out of money – eu fiquei sem dinheiro","I ran out of time – eu fiquei sem tempo","to be stuck – estar preso/travado","to get stuck in traffic – ficar preso no trânsito","what should I do – o que eu devo fazer","what would you do – o que você faria","if I were you – se eu fosse você","I wish I had – eu queria ter","if this happens again – se isso acontecer de novo","to solve – resolver","solution – solução","alternative – alternativa","backup plan – plano B","to figure out – descobrir/resolver","to handle a situation – lidar com uma situação","to stay calm – manter a calma","don't panic – não entre em pânico","to ask for assistance – pedir assistência","customer support – suporte ao cliente","helpline – linha de ajuda","to escalate – escalar (um problema)","manager – gerente","to speak to a manager – falar com um gerente","dissatisfied – insatisfeito","frustrated – frustrado","to be frustrated with – estar frustrado com","to overcharge – cobrar a mais","I was overcharged – fui cobrado a mais","wrong order – pedido errado","wrong change – troco errado","to double-check – verificar novamente","mistake – erro","to make a mistake – cometer um erro","human error – erro humano","technical issue – problema técnico","to reschedule – reagendar","to cancel – cancelar","cancellation – cancelamento","to reschedule an appointment – reagendar uma consulta/compromisso","to be patient – ter paciência","patience – paciência","thank you for your patience – obrigado pela sua paciência","to resolve – resolver","resolved – resolvido","unresolved – não resolvido","follow-up – acompanhamento","to follow up on – dar continuidade a","I appreciate your help – eu agradeço sua ajuda","I understand – eu entendo","that makes sense – isso faz sentido","no worries – sem problemas/tranquilo","it happens – acontece (consolo)","lesson learned – lição aprendida","to learn from mistakes – aprender com os erros","everything worked out – tudo deu certo","all's well that ends well – tudo está bem quando termina bem"],
+  mon:{title:"Fazendo uma reclamação educadamente", resource:"BBC Learning English", scenario:"reclamar educadamente de um pedido errado em um restaurante"},
+  tue:{title:"Resolvendo mal-entendidos", resource:"Customer service roleplay videos"},
+  wed:{title:"Pedindo ajuda em imprevistos", resource:"Problem-solving phrases", scenario:"reportar que perdeu um objeto ou foi cobrado errado"},
+  thu:{title:"Lidando com frustração e pedindo desculpas", resource:"BBC Learning English", task:"narrar em voz alta como resolver uma situação frustrante com calma"}
+}
+];
+
+function buildWeekDays(cfg, globalStart){
+  const templates = [
+    {kind:'roleplay', focus:cfg.mon.title, resource:cfg.mon.resource,
+      activity:`Bloco 1-2 (15 min): assista um trecho curto sobre "${cfg.mon.title.toLowerCase()}" em ${cfg.mon.resource}, depois repita em voz alta imitando a entonação (shadowing). Bloco 3 (5 min): extraia 3-5 frases do trecho para o Anki. Bloco 4 (10 min): roleplay com IA simulando ${cfg.mon.scenario}.`},
+    {kind:'interacao', focus:cfg.tue.title, resource:cfg.tue.resource,
+      activity:`Bloco 1-2 (15 min): assista/ouça um trecho sobre "${cfg.tue.title.toLowerCase()}" em ${cfg.tue.resource}, repetindo em voz alta as partes-chave. Bloco 3 (5 min): sentence mining das frases mais úteis. Bloco 4 (10 min): pause o vídeo nos momentos-chave — responda em voz alta, dê sua opinião e faça uma pergunta ao que foi dito.`},
+    {kind:'roleplay', focus:cfg.wed.title, resource:cfg.wed.resource,
+      activity:`Bloco 1-2 (15 min): assista um trecho sobre "${cfg.wed.title.toLowerCase()}" em ${cfg.wed.resource}, repetindo em voz alta (shadowing/chorusing). Bloco 3 (5 min): sentence mining para o Anki. Bloco 4 (10 min): roleplay com IA simulando ${cfg.wed.scenario}.`},
+    {kind:'selftalk', focus:cfg.thu.title, resource:cfg.thu.resource,
+      activity:`Bloco 1-2 (15 min): revise um trecho sobre "${cfg.thu.title.toLowerCase()}" em ${cfg.thu.resource}. Bloco 3 (5 min): sentence mining. Bloco 4 (10 min): self-talk — ${cfg.thu.task}, depois pause um vídeo que já assistiu e interaja com ele (responda, opine, pergunte).`},
+    {kind:'lacunas', focus:'Fechando lacunas da semana', resource:'Suas anotações + Anki',
+      activity:`Revise as palavras e frases que você não soube dizer durante a semana sobre "${cfg.title.toLowerCase()}". Bloco final (10 min): escreva um parágrafo curto (5-8 frases) sobre o tema e peça correção detalhada por IA, com explicação de cada erro.`},
+    {kind:'revisao', focus:'Revisão geral da semana', resource:'Anki + trechos da semana',
+      activity:`Revise todas as flashcards da semana no Anki (10-15 min). Escolha os 3 trechos que você achou mais difíceis e repita o shadowing. Bloco final (10 min): roleplay livre com a IA usando qualquer cenário da semana, sem roteiro fixo.`},
+    {kind:'manutencao', focus:'Manutenção do Barril + escrita', resource:'Seu Barril de Conteúdos',
+      activity:`Dedique 10 minutos para atualizar sua pasta do Barril com 3-5 vídeos/podcasts novos sobre o próximo tema, removendo os já usados. Nos 20 minutos restantes, escreva uma reflexão curta sobre o que aprendeu essa semana e peça correção por IA.`}
+  ];
+  return templates.map((t,i)=>({
+    globalIndex: globalStart+i,
+    dow: i,
+    focus: t.focus,
+    resource: t.resource,
+    minutes: 30,
+    activity: t.activity
+  }));
+}
+
+const WEEKS = WEEK_DEFS.map((cfg,i)=>{
+  const globalStart = i*7+1;
+  return {
+    id:i+1,
+    title:cfg.title,
+    grammar:cfg.grammar,
+    resources:cfg.resources,
+    vocab:cfg.vocab,
+    days:buildWeekDays(cfg, globalStart)
+  };
+});
+
+const FINAL_SPRINT_START = 71;
+const FINAL_SPRINT_DAYS = [
+  {focus:"Revisão geral de vocabulário", resource:"Anki (todas as semanas)", minutes:30,
+    activity:"Revise todas as ~1000 palavras estudadas usando os filtros de dificuldade do Anki. Foque nas marcadas como difíceis nas últimas 10 semanas."},
+  {focus:"Simulação: aeroporto + casa", resource:"Roleplay com IA", minutes:30,
+    activity:"Simulação contínua com a IA: do desembarque no aeroporto de Malta até chegar e se instalar na casa/família anfitriã. Fale em voz alta o tempo todo, sem pausar para pensar em português."},
+  {focus:"Simulação: cidade + compras + saúde", resource:"Roleplay com IA", minutes:30,
+    activity:"Simule em uma única conversa contínua: perguntar direções na rua, fazer compras no mercado e explicar um sintoma leve na farmácia."},
+  {focus:"Revisão leve — dia da viagem", resource:"Suas anotações + Barril", minutes:15,
+    activity:"Sem carga pesada hoje. Releia suas frases de sobrevivência favoritas e respire fundo — você já treinou o suficiente para isto. Boa viagem para Malta."}
+];
+
+const TOTAL_DAYS = 74;
+let completedDays = new Set();
+let selectedDayKey = null;
+
+async function loadProgress(){
+  try{
+    const res = await window.storage.get('malta-completed-days', false);
+    if(res && res.value){
+      completedDays = new Set(JSON.parse(res.value));
+    }
+  }catch(e){}
+  render();
+}
+
+async function saveProgress(){
+  try{
+    await window.storage.set('malta-completed-days', JSON.stringify(Array.from(completedDays)), false);
+  }catch(e){}
+}
+
+function dayKey(weekId, globalIndex){ return weekId+'-'+globalIndex; }
+
+function toggleDay(key, checked){
+  if(checked) completedDays.add(key);
+  else completedDays.delete(key);
+  saveProgress();
+  updateProgressUI();
+  document.querySelectorAll('[data-daykey="'+key+'"]').forEach(el=>{
+    el.classList.toggle('done', checked);
+  });
+}
+
+function updateProgressUI(){
+  const done = completedDays.size;
+  const pct = Math.round((done/TOTAL_DAYS)*100);
+  document.getElementById('progressPct').textContent = pct+'%';
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressDone').textContent = done+' de '+TOTAL_DAYS+' dias concluídos';
+  document.getElementById('progressRemain').textContent = (TOTAL_DAYS-done)+' dias restantes';
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diffMs = new Date(2026,9,29) - today;
+  const diffDays = Math.max(0, Math.ceil(diffMs/(1000*60*60*24)));
+  document.getElementById('countdownNum').textContent = diffDays;
+
+  document.querySelectorAll('.week').forEach(w=>{
+    const wid = w.dataset.weekId;
+    const ring = w.querySelector('.week-ring-fg');
+    const txt = w.querySelector('.week-ring-txt');
+    if(!ring) return;
+    const total = parseInt(w.dataset.total);
+    let c = 0;
+    completedDays.forEach(k=>{ if(k.startsWith(wid+'-')) c++; });
+    const circumference = 2*Math.PI*15;
+    const offset = circumference*(1-c/total);
+    ring.style.strokeDasharray = circumference;
+    ring.style.strokeDashoffset = offset;
+    txt.textContent = c+'/'+total;
+  });
+}
+
+function iconCheck(){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>';
+}
+function iconChevron(){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>';
+}
+
+function renderVocabItem(str){
+  const parts = str.split(' – ');
+  return '<div class="vocab-item"><b>'+parts[0]+'</b> – '+ (parts[1]||'') +'</div>';
+}
+
+function renderDaysGrid(week, weekId){
+  return week.days.map(d=>{
+    const key = dayKey(weekId, d.globalIndex);
+    const date = dateForDay(d.globalIndex);
+    const isDone = completedDays.has(key);
+    return '<button class="day-btn'+(isDone?' done':'')+'" data-daykey="'+key+'" onclick="selectDay(\''+weekId+'\','+d.globalIndex+')">'
+      +'<div class="day-dow">'+DOW[d.dow]+'</div>'
+      +'<div class="day-num">'+fmtDate(date)+'</div>'
+      +'<div class="day-stamp">'+iconCheck()+'</div>'
+      +'</button>';
+  }).join('');
+}
+
+let dayLookup = {};
+
+function renderWeek(week){
+  week.days.forEach(d=>{ dayLookup[week.id+'-'+d.globalIndex] = {week, day:d}; });
+  const vocabId = 'vocab-'+week.id;
+  const daysId = 'days-'+week.id;
+  const detailId = 'detail-'+week.id;
+  const startDate = dateForDay(week.days[0].globalIndex);
+  const endDate = dateForDay(week.days[6].globalIndex);
+  return `
+  <div class="week" data-week-id="${week.id}" data-total="${week.days.length}">
+    <button class="week-head" onclick="toggleWeek(${week.id})">
+      <span class="week-gate">Semana ${week.id}</span>
+      <span class="week-head-text">
+        <p class="week-name">${week.title}</p>
+        <p class="week-dates">${fmtDate(startDate)} — ${fmtDate(endDate)}</p>
+      </span>
+      <span class="week-ring">
+        <svg width="38" height="38" viewBox="0 0 38 38">
+          <circle class="week-ring-bg" cx="19" cy="19" r="15"/>
+          <circle class="week-ring-fg" cx="19" cy="19" r="15"/>
+        </svg>
+        <span class="week-ring-txt">0/7</span>
+      </span>
+      <span class="chevron">${iconChevron()}</span>
+    </button>
+    <div class="week-body">
+      <p class="block-title">Foco gramatical</p>
+      <div class="grammar-card">
+        <p class="grammar-name">${week.grammar.name}</p>
+        <p class="grammar-exp">${week.grammar.exp}</p>
+        <ul class="grammar-ex">${week.grammar.examples.map(e=>'<li>'+e+'</li>').join('')}</ul>
+      </div>
+
+      <p class="block-title">Recursos recomendados</p>
+      <div class="resources">
+        ${week.resources.map(r=>'<div class="resource-item"><span class="resource-name">'+r.name+'</span><span class="resource-desc">'+r.desc+'</span></div>').join('')}
+      </div>
+
+      <p class="block-title">Vocabulário da semana (100 palavras)</p>
+      <button class="vocab-toggle" onclick="toggleVocab('${vocabId}', this)">Mostrar as 100 palavras</button>
+      <div class="vocab-grid" id="${vocabId}">
+        ${week.vocab.map(renderVocabItem).join('')}
+      </div>
+
+      <p class="block-title">Dias da semana</p>
+      <div class="days-grid" id="${daysId}">
+        ${renderDaysGrid(week, week.id)}
+      </div>
+      <div class="day-detail" id="${detailId}"></div>
+    </div>
+  </div>`;
+}
+
+function renderFinalSprint(){
+  const days = FINAL_SPRINT_DAYS.map((d,i)=>({
+    globalIndex: FINAL_SPRINT_START+i,
+    dow: i,
+    focus:d.focus, resource:d.resource, minutes:d.minutes, activity:d.activity
+  }));
+  const weekId = 'final';
+  days.forEach(d=>{ dayLookup[weekId+'-'+d.globalIndex] = {week:{id:weekId,title:'Sprint final'}, day:d}; });
+  const startDate = dateForDay(days[0].globalIndex);
+  const endDate = dateForDay(days[3].globalIndex);
+  const daysHtml = days.map(d=>{
+    const key = dayKey(weekId, d.globalIndex);
+    const date = dateForDay(d.globalIndex);
+    const isDone = completedDays.has(key);
+    return '<button class="day-btn'+(isDone?' done':'')+'" style="max-width:120px" data-daykey="'+key+'" onclick="selectDay(\''+weekId+'\','+d.globalIndex+')">'
+      +'<div class="day-dow">'+DOW_FULL[d.dow]+'</div>'
+      +'<div class="day-num">'+fmtDate(date)+'</div>'
+      +'<div class="day-stamp">'+iconCheck()+'</div>'
+      +'</button>';
+  }).join('');
+  return `
+  <div class="week" data-week-id="${weekId}" data-total="4">
+    <button class="week-head" onclick="toggleWeek('${weekId}')">
+      <span class="week-gate">Sprint final</span>
+      <span class="week-head-text">
+        <p class="week-name">Revisão geral e simulação completa</p>
+        <p class="week-dates">${fmtDate(startDate)} — ${fmtDate(endDate)} · dia da viagem</p>
+      </span>
+      <span class="week-ring">
+        <svg width="38" height="38" viewBox="0 0 38 38">
+          <circle class="week-ring-bg" cx="19" cy="19" r="15"/>
+          <circle class="week-ring-fg" cx="19" cy="19" r="15"/>
+        </svg>
+        <span class="week-ring-txt">0/4</span>
+      </span>
+      <span class="chevron">${iconChevron()}</span>
+    </button>
+    <div class="week-body">
+      <p class="block-title">Últimos 4 dias antes do embarque</p>
+      <div class="days-grid" style="grid-template-columns:repeat(4,1fr)">
+        ${daysHtml}
+      </div>
+      <div class="day-detail" id="detail-${weekId}"></div>
+    </div>
+  </div>`;
+}
+
+function toggleWeek(id){
+  const el = document.querySelector('.week[data-week-id="'+id+'"]');
+  el.classList.toggle('open');
+}
+
+function toggleVocab(id, btn){
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+  btn.textContent = el.classList.contains('open') ? 'Ocultar palavras' : 'Mostrar as 100 palavras';
+}
+
+function selectDay(weekId, globalIndex){
+  const entry = dayLookup[weekId+'-'+globalIndex];
+  if(!entry) return;
+  const d = entry.day;
+  const key = dayKey(weekId, globalIndex);
+  const date = dateForDay(globalIndex);
+  const isDone = completedDays.has(key);
+  const detail = document.getElementById('detail-'+weekId);
+
+  document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('selected'));
+  document.querySelector('[data-daykey="'+key+'"]').classList.add('selected');
+
+  detail.innerHTML = `
+    <div class="day-detail-head">
+      <div>
+        <p class="day-detail-title">${d.focus}</p>
+        <p class="day-detail-date">${DOW_FULL[d.dow]}, ${fmtDate(date)}</p>
+      </div>
+    </div>
+    <div class="day-meta-row">
+      <span>Recurso: <b>${d.resource}</b></span>
+      <span>Duração: <b>${d.minutes} min</b></span>
+    </div>
+    <p class="day-activity">${d.activity}</p>
+    <div class="check-row">
+      <input type="checkbox" id="chk-${key}" ${isDone?'checked':''} onchange="toggleDay('${key}', this.checked)">
+      <label for="chk-${key}">Marcar este dia como concluído</label>
+    </div>
+  `;
+  detail.classList.add('open');
+}
+
+function render(){
+  document.getElementById('weeksContainer').innerHTML =
+    WEEKS.map(renderWeek).join('') + renderFinalSprint();
+  updateProgressUI();
+}
+
+loadProgress();
+</script>
+</body>
+</html>
