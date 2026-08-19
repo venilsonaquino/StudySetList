@@ -118,6 +118,7 @@ h1{
 .day-btn:hover{border-color:var(--teal);}
 .day-btn.selected{border-color:var(--teal);background:rgba(79,181,166,0.12);}
 .day-btn.done{border-color:var(--gold);background:rgba(210,165,68,0.1);}
+.day-btn.today{border:2px solid var(--gold);}
 .day-q{font-family:var(--font-mono);font-size:9px;text-transform:uppercase;color:var(--sand-dim);letter-spacing:.03em;}
 .day-num{font-family:var(--font-mono);font-size:13px;margin:4px 0;}
 .day-stamp{width:15px;height:15px;margin:0 auto;border-radius:50%;border:1.5px solid var(--sand-dim);display:flex;align-items:center;justify-content:center;}
@@ -129,6 +130,30 @@ h1{
 .detail.open{display:block;}
 .detail-q{font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--sand);margin:0 0 3px;}
 .detail-date{font-family:var(--font-mono);font-size:11px;color:var(--sand-dim);margin-bottom:12px;}
+.listen-btn{
+  display:inline-flex;align-items:center;gap:6px;margin:0 0 14px;padding:7px 11px;
+  background:transparent;border:1px solid var(--teal);border-radius:8px;color:var(--teal);
+  font-family:var(--font-body);font-size:12.5px;font-weight:600;cursor:pointer;
+}
+.listen-btn:hover{background:var(--card-hover);color:var(--sand);}
+.listen-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+.voice-recorder{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);}
+.record-btn{margin:0;}
+.record-btn.recording{border-color:var(--gold);color:var(--gold);}
+.record-btn:disabled{cursor:wait;color:var(--sand-dim);border-color:var(--line-strong);}
+.record-status{min-height:20px;margin:7px 0 0;font-size:12px;color:var(--sand-dim);}
+.record-status.error{color:var(--gold);}
+.record-audio{display:block;width:100%;margin-top:8px;accent-color:var(--teal);}
+.record-audio[hidden]{display:none;}
+.countdown{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  margin:0 0 14px;padding:14px 16px;background:var(--card-hover);
+  border:1px solid var(--line-strong);border-radius:10px;
+}
+.countdown-label{margin:0;font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--sand-dim);}
+.countdown-value{margin:2px 0 0;font-family:var(--font-mono);font-size:42px;font-weight:500;line-height:1;color:var(--sand);}
+.countdown-value.finished{color:var(--gold);}
+.countdown-btn{flex-shrink:0;margin:0;}
 .detail-mode{
   background:rgba(79,181,166,0.1);border:1px solid var(--teal);border-radius:8px;
   padding:10px 12px;font-size:13px;color:var(--sand);margin-bottom:14px;
@@ -145,10 +170,17 @@ h1{
 .check-row label{font-size:13px;color:var(--sand-dim);cursor:pointer;}
 
 .footer-note{margin-top:34px;text-align:center;font-size:12px;color:var(--sand-dim);font-family:var(--font-mono);}
+.reset-progress{
+  display:block;margin:8px auto 0;padding:4px 7px;background:transparent;border:0;
+  color:var(--sand-dim);font-family:var(--font-body);font-size:11.5px;text-decoration:underline;
+  text-underline-offset:3px;cursor:pointer;
+}
+.reset-progress:hover{color:var(--sand);}
+.reset-progress:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:4px;}
 
 @media (max-width:520px){
   .days-row{grid-template-columns:repeat(7,1fr);gap:4px;}
-  .day-q{display:none;}
+  .day-q{font-size:7.5px;}
 }
 </style>
 </head>
@@ -189,6 +221,7 @@ h1{
   <div id="roundsContainer"></div>
 
   <p class="footer-note">Um dia, uma pergunta, 30 minutos. Clique no dia para abrir o treino.</p>
+  <button type="button" class="reset-progress" onclick="resetProgress()">Reiniciar progresso</button>
 </div>
 
 <script>
@@ -289,17 +322,42 @@ function buildDays(){
 const ALL_DAYS = buildDays();
 const TOTAL_DAYS = 72;
 
-let completedDays = new Set();
+function findTodayDayIndex(){
+  const today = new Date();
+  today.setHours(0,0,0,0);
 
-async function loadProgress(){
+  for(let i=1;i<=TOTAL_DAYS;i++){
+    const planDate = dateForDay(i);
+    planDate.setHours(0,0,0,0);
+    if(planDate.getTime() === today.getTime()) return i;
+  }
+
+  return null;
+}
+
+const TODAY_DAY_INDEX = findTodayDayIndex();
+
+let completedDays = new Set();
+const PROGRESS_STORAGE_KEY = 'malta-interview-completed';
+
+function loadProgress(){
   try{
-    const res = await window.storage.get('malta-interview-completed', false);
-    if(res && res.value) completedDays = new Set(JSON.parse(res.value));
-  }catch(e){}
+    const savedProgress = window.localStorage.getItem(PROGRESS_STORAGE_KEY);
+    if(savedProgress){
+      const parsedProgress = JSON.parse(savedProgress);
+      if(Array.isArray(parsedProgress)) completedDays = new Set(parsedProgress);
+    }
+  }catch(e){
+    console.warn('Não foi possível carregar o progresso salvo.', e);
+  }
   render();
 }
-async function saveProgress(){
-  try{ await window.storage.set('malta-interview-completed', JSON.stringify(Array.from(completedDays)), false); }catch(e){}
+function saveProgress(){
+  try{
+    window.localStorage.setItem(PROGRESS_STORAGE_KEY, JSON.stringify(Array.from(completedDays)));
+  }catch(e){
+    console.warn('Não foi possível salvar o progresso.', e);
+  }
 }
 
 function toggleDay(key, checked){
@@ -309,8 +367,23 @@ function toggleDay(key, checked){
   document.querySelectorAll('[data-daykey="'+key+'"]').forEach(el=>el.classList.toggle('done', checked));
 }
 
-function iconCheck(){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>'; }
-function iconChevron(){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>'; }
+function resetProgress(){
+  if(!window.confirm('Tem certeza de que deseja reiniciar todo o progresso?')) return;
+
+  try{
+    window.localStorage.removeItem(PROGRESS_STORAGE_KEY);
+  }catch(e){
+    console.warn('Não foi possível remover o progresso salvo.', e);
+  }
+
+  completedDays = new Set();
+  stopCountdown();
+  stopActiveRecording();
+  render();
+}
+
+function iconCheck(){ return '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>'; }
+function iconChevron(){ return '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>'; }
 
 function updateProgressUI(){
   const done = completedDays.size;
@@ -325,6 +398,7 @@ function updateProgressUI(){
 
   document.querySelectorAll('.round').forEach(el=>{
     const r = parseInt(el.dataset.roundIndex);
+    if(Number.isNaN(r)) return;
     let c = 0;
     for(let q=0;q<7;q++){
       const day = ALL_DAYS[r*7+q];
@@ -348,31 +422,35 @@ function renderQList(){
 }
 
 function renderAnswerBlock(q){
+  const listenButton = '<button type="button" class="listen-btn" onclick="speakAnswer(\''+q.id+'\')">🔊 Ouvir resposta</button>';
   if(q.car){
-    return '<p class="sub-label">Contexto</p><p class="model-answer">'+q.car.context+'</p>'
+    return listenButton
+      +'<p class="sub-label">Contexto</p><p class="model-answer">'+q.car.context+'</p>'
       +'<p class="sub-label">Ação</p><p class="model-answer">'+q.car.action+'</p>'
       +'<p class="sub-label">Resultado</p><p class="model-answer">'+q.car.result+'</p>';
   }
-  return '<p class="sub-label">Resposta-modelo</p><p class="model-answer">'+q.model+'</p>';
+  return listenButton+'<p class="sub-label">Resposta-modelo</p><p class="model-answer">'+q.model+'</p>';
 }
 
 function renderRound(r, idx){
   const days = ALL_DAYS.slice(idx*7, idx*7+7);
   const startDate = dateForDay(days[0].globalIndex);
   const endDate = dateForDay(days[6].globalIndex);
+  const containsToday = days.some(d=>d.globalIndex === TODAY_DAY_INDEX);
   const chips = days.map(d=>{
     const key = 'r-'+d.globalIndex;
     const date = dateForDay(d.globalIndex);
     const isDone = completedDays.has(key);
-    return '<button class="day-btn'+(isDone?' done':'')+'" data-daykey="'+key+'" onclick="selectDay('+idx+','+d.globalIndex+')">'
+    const isToday = d.globalIndex === TODAY_DAY_INDEX;
+    return '<button class="day-btn'+(isDone?' done':'')+(isToday?' today':'')+'" data-daykey="'+key+'"'+(isToday?' aria-current="date"':'')+' onclick="selectDay('+idx+','+d.globalIndex+')">'
       +'<div class="day-q">'+d.question.short+'</div>'
       +'<div class="day-num">'+fmtDate(date)+'</div>'
       +'<div class="day-stamp">'+iconCheck()+'</div>'
       +'</button>';
   }).join('');
   return `
-  <div class="round" data-round-index="${idx}">
-    <button class="round-head" onclick="toggleRound(${idx})">
+  <div class="round${containsToday?' open':''}" data-round-index="${idx}">
+    <button class="round-head" aria-expanded="${containsToday?'true':'false'}" onclick="toggleRound(${idx})">
       <span class="round-num">R${idx+1}</span>
       <span class="round-text">
         <p class="round-name">${r.name}</p>
@@ -394,18 +472,20 @@ function renderSprint(){
     {globalIndex:71, focus:FINAL_SPRINT[0].focus, activity:FINAL_SPRINT[0].activity, key:'s-71'},
     {globalIndex:72, focus:FINAL_SPRINT[1].focus, activity:FINAL_SPRINT[1].activity, key:'s-72'}
   ];
+  const containsToday = days.some(d=>d.globalIndex === TODAY_DAY_INDEX);
   const chips = days.map(d=>{
     const date = dateForDay(d.globalIndex);
     const isDone = completedDays.has(d.key);
-    return '<button class="day-btn'+(isDone?' done':'')+'" style="max-width:130px" data-daykey="'+d.key+'" onclick="selectSprintDay(\''+d.key+'\')">'
+    const isToday = d.globalIndex === TODAY_DAY_INDEX;
+    return '<button class="day-btn'+(isDone?' done':'')+(isToday?' today':'')+'" style="max-width:130px" data-daykey="'+d.key+'"'+(isToday?' aria-current="date"':'')+' onclick="selectSprintDay(\''+d.key+'\')">'
       +'<div class="day-q">'+fmtDate(date)+'</div>'
       +'<div class="day-num">Dia '+d.globalIndex+'</div>'
       +'<div class="day-stamp">'+iconCheck()+'</div>'
       +'</button>';
   }).join('');
   return `
-  <div class="round" data-round-index="sprint">
-    <button class="round-head" onclick="toggleRound('sprint')">
+  <div class="round${containsToday?' open':''}" data-round-index="sprint">
+    <button class="round-head" aria-expanded="${containsToday?'true':'false'}" onclick="toggleRound('sprint')">
       <span class="round-num">Final</span>
       <span class="round-text">
         <p class="round-name">Sprint final</p>
@@ -422,7 +502,230 @@ function renderSprint(){
 }
 
 function toggleRound(idx){
-  document.querySelector('.round[data-round-index="'+idx+'"]').classList.toggle('open');
+  const round = document.querySelector('.round[data-round-index="'+idx+'"]');
+  const isOpen = round.classList.toggle('open');
+  round.querySelector('.round-head').setAttribute('aria-expanded', String(isOpen));
+}
+
+let speechSequenceId = 0;
+
+function speakQuestion(text){
+  if(!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') return;
+  speechSequenceId++;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'en-US';
+  window.speechSynthesis.speak(utterance);
+}
+
+function speakDayQuestion(globalIndex){
+  speakQuestion(ALL_DAYS[globalIndex-1].question.q);
+}
+
+function speakSprintPrompt(index){
+  speakQuestion(FINAL_SPRINT[index].focus);
+}
+
+function speakAnswer(questionId){
+  if(!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') return;
+  const q = QUESTIONS.find(question=>question.id === questionId);
+  if(!q) return;
+
+  const parts = q.car
+    ? [q.car.context, q.car.action, q.car.result]
+    : [q.model];
+  let partIndex = 0;
+  const currentSequenceId = ++speechSequenceId;
+
+  window.speechSynthesis.cancel();
+
+  function speakNextPart(){
+    if(currentSequenceId !== speechSequenceId || partIndex >= parts.length) return;
+    const utterance = new SpeechSynthesisUtterance(parts[partIndex]);
+    utterance.lang = 'en-US';
+    partIndex++;
+    utterance.onend = ()=>{
+      if(partIndex < parts.length) window.setTimeout(speakNextPart, 350);
+    };
+    window.speechSynthesis.speak(utterance);
+  }
+
+  speakNextPart();
+}
+
+const savedRecordings = new Map();
+let activeRecording = null;
+let recordingRequestId = 0;
+
+function renderVoiceRecorder(key){
+  const savedRecording = savedRecordings.get(key);
+  const isRecording = activeRecording
+    && activeRecording.key === key
+    && activeRecording.recorder.state === 'recording';
+
+  return `
+    <div class="voice-recorder">
+      <p class="sub-label">Treine sua resposta</p>
+      <button type="button" id="record-btn-${key}" class="listen-btn record-btn${isRecording?' recording':''}" aria-pressed="${isRecording?'true':'false'}" onclick="toggleRecording('${key}', this)">${isRecording?'Parar':'Gravar'}</button>
+      <p class="record-status" id="record-status-${key}" aria-live="polite">${isRecording?'Gravando...':''}</p>
+      <audio class="record-audio" id="record-audio-${key}" controls ${savedRecording?'src="'+savedRecording.url+'"':'hidden'}></audio>
+    </div>
+  `;
+}
+
+function setRecorderMessage(key, message, isError=false){
+  const status = document.getElementById('record-status-'+key);
+  if(status){
+    status.textContent = message;
+    status.classList.toggle('error', isError);
+  }
+}
+
+function stopActiveRecording(){
+  if(!activeRecording) return Promise.resolve();
+  if(activeRecording.recorder.state === 'recording') activeRecording.recorder.stop();
+  return activeRecording.stopped;
+}
+
+function prepareRecorderForPanel(key){
+  recordingRequestId++;
+  if(activeRecording && activeRecording.key !== key) stopActiveRecording();
+}
+
+async function toggleRecording(key, button){
+  if(activeRecording && activeRecording.key === key && activeRecording.recorder.state === 'recording'){
+    button.disabled = true;
+    button.textContent = 'Parando...';
+    activeRecording.recorder.stop();
+    return;
+  }
+
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof MediaRecorder === 'undefined'){
+    const audio = document.getElementById('record-audio-'+key);
+    if(audio) audio.hidden = true;
+    setRecorderMessage(key, 'Este navegador não suporta gravação de voz.', true);
+    return;
+  }
+
+  if(activeRecording) await stopActiveRecording();
+
+  const requestId = ++recordingRequestId;
+  setRecorderMessage(key, 'Aguardando permissão do microfone...');
+
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    if(requestId !== recordingRequestId || !button.isConnected){
+      stream.getTracks().forEach(track=>track.stop());
+      return;
+    }
+
+    const recorder = new MediaRecorder(stream);
+    const chunks = [];
+    let resolveStopped;
+    const stopped = new Promise(resolve=>{ resolveStopped = resolve; });
+
+    activeRecording = {key, recorder, stream, stopped};
+    recorder.ondataavailable = event=>{
+      if(event.data && event.data.size > 0) chunks.push(event.data);
+    };
+    recorder.onstop = ()=>{
+      stream.getTracks().forEach(track=>track.stop());
+
+      if(chunks.length){
+        const previousRecording = savedRecordings.get(key);
+        if(previousRecording) URL.revokeObjectURL(previousRecording.url);
+
+        const blob = new Blob(chunks, {type:recorder.mimeType || 'audio/webm'});
+        const url = URL.createObjectURL(blob);
+        savedRecordings.set(key, {url});
+
+        const audio = document.getElementById('record-audio-'+key);
+        if(audio){
+          audio.src = url;
+          audio.hidden = false;
+        }
+        setRecorderMessage(key, 'Gravação pronta para ouvir.');
+      }else{
+        setRecorderMessage(key, 'Não foi possível gerar a gravação.', true);
+      }
+
+      const currentButton = document.getElementById('record-btn-'+key);
+      if(currentButton){
+        currentButton.disabled = false;
+        currentButton.textContent = 'Gravar';
+        currentButton.classList.remove('recording');
+        currentButton.setAttribute('aria-pressed', 'false');
+      }
+
+      if(activeRecording && activeRecording.recorder === recorder) activeRecording = null;
+      resolveStopped();
+    };
+
+    recorder.start();
+    button.textContent = 'Parar';
+    button.classList.add('recording');
+    button.setAttribute('aria-pressed', 'true');
+    const audio = document.getElementById('record-audio-'+key);
+    if(audio) audio.hidden = true;
+    setRecorderMessage(key, 'Gravando...');
+  }catch(e){
+    const audio = document.getElementById('record-audio-'+key);
+    if(audio) audio.hidden = true;
+    button.disabled = false;
+    button.textContent = 'Gravar';
+    button.classList.remove('recording');
+    button.setAttribute('aria-pressed', 'false');
+    setRecorderMessage(key, 'Não foi possível acessar o microfone. Verifique a permissão do navegador.', true);
+  }
+}
+
+let countdownInterval = null;
+
+function stopCountdown(){
+  if(countdownInterval !== null){
+    window.clearInterval(countdownInterval);
+    countdownInterval = null;
+  }
+}
+
+function renderCountdown(roundName, key){
+  if(roundName !== 'Cronometrada') return '';
+  return `
+    <div class="countdown">
+      <div>
+        <p class="countdown-label">Tempo para responder</p>
+        <p class="countdown-value" id="countdown-${key}">45</p>
+      </div>
+      <button type="button" class="listen-btn countdown-btn" onclick="startCountdown('${key}', this)">Iniciar</button>
+    </div>
+  `;
+}
+
+function startCountdown(key, button){
+  stopCountdown();
+  const display = document.getElementById('countdown-'+key);
+  if(!display) return;
+
+  let secondsLeft = 45;
+  display.textContent = secondsLeft;
+  display.classList.remove('finished');
+  button.textContent = 'Reiniciar';
+
+  countdownInterval = window.setInterval(()=>{
+    if(!display.isConnected){
+      stopCountdown();
+      return;
+    }
+
+    secondsLeft--;
+    display.textContent = Math.max(0, secondsLeft);
+
+    if(secondsLeft <= 0){
+      stopCountdown();
+      display.classList.add('finished');
+      button.textContent = 'Iniciar novamente';
+    }
+  }, 1000);
 }
 
 function selectDay(roundIdx, globalIndex){
@@ -434,24 +737,30 @@ function selectDay(roundIdx, globalIndex){
   const isDone = completedDays.has(key);
   const detail = document.getElementById('detail-'+roundIdx);
 
+  stopCountdown();
+  prepareRecorderForPanel(key);
   document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('selected'));
   document.querySelector('[data-daykey="'+key+'"]').classList.add('selected');
 
   detail.innerHTML = `
     <p class="detail-q">"${q.q}"</p>
     <p class="detail-date">${fmtDate(date)} · 30 min</p>
+    <button type="button" class="listen-btn" onclick="speakDayQuestion(${globalIndex})">🔊 Ouvir pergunta</button>
     <div class="detail-mode"><b>Hoje (${round.name}):</b> ${round.mode}</div>
+    ${renderCountdown(round.name, key)}
     ${renderAnswerBlock(q)}
     <p class="sub-label">Vocabulário-chave</p>
     <div class="chips">${q.vocab.map(v=>'<span class="chip">'+v+'</span>').join('')}</div>
     <p class="sub-label">Tempo verbal</p>
     <p class="tense-note">${q.tense}</p>
+    ${renderVoiceRecorder(key)}
     <div class="check-row">
       <input type="checkbox" id="chk-${key}" ${isDone?'checked':''} onchange="toggleDay('${key}', this.checked)">
       <label for="chk-${key}">Marcar este dia como concluído</label>
     </div>
   `;
   detail.classList.add('open');
+  detail.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 function selectSprintDay(key){
@@ -462,19 +771,24 @@ function selectSprintDay(key){
   const isDone = completedDays.has(key);
   const detail = document.getElementById('detail-sprint');
 
+  stopCountdown();
+  prepareRecorderForPanel(key);
   document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('selected'));
   document.querySelector('[data-daykey="'+key+'"]').classList.add('selected');
 
   detail.innerHTML = `
     <p class="detail-q">${d.focus}</p>
     <p class="detail-date">${fmtDate(date)}</p>
+    <button type="button" class="listen-btn" onclick="speakSprintPrompt(${idx})">🔊 Ouvir pergunta</button>
     <p class="model-answer">${d.activity}</p>
+    ${renderVoiceRecorder(key)}
     <div class="check-row">
       <input type="checkbox" id="chk-${key}" ${isDone?'checked':''} onchange="toggleDay('${key}', this.checked)">
       <label for="chk-${key}">Marcar este dia como concluído</label>
     </div>
   `;
   detail.classList.add('open');
+  detail.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
 function render(){
