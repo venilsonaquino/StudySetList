@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foco: Entrevista em Inglês — rumo a Malta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12202D;
+  --card:#17293A;
+  --card-hover:#1C3040;
+  --sand:#ECE6D8;
+  --sand-dim:#9FB0BE;
+  --teal:#4FB5A6;
+  --gold:#D2A544;
+  --line:rgba(236,230,216,0.12);
+  --line-strong:rgba(236,230,216,0.24);
+  --radius:14px;
+  --font-display:'Fraunces', serif;
+  --font-body:'Work Sans', sans-serif;
+  --font-mono:'IBM Plex Mono', monospace;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--ink);
+  color:var(--sand);
+  font-family:var(--font-body);
+  line-height:1.6;
+  padding:0 0 4rem;
+}
+.wrap{max-width:760px;margin:0 auto;padding:0 20px;}
+
+.hero{padding-top:30px;}
+.eyebrow{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--teal);margin:0 0 8px;
+}
+h1{
+  font-family:var(--font-display);font-weight:600;font-size:clamp(24px,4vw,32px);
+  margin:0 0 8px;color:var(--sand);
+}
+.hero-sub{font-size:14px;color:var(--sand-dim);margin:0 0 24px;max-width:56ch;}
+
+/* pinned reference card */
+.pin{
+  background:var(--card);
+  border:1px solid var(--teal);
+  border-radius:var(--radius);
+  padding:18px 20px;
+  margin-bottom:22px;
+}
+.pin-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin:0 0 10px;}
+.pin-row{display:flex;gap:10px;margin-bottom:8px;font-size:13.5px;}
+.pin-row:last-child{margin-bottom:0;}
+.pin-tag{
+  font-family:var(--font-mono);font-size:10.5px;color:var(--gold);
+  border:1px solid var(--gold);border-radius:6px;padding:1px 6px;height:fit-content;white-space:nowrap;
+}
+.pin-phrase{color:var(--sand);}
+.pin-note{font-size:12.5px;color:var(--sand-dim);margin-top:10px;padding-top:10px;border-top:1px solid var(--line);}
+.pin-note b{color:var(--sand);}
+
+/* progress */
+.progress-card{
+  background:var(--card);border:1px solid var(--line-strong);border-radius:var(--radius);
+  padding:18px 20px;margin-bottom:26px;
+}
+.progress-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;font-size:13px;color:var(--sand-dim);}
+.progress-pct{font-family:var(--font-mono);font-size:20px;color:var(--sand);font-weight:500;}
+.progress-track{height:7px;background:rgba(236,230,216,0.1);border-radius:4px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--teal);border-radius:4px;width:0%;transition:width .4s ease;}
+.progress-meta{display:flex;justify-content:space-between;margin-top:8px;font-size:11.5px;color:var(--sand-dim);font-family:var(--font-mono);}
+.progress-meta b{color:var(--gold);}
+
+.section-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin:0 0 12px;}
+
+/* the 7 questions reference */
+.qlist{display:flex;flex-direction:column;gap:8px;margin-bottom:30px;}
+.qitem{
+  background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:12px 16px;font-size:13.5px;display:flex;gap:12px;align-items:baseline;
+}
+.qitem b{color:var(--sand);font-weight:500;min-width:20px;font-family:var(--font-mono);color:var(--teal);}
+.qitem span{color:var(--sand-dim);}
+
+/* rounds */
+.round{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  margin-bottom:12px;overflow:hidden;
+}
+.round-head{
+  width:100%;display:flex;align-items:center;gap:14px;padding:16px 18px;
+  background:transparent;border:none;cursor:pointer;text-align:left;color:inherit;font-family:inherit;
+}
+.round-head:hover{background:var(--card-hover);}
+.round-num{
+  font-family:var(--font-mono);font-size:12px;color:var(--gold);
+  border:1px solid var(--gold);border-radius:20px;padding:3px 10px;white-space:nowrap;
+}
+.round-text{flex:1;min-width:0;}
+.round-name{font-family:var(--font-display);font-size:16.5px;font-weight:600;margin:0 0 2px;color:var(--sand);}
+.round-mode{font-size:12.5px;color:var(--sand-dim);}
+.round-badge{font-family:var(--font-mono);font-size:11px;color:var(--sand-dim);white-space:nowrap;}
+.chevron{width:14px;height:14px;flex-shrink:0;transition:transform .2s ease;color:var(--sand-dim);}
+.round.open .chevron{transform:rotate(180deg);}
+.round-body{display:none;padding:2px 18px 18px;border-top:1px solid var(--line);}
+.round.open .round-body{display:block;}
+
+.days-row{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:14px;}
+.day-btn{
+  background:rgba(236,230,216,0.04);border:1px solid var(--line-strong);border-radius:9px;
+  padding:8px 3px 7px;cursor:pointer;text-align:center;color:var(--sand);font-family:inherit;
+}
+.day-btn:hover{border-color:var(--teal);}
+.day-btn.selected{border-color:var(--teal);background:rgba(79,181,166,0.12);}
+.day-btn.done{border-color:var(--gold);background:rgba(210,165,68,0.1);}
+.day-q{font-family:var(--font-mono);font-size:9px;text-transform:uppercase;color:var(--sand-dim);letter-spacing:.03em;}
+.day-num{font-family:var(--font-mono);font-size:13px;margin:4px 0;}
+.day-stamp{width:15px;height:15px;margin:0 auto;border-radius:50%;border:1.5px solid var(--sand-dim);display:flex;align-items:center;justify-content:center;}
+.day-btn.done .day-stamp{border-color:var(--gold);color:var(--gold);}
+.day-stamp svg{width:8px;height:8px;display:none;}
+.day-btn.done .day-stamp svg{display:block;}
+
+.detail{display:none;margin-top:14px;background:rgba(236,230,216,0.05);border:1px solid var(--line-strong);border-radius:10px;padding:16px 18px;}
+.detail.open{display:block;}
+.detail-q{font-family:var(--font-display);font-size:16px;font-weight:600;color:var(--sand);margin:0 0 3px;}
+.detail-date{font-family:var(--font-mono);font-size:11px;color:var(--sand-dim);margin-bottom:12px;}
+.detail-mode{
+  background:rgba(79,181,166,0.1);border:1px solid var(--teal);border-radius:8px;
+  padding:10px 12px;font-size:13px;color:var(--sand);margin-bottom:14px;
+}
+.detail-mode b{color:var(--teal);}
+.sub-label{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--sand-dim);margin:12px 0 6px;}
+.model-answer{font-size:13.5px;color:var(--sand);background:rgba(236,230,216,0.04);border-left:2px solid var(--teal);padding:8px 12px;border-radius:0 6px 6px 0;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{font-family:var(--font-mono);font-size:11.5px;color:var(--gold);border:1px solid var(--gold);border-radius:14px;padding:3px 10px;}
+.tense-note{font-size:12.5px;color:var(--sand-dim);}
+.tense-note code{color:var(--sand);background:rgba(236,230,216,0.06);padding:1px 5px;border-radius:4px;font-family:var(--font-mono);}
+.check-row{display:flex;align-items:center;gap:10px;padding-top:14px;margin-top:14px;border-top:1px solid var(--line);}
+.check-row input{width:17px;height:17px;accent-color:var(--gold);cursor:pointer;}
+.check-row label{font-size:13px;color:var(--sand-dim);cursor:pointer;}
+
+.footer-note{margin-top:34px;text-align:center;font-size:12px;color:var(--sand-dim);font-family:var(--font-mono);}
+
+@media (max-width:520px){
+  .days-row{grid-template-columns:repeat(7,1fr);gap:4px;}
+  .day-q{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <p class="eyebrow">Baseado na sua simulação real de entrevista</p>
+    <h1>Pronto para a entrevista, Venilson</h1>
+    <p class="hero-sub">Sem gramática solta, sem vocabulário espalhado. Só as perguntas que apareceram na sua entrevista real — incluindo a que você travou — treinadas até saírem naturais.</p>
+  </div>
+
+  <div class="pin">
+    <p class="pin-label">Sempre que travar, use isto</p>
+    <div class="pin-row"><span class="pin-tag">pedir repetição</span><span class="pin-phrase">"Could you repeat the question, please?"</span></div>
+    <div class="pin-row"><span class="pin-tag">pedir mais devagar</span><span class="pin-phrase">"Sorry, could you say that a little more slowly?"</span></div>
+    <div class="pin-row"><span class="pin-tag">ganhar tempo</span><span class="pin-phrase">"Sure. Let me think for a second."</span></div>
+    <div class="pin-note"><b>Regra de tempo verbal:</b> "Currently" + presente ("I work") · "Recently / Last year / In my last job" + passado ("I worked"). Nunca "Recently I work". Erro real seu: "I have four experience" → "I have four years of experience".</div>
+    <div class="pin-note"><b>Molde para qualquer história (C-A-R):</b> Contexto ("Recently, I worked on...") → Ação ("To solve it, I...") → Resultado ("The result was..."). Isso evita a frase morrer no meio, como aconteceu na sua simulação real.</div>
+  </div>
+
+  <div class="progress-card">
+    <div class="progress-top">
+      <span>Progresso geral</span>
+      <span class="progress-pct" id="progressPct">0%</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-meta">
+      <span id="progressDone">0 de 72 dias concluídos</span>
+      <span><b id="countdownNum">72</b> dias até Malta</span>
+    </div>
+  </div>
+
+  <p class="section-label">As 7 perguntas (+ 1 bônus) — o resto é ruído</p>
+  <div class="qlist" id="qlist"></div>
+
+  <p class="section-label">10 rodadas de treino + sprint final</p>
+  <div id="roundsContainer"></div>
+
+  <p class="footer-note">Um dia, uma pergunta, 30 minutos. Clique no dia para abrir o treino.</p>
+</div>
+
+<script>
+const START_DATE = new Date(2026,7,19); // 19 ago 2026 — dia 1 do plano
+const TRIP_DATE = new Date(2026,9,29); // 29 out 2026 — dia 72, dia da viagem
+
+function fmtDate(d){
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  return dd+'/'+mm;
+}
+function dateForDay(i){
+  const d = new Date(START_DATE);
+  d.setDate(d.getDate()+(i-1));
+  return d;
+}
+
+const QUESTIONS = [
+  {id:'q1', short:'Sobre você', q:"Could you please introduce yourself?",
+    model:"I'm a software developer with four years of experience. I graduated from Uninove, in São Paulo. Currently, I work mainly with C#, .NET Core and ASP.NET Core. I also have experience with Angular, Azure and clean architecture. Recently, I learned more about microservices and DDD.",
+    vocab:["four years of experience","currently","clean architecture","recently"],
+    tense:'"I have four years of experience", nunca "I have four experience". "Currently" + presente ("I work"). "Recently" + passado ("I learned").'},
+  {id:'q2', short:'Projeto recente', q:"Can you tell me about a recent project you worked on? What was the goal, your role, and the outcome?",
+    car:{
+      context:"Recently, I built a personal project for my church's band, from scratch, in my free time.",
+      action:"I designed the interface with a tool called Google Stitch, then built the backend in C# and the front end in React. I used an AI coding tool to move faster, and I hosted everything myself with Proxmox, Nginx Proxy Manager and Cloudflare.",
+      result:"The band admin can now see who listened to each song and who didn't. I worked on it end to end — design, backend, frontend and hosting."
+    },
+    vocab:["from scratch","end to end","to host","ownership"],
+    tense:'Contexto e ação no passado simples (built, designed, hosted). Resultado pode ficar no presente, porque ainda existe hoje ("can now see").'},
+  {id:'q3', short:'Sob pressão', q:"When you're under pressure to deliver, how do you usually handle that?",
+    model:"I don't mind pressure — I actually see it as a challenge. When I'm under pressure, I break the problem into small steps and focus on one task at a time. Pressure shows me my limitations, and I like overcoming that.",
+    vocab:["under pressure","to break into small steps","to focus","limitation"],
+    tense:'Presente simples — é um hábito seu, não um evento único: "I break", "I focus", "pressure shows".'},
+  {id:'q4', short:'Aprender rápido', q:"Tell me about a time when you had to learn something fast for a project.",
+    car:{
+      context:"In my current job, I had to learn about microservices and stored procedures — I didn't have much experience with them before.",
+      action:"I used SQL Profiler to debug the procedures and understand how they worked.",
+      result:"I learned it fast, and now I can debug procedure issues on my own."
+    },
+    vocab:["stored procedures","to debug","to figure out","on my own"],
+    tense:'Contexto e ação no passado (had, used). Resultado no presente, porque a habilidade continua com você hoje ("I can").'},
+  {id:'q5', short:'Times cruzados ⚠', q:"Could you tell me about a time you worked with a cross-functional team, like design, product or QA?",
+    car:{
+      context:"In my current job, I worked on a report feature that was blocking other people's tasks.",
+      action:"I talked with the other developers and the QA team every day to check priorities and avoid blocking them again.",
+      result:"We finished the feature on time, and the team could continue their work without delays."
+    },
+    vocab:["cross-functional team","to block","priorities","on time"],
+    tense:'Toda a resposta no passado simples (worked, talked, finished). Essa foi a pergunta que te pegou na simulação real — mereça atenção redobrada.'},
+  {id:'q6', short:'Por que essa vaga', q:"Why do you want this role?",
+    model:"I want this role because it matches my experience with C#, .NET Core and Angular, and it also uses Azure and clean architecture, which I'm currently learning more about. I want to grow as a senior developer and work with an international team.",
+    vocab:["to match","to grow","international team","senior"],
+    tense:'Presente simples: "I want", "it matches". Motivação atual, não passado.'},
+  {id:'q7', short:'Seus pontos fortes', q:"What are your strengths?",
+    model:"One of my strengths is learning new tools quickly — I learned SQL Profiler fast when I needed it. I also take ownership: in my personal project, I worked on the design, backend, frontend and hosting, from start to finish.",
+    vocab:["to take ownership","from start to finish","strength","quickly"],
+    tense:'Presente para a característica ("is learning", "I take"), passado só no exemplo pontual ("I learned").'},
+  {id:'q8', short:'Código limpo (bônus)', q:"What's your approach to writing clean, maintainable code?",
+    model:"I try to follow SOLID principles and keep my code organized with clean architecture. I also review my code before opening a pull request, and I like getting feedback in code reviews — it helps the whole team stay consistent.",
+    vocab:["SOLID principles","clean architecture","pull request","code review"],
+    tense:'Presente simples — é um hábito/prática constante: "I try", "I review", "I like".',
+    bonus:true}
+];
+
+const ROUNDS = [
+  {name:"Montagem", mode:"Leia o modelo em voz alta 3 vezes, grifando mentalmente as frases curtas. Depois repita sem olhar para os trechos que já decorou (shadowing)."},
+  {name:"Memorização", mode:"Cubra o texto do modelo. Responda usando só as palavras-chave (chips) como lembrete — sem reler a frase pronta."},
+  {name:"Tempos verbais", mode:"Responda de novo prestando atenção total ao tempo verbal certo. Grave sua voz e escute: você manteve o tempo verbal do início ao fim?"},
+  {name:"Frases curtas", mode:"Se travar tentando montar uma frase longa, pare e quebre em duas frases curtas (até 8-10 palavras cada). Evite \"I... I... I...\"."},
+  {name:"Vocabulário-alvo", mode:"Responda de novo garantindo que pelo menos 1 das palavras-chave apareça naturalmente na sua fala, não só decorada."},
+  {name:"Escuta ativa", mode:"Peça para a IA (ou um app de voz) fazer a pergunta em voz alta, sem você ler o texto. Treine reconhecer a pergunta de ouvido antes de responder."},
+  {name:"Cronometrada", mode:"Responda em até 45 segundos, sem pausas longas. Se travar, use a frase de pedir repetição e continue — não pare de falar."},
+  {name:"Pergunta de acompanhamento", mode:"Depois da resposta principal, peça para a IA fazer uma pergunta de acompanhamento (ex: \"Can you give a specific example?\") e responda também. Se sobrar tempo, treine também a pergunta bônus sobre código limpo."},
+  {name:"Simulação completa", mode:"Responda as 7 perguntas seguidas, sem pausa entre elas, como numa entrevista real. No final, adicione a pergunta bônus sobre código limpo. Não corrija no meio — só continue."},
+  {name:"Sob pressão + revisão", mode:"Repita a simulação completa (incluindo a pergunta bônus), mas peça para a IA incluir 1 pergunta surpresa no meio. Depois, revise qual das 7 respostas ainda te deixa mais inseguro — provavelmente a de times cruzados."}
+];
+
+const FINAL_SPRINT = [
+  {focus:"Revisão leve das 7 respostas", activity:"Releia rapidamente os 7 modelos, o C-A-R e os chips de vocabulário. Sem gravar, sem cronômetro — só relembrar. Repasse também as frases de pedir repetição e a pergunta bônus de código limpo."},
+  {focus:"Dia da viagem — respire", activity:"Sem treino pesado. Releia uma vez as 7 respostas em silêncio. Você já treinou isso 10 vezes — confie no que construiu. Boa entrevista e boa viagem."}
+];
+
+const CORE_QUESTIONS = QUESTIONS.filter(q=>!q.bonus);
+const BONUS_QUESTION = QUESTIONS.find(q=>q.bonus);
+
+function buildDays(){
+  const days = [];
+  let idx = 1;
+  for(let r=0;r<ROUNDS.length;r++){
+    for(let q=0;q<CORE_QUESTIONS.length;q++){
+      days.push({globalIndex:idx, roundIndex:r, question:CORE_QUESTIONS[q]});
+      idx++;
+    }
+  }
+  return days;
+}
+const ALL_DAYS = buildDays();
+const TOTAL_DAYS = 72;
+
+let completedDays = new Set();
+
+async function loadProgress(){
+  try{
+    const res = await window.storage.get('malta-interview-completed', false);
+    if(res && res.value) completedDays = new Set(JSON.parse(res.value));
+  }catch(e){}
+  render();
+}
+async function saveProgress(){
+  try{ await window.storage.set('malta-interview-completed', JSON.stringify(Array.from(completedDays)), false); }catch(e){}
+}
+
+function toggleDay(key, checked){
+  if(checked) completedDays.add(key); else completedDays.delete(key);
+  saveProgress();
+  updateProgressUI();
+  document.querySelectorAll('[data-daykey="'+key+'"]').forEach(el=>el.classList.toggle('done', checked));
+}
+
+function iconCheck(){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M5 13l4 4L19 7"/></svg>'; }
+function iconChevron(){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>'; }
+
+function updateProgressUI(){
+  const done = completedDays.size;
+  const pct = Math.round((done/TOTAL_DAYS)*100);
+  document.getElementById('progressPct').textContent = pct+'%';
+  document.getElementById('progressFill').style.width = pct+'%';
+  document.getElementById('progressDone').textContent = done+' de '+TOTAL_DAYS+' dias concluídos';
+
+  const today = new Date(); today.setHours(0,0,0,0);
+  const diffDays = Math.max(0, Math.ceil((TRIP_DATE-today)/(1000*60*60*24)));
+  document.getElementById('countdownNum').textContent = diffDays;
+
+  document.querySelectorAll('.round').forEach(el=>{
+    const r = parseInt(el.dataset.roundIndex);
+    let c = 0;
+    for(let q=0;q<7;q++){
+      const day = ALL_DAYS[r*7+q];
+      if(completedDays.has('r-'+day.globalIndex)) c++;
+    }
+    el.querySelector('.round-badge').textContent = c+'/7';
+  });
+  const sEl = document.getElementById('sprint-badge');
+  if(sEl){
+    let c=0;
+    if(completedDays.has('s-71')) c++;
+    if(completedDays.has('s-72')) c++;
+    sEl.textContent = c+'/2';
+  }
+}
+
+function renderQList(){
+  document.getElementById('qlist').innerHTML = CORE_QUESTIONS.map((q,i)=>
+    '<div class="qitem"><b>'+(i+1)+'</b><span>"'+q.q+'"</span></div>'
+  ).join('') + '<div class="qitem" style="border-color:var(--gold);"><b style="color:var(--gold);">+</b><span>"'+BONUS_QUESTION.q+'" <span style="color:var(--gold);">— bônus, técnica, ficou sem resposta na simulação real</span></span></div>';
+}
+
+function renderAnswerBlock(q){
+  if(q.car){
+    return '<p class="sub-label">Contexto</p><p class="model-answer">'+q.car.context+'</p>'
+      +'<p class="sub-label">Ação</p><p class="model-answer">'+q.car.action+'</p>'
+      +'<p class="sub-label">Resultado</p><p class="model-answer">'+q.car.result+'</p>';
+  }
+  return '<p class="sub-label">Resposta-modelo</p><p class="model-answer">'+q.model+'</p>';
+}
+
+function renderRound(r, idx){
+  const days = ALL_DAYS.slice(idx*7, idx*7+7);
+  const startDate = dateForDay(days[0].globalIndex);
+  const endDate = dateForDay(days[6].globalIndex);
+  const chips = days.map(d=>{
+    const key = 'r-'+d.globalIndex;
+    const date = dateForDay(d.globalIndex);
+    const isDone = completedDays.has(key);
+    return '<button class="day-btn'+(isDone?' done':'')+'" data-daykey="'+key+'" onclick="selectDay('+idx+','+d.globalIndex+')">'
+      +'<div class="day-q">'+d.question.short+'</div>'
+      +'<div class="day-num">'+fmtDate(date)+'</div>'
+      +'<div class="day-stamp">'+iconCheck()+'</div>'
+      +'</button>';
+  }).join('');
+  return `
+  <div class="round" data-round-index="${idx}">
+    <button class="round-head" onclick="toggleRound(${idx})">
+      <span class="round-num">R${idx+1}</span>
+      <span class="round-text">
+        <p class="round-name">${r.name}</p>
+        <p class="round-mode">${fmtDate(startDate)} — ${fmtDate(endDate)}</p>
+      </span>
+      <span class="round-badge">0/7</span>
+      <span class="chevron">${iconChevron()}</span>
+    </button>
+    <div class="round-body">
+      <p style="font-size:13px;color:var(--sand-dim);margin:10px 0 0;">${r.mode}</p>
+      <div class="days-row">${chips}</div>
+      <div class="detail" id="detail-${idx}"></div>
+    </div>
+  </div>`;
+}
+
+function renderSprint(){
+  const days = [
+    {globalIndex:71, focus:FINAL_SPRINT[0].focus, activity:FINAL_SPRINT[0].activity, key:'s-71'},
+    {globalIndex:72, focus:FINAL_SPRINT[1].focus, activity:FINAL_SPRINT[1].activity, key:'s-72'}
+  ];
+  const chips = days.map(d=>{
+    const date = dateForDay(d.globalIndex);
+    const isDone = completedDays.has(d.key);
+    return '<button class="day-btn'+(isDone?' done':'')+'" style="max-width:130px" data-daykey="'+d.key+'" onclick="selectSprintDay(\''+d.key+'\')">'
+      +'<div class="day-q">'+fmtDate(date)+'</div>'
+      +'<div class="day-num">Dia '+d.globalIndex+'</div>'
+      +'<div class="day-stamp">'+iconCheck()+'</div>'
+      +'</button>';
+  }).join('');
+  return `
+  <div class="round" data-round-index="sprint">
+    <button class="round-head" onclick="toggleRound('sprint')">
+      <span class="round-num">Final</span>
+      <span class="round-text">
+        <p class="round-name">Sprint final</p>
+        <p class="round-mode">${fmtDate(dateForDay(71))} — ${fmtDate(dateForDay(72))} · dia da viagem</p>
+      </span>
+      <span class="round-badge" id="sprint-badge">0/2</span>
+      <span class="chevron">${iconChevron()}</span>
+    </button>
+    <div class="round-body">
+      <div class="days-row" style="grid-template-columns:repeat(2,1fr);max-width:280px;">${chips}</div>
+      <div class="detail" id="detail-sprint"></div>
+    </div>
+  </div>`;
+}
+
+function toggleRound(idx){
+  document.querySelector('.round[data-round-index="'+idx+'"]').classList.toggle('open');
+}
+
+function selectDay(roundIdx, globalIndex){
+  const day = ALL_DAYS[globalIndex-1];
+  const q = day.question;
+  const round = ROUNDS[roundIdx];
+  const key = 'r-'+globalIndex;
+  const date = dateForDay(globalIndex);
+  const isDone = completedDays.has(key);
+  const detail = document.getElementById('detail-'+roundIdx);
+
+  document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('selected'));
+  document.querySelector('[data-daykey="'+key+'"]').classList.add('selected');
+
+  detail.innerHTML = `
+    <p class="detail-q">"${q.q}"</p>
+    <p class="detail-date">${fmtDate(date)} · 30 min</p>
+    <div class="detail-mode"><b>Hoje (${round.name}):</b> ${round.mode}</div>
+    ${renderAnswerBlock(q)}
+    <p class="sub-label">Vocabulário-chave</p>
+    <div class="chips">${q.vocab.map(v=>'<span class="chip">'+v+'</span>').join('')}</div>
+    <p class="sub-label">Tempo verbal</p>
+    <p class="tense-note">${q.tense}</p>
+    <div class="check-row">
+      <input type="checkbox" id="chk-${key}" ${isDone?'checked':''} onchange="toggleDay('${key}', this.checked)">
+      <label for="chk-${key}">Marcar este dia como concluído</label>
+    </div>
+  `;
+  detail.classList.add('open');
+}
+
+function selectSprintDay(key){
+  const idx = key === 's-71' ? 0 : 1;
+  const globalIndex = key === 's-71' ? 71 : 72;
+  const d = FINAL_SPRINT[idx];
+  const date = dateForDay(globalIndex);
+  const isDone = completedDays.has(key);
+  const detail = document.getElementById('detail-sprint');
+
+  document.querySelectorAll('.day-btn').forEach(b=>b.classList.remove('selected'));
+  document.querySelector('[data-daykey="'+key+'"]').classList.add('selected');
+
+  detail.innerHTML = `
+    <p class="detail-q">${d.focus}</p>
+    <p class="detail-date">${fmtDate(date)}</p>
+    <p class="model-answer">${d.activity}</p>
+    <div class="check-row">
+      <input type="checkbox" id="chk-${key}" ${isDone?'checked':''} onchange="toggleDay('${key}', this.checked)">
+      <label for="chk-${key}">Marcar este dia como concluído</label>
+    </div>
+  `;
+  detail.classList.add('open');
+}
+
+function render(){
+  renderQList();
+  document.getElementById('roundsContainer').innerHTML =
+    ROUNDS.map((r,i)=>renderRound(r,i)).join('') + renderSprint();
+  updateProgressUI();
+}
+
+loadProgress();
+</script>
+</body>
+</html>
