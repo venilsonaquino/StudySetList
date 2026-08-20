@@ -522,6 +522,17 @@ body{
 .pronunciation-ipa.loading,.pronunciation-ipa.unavailable{
   color:var(--sand-dim);font:400 11.5px var(--font-body);
 }
+.pronunciation-translation{
+  display:grid;gap:2px;margin:0 2px 9px;padding:7px 8px;background:rgba(76,154,191,.08);
+  border-left:2px solid var(--azure);border-radius:0 7px 7px 0;
+}
+.pronunciation-translation-label{
+  color:var(--azure);font:700 9.5px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;
+}
+.pronunciation-translation-value{max-height:6em;overflow:auto;color:var(--sand);font-size:12.5px;line-height:1.4;overflow-wrap:anywhere;}
+.pronunciation-translation-value.loading,.pronunciation-translation-value.unavailable{
+  color:var(--sand-dim);font-size:11.5px;
+}
 .pronunciation-actions{display:flex;flex-wrap:wrap;gap:6px;}
 .pronunciation-btn{
   display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:6px 9px;
@@ -563,7 +574,7 @@ body{
         <p class="pass-eyebrow">Roteiro da Lara · rumo à fluência ♡</p>
         <h1 class="pass-title">Inglês para Malta</h1>
         <p class="pass-sub">De A2.2 a B1 falando com confiança — 74 dias de imersão antes do embarque.</p>
-        <p class="selection-tip"><span aria-hidden="true">🔊</span><span><strong>Treine a pronúncia:</strong> selecione qualquer palavra ou frase em inglês.</span></p>
+        <p class="selection-tip"><span aria-hidden="true">🔊</span><span><strong>Pronúncia e tradução:</strong> selecione qualquer palavra ou frase em inglês.</span></p>
       </div>
       <div class="pass-countdown">
         <div class="countdown-num" id="countdownNum">74</div>
@@ -604,10 +615,14 @@ body{
   <button type="button" class="reset-progress" onclick="resetProgress()">Reiniciar apenas o progresso</button>
 </div>
 
-<aside class="pronunciation-popover" id="pronunciationPopover" role="dialog" aria-label="Treinar pronúncia" aria-hidden="true">
+<aside class="pronunciation-popover" id="pronunciationPopover" role="dialog" aria-label="Pronúncia e tradução" aria-hidden="true">
   <button type="button" class="pronunciation-close" id="pronunciationClose" aria-label="Fechar">×</button>
   <span class="pronunciation-text" id="pronunciationText"></span>
   <span class="pronunciation-ipa loading" id="pronunciationIpa">Buscando pronúncia…</span>
+  <div class="pronunciation-translation">
+    <span class="pronunciation-translation-label">Tradução</span>
+    <span class="pronunciation-translation-value loading" id="pronunciationTranslation" aria-live="polite">Traduzindo…</span>
+  </div>
   <div class="pronunciation-actions">
     <button type="button" class="pronunciation-btn" data-speak="normal">🔊 Ouvir</button>
     <button type="button" class="pronunciation-btn accent" id="pronunciationAccent" aria-label="Alternar sotaque">US</button>
@@ -1631,7 +1646,9 @@ const pronunciationHelper = {
   phonetics:[]
 };
 const pronunciationCache = new Map();
+const translationCache = new Map();
 let pronunciationRequestId = 0;
+let translationRequestId = 0;
 
 function getPreferredVoice(lang){
   const voices = window.speechSynthesis.getVoices();
@@ -1743,6 +1760,52 @@ async function loadSelectedPronunciation(text){
   }
 }
 
+function decodeTranslation(value){
+  const decoder = document.createElement('textarea');
+  decoder.innerHTML = value;
+  return decoder.value.trim();
+}
+
+async function loadSelectedTranslation(text){
+  const output = document.getElementById('pronunciationTranslation');
+  const requestId = ++translationRequestId;
+  const cacheKey = text;
+  output.textContent = 'Traduzindo…';
+  output.className = 'pronunciation-translation-value loading';
+
+  if(new TextEncoder().encode(text).length > 500){
+    output.textContent = 'Seleção longa demais para traduzir.';
+    output.className = 'pronunciation-translation-value unavailable';
+    return;
+  }
+
+  try{
+    let translation = translationCache.get(cacheKey);
+    if(!translation){
+      const url = 'https://api.mymemory.translated.net/get?q='+encodeURIComponent(text)+'&langpair=en%7Cpt-BR';
+      const response = await fetch(url);
+      if(!response.ok) throw new Error('Tradução não encontrada');
+      const data = await response.json();
+      if(Number(data.responseStatus) !== 200 || !data.responseData || !data.responseData.translatedText){
+        throw new Error('Tradução não encontrada');
+      }
+      translation = decodeTranslation(data.responseData.translatedText);
+      if(!translation) throw new Error('Tradução vazia');
+      translationCache.set(cacheKey,translation);
+    }
+    if(requestId !== translationRequestId) return;
+    output.textContent = translation;
+    output.className = 'pronunciation-translation-value';
+  }catch(error){
+    if(requestId !== translationRequestId) return;
+    output.textContent = 'Tradução indisponível no momento.';
+    output.className = 'pronunciation-translation-value unavailable';
+  }
+  if(pronunciationHelper.range && document.getElementById('pronunciationPopover').classList.contains('open')){
+    positionPronunciationPopover(pronunciationHelper.range);
+  }
+}
+
 function positionPronunciationPopover(range){
   const popover = document.getElementById('pronunciationPopover');
   const rect = range.getBoundingClientRect();
@@ -1772,6 +1835,7 @@ function openPronunciationForSelection(){
   pronunciationHelper.range = range;
   document.getElementById('pronunciationText').textContent = '“'+text+'”';
   loadSelectedPronunciation(text);
+  loadSelectedTranslation(text);
   positionPronunciationPopover(range);
 }
 
