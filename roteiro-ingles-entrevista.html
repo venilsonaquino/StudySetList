@@ -280,6 +280,33 @@ h1{
     <div class="pin-note"><b>Molde para qualquer história (C-A-R):</b> Contexto ("Recently, I worked on...") → Ação ("To solve it, I...") → Resultado ("The result was..."). Isso evita a frase morrer no meio, como aconteceu na sua simulação real.</div>
   </div>
 
+  <section class="pin" aria-labelledby="technicalGlossaryTitle">
+    <p class="pin-label" id="technicalGlossaryTitle">Glossário técnico essencial</p>
+    <div class="chips">
+      <span class="chip">classe pai → parent class</span>
+      <span class="chip">classe filha → child class</span>
+      <span class="chip">herança → inheritance</span>
+      <span class="chip">polimorfismo → polymorphism</span>
+      <span class="chip">sobrescrever → override</span>
+      <span class="chip">sobrecarga de método → method overloading</span>
+      <span class="chip">cadeia imutável → immutable string</span>
+      <span class="chip">classe abstrata → abstract class</span>
+      <span class="chip">atributo → attribute</span>
+      <span class="chip">reflexão → reflection</span>
+      <span class="chip">coletor de lixo → garbage collector</span>
+      <span class="chip">injeção de dependência → dependency injection</span>
+      <span class="chip">tempo de vida do serviço → service lifetime</span>
+      <span class="chip">plano de execução → execution plan</span>
+      <span class="chip">carregamento tardio → lazy loading</span>
+      <span class="chip">carregamento antecipado → eager loading</span>
+      <span class="chip">fila de mensagens → message queue</span>
+      <span class="chip">fila de mensagens mortas → dead-letter queue</span>
+      <span class="chip">pipeline de requisição → request pipeline</span>
+      <span class="chip">causa raiz → root cause</span>
+    </div>
+    <div class="pin-note"><b>Como treinar:</b> explique cada termo em inglês com uma frase curta e um exemplo em C# antes de consultar a resposta-modelo.</div>
+  </section>
+
   <div class="progress-card">
     <div class="progress-top">
       <span>Progresso geral</span>
@@ -303,7 +330,7 @@ h1{
     <p class="ai-key-note" id="geminiKeyNote">A chave fica apenas neste campo e não é salva. Ao avaliar, o áudio é enviado ao Google. A camada gratuita está sujeita a limites. <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer">Criar chave no Google AI Studio</a>.</p>
   </section>
 
-  <p class="section-label">As 13 perguntas principais (+ 1 bônus técnica)</p>
+  <p class="section-label">As 25 perguntas principais (+ 1 bônus técnica)</p>
   <div class="qlist" id="qlist"></div>
 
   <p class="section-label">10 rodadas de treino + sprint final</p>
@@ -347,14 +374,14 @@ const QUESTIONS = [
     model:"I'm a software developer with four years of experience. I graduated from Uninove in São Paulo, and I currently work mainly with C#, .NET Core and ASP.NET Core. I also have experience with Angular, Azure and clean architecture. Recently, I've been learning more about microservices and DDD because I want to grow into a senior role in an international team.",
     vocab:["four years of experience","currently","clean architecture","international team"],
     tense:'"I have four years of experience", nunca "I have four experience". "Currently" + presente ("I work"). Use presente perfeito contínuo para um estudo recente que continua ("I have been learning").'},
-  {id:'q2', short:'Projeto recente', q:"Can you tell me about a recent project you worked on? What was the goal, your role, and the outcome?",
+  {id:'q2', short:'Projeto profissional', q:"Can you tell me about a recent professional project you worked on? What was the goal, your role, and the outcome?",
     car:{
-      context:"Recently, I built a personal project from scratch for my church band in my free time.",
-      action:"I designed the interface with a tool called Google Stitch, then built the backend in C# and the front end in React. I used an AI coding tool to move faster, and I hosted everything myself with Proxmox, Nginx Proxy Manager and Cloudflare.",
-      result:"The band admin can now see who listened to each song and who didn't. I delivered it end to end, and the most challenging part was making the application and deployment work reliably across the infrastructure."
+      context:"Recently, I worked on a reporting feature in a .NET and Angular application. The existing flow was slow and was blocking users during busy periods.",
+      action:"I traced the requests through the API, reviewed the SQL Server queries and stored procedures, and confirmed the expected behavior with product and QA. Then I adjusted the backend flow, optimized the query and added tests before the release.",
+      result:"The report became faster and more reliable, users could complete their work without the recurring blocker, and the team had better tests and documentation for future changes."
     },
-    vocab:["from scratch","end to end","reliable deployment","ownership"],
-    tense:'Contexto e ação no passado simples (built, designed, hosted). Resultado pode ficar no presente, porque ainda existe hoje ("can now see").'},
+    vocab:["reporting feature","stored procedure","recurring blocker","reliable release"],
+    tense:'Contexto, ação e resultado no passado simples (worked, traced, adjusted, became). Use o presente apenas ao explicar algo que continua verdadeiro hoje.'},
   {id:'q3', short:'Sob pressão', q:"When you're under pressure to deliver, how do you usually handle that?",
     model:"I don't mind pressure — I see it as a challenge. I break the problem into small steps, confirm the highest priority and focus on one task at a time. I also communicate early if I see a risk instead of waiting until the deadline. That helps the team adjust the plan and keeps me focused on what matters most.",
     vocab:["under pressure","highest priority","to communicate early","deadline"],
@@ -411,6 +438,62 @@ const QUESTIONS = [
     model:"In five years, I see myself as a senior developer with deeper experience designing scalable .NET systems and making sound architectural decisions. I also want to be confident working in English with international teams and mentoring other developers. I'm flexible about the exact title; what matters to me is taking on more responsibility and continuing to deliver value.",
     vocab:["in five years","scalable systems","architectural decisions","to take on responsibility"],
     tense:'Presente simples depois de "I see myself" e "I want" para descrever sua visão; evite promessas rígidas sobre cargo.'},
+  {id:'q15', short:'Entrevista em inglês', q:"Have you interviewed in English before? How did it go?",
+    model:"I have done mock interviews and technical conversations in English, but I have not completed many formal interviews in English yet. The practice showed me that I can explain my experience clearly when I keep my answers structured and concise. I still need to improve my listening under pressure, so I train with follow-up questions and ask for clarification when necessary.",
+    vocab:["mock interview","screening interview","technical interview","to ask for clarification"],
+    tense:'Presente perfeito para experiências de vida sem data específica ("I have done", "I have not completed"). Passado simples apenas se você mencionar quando uma entrevista aconteceu.'},
+  {id:'q16', short:'Conquista', q:"Tell me about a professional challenge or achievement you are proud of.",
+    car:{
+      context:"One challenge I'm proud of was solving a recurring performance problem in a reporting flow with limited documentation.",
+      action:"I reproduced the issue, traced the .NET requests, inspected the stored-procedure execution and compared the slow query with the expected data flow. I then fixed the bottleneck, added regression tests and documented the investigation.",
+      result:"The flow became stable and noticeably faster, the support issue stopped recurring, and the team gained a repeatable way to investigate similar problems."
+    },
+    vocab:["an achievement I'm proud of","recurring issue","performance bottleneck","repeatable process"],
+    tense:'Use passado simples para narrar o desafio, as ações e o resultado (was, reproduced, fixed, became). "I am proud of" pode ficar no presente porque o orgulho é atual.'},
+  {id:'q17', short:'Projeto pessoal', q:"Can you tell me about a personal project you have built and what you learned from it?",
+    car:{
+      context:"In my free time, I built a project from scratch for my church band.",
+      action:"I designed the interface with Google Stitch, built the backend in C# and the front end in React, and hosted the application myself with Proxmox, Nginx Proxy Manager and Cloudflare.",
+      result:"The band admin can now see who listened to each song. I delivered the project end to end and learned how application code, deployment and infrastructure decisions affect one another."
+    },
+    vocab:["personal project","from scratch","self-hosted","end-to-end delivery"],
+    tense:'Passado simples para o que você construiu (built, designed, hosted) e presente para o benefício que ainda existe ("can now see").'},
+  {id:'q18', short:'Hobbies', q:"What do you enjoy doing outside work?",
+    model:"Outside work, I enjoy music and play in a church band. I also like building small software projects, studying English and learning about self-hosting. Music gives me a collaborative hobby away from code, while personal projects let me experiment with technologies that I may not use in my daily work.",
+    vocab:["outside work","church band","self-hosting","to experiment with"],
+    tense:'Presente simples para hobbies e hábitos atuais ("I enjoy", "I play", "I like"). Use gerúndio depois de enjoy e like neste modelo ("enjoy doing", "like building").'},
+  {id:'q19', short:'Fundamentos C#', q:"Could you explain some core C# and .NET concepts: inheritance and polymorphism, interfaces versus abstract classes, strings, methods, attributes, dependency injection, and garbage collection?",
+    model:"In C#, inheritance allows a child class to reuse or extend a parent class, while polymorphism lets the same contract call different overridden implementations. I use an interface to define a contract and an abstract class when related types also need shared behavior or state. Strings are immutable, so I use StringBuilder for heavy concatenation. Methods can be overloaded, and virtual methods can be overridden. Attributes add metadata that frameworks can inspect through reflection. The built-in dependency injection container keeps classes loosely coupled. Finally, the .NET garbage collector reclaims managed memory by generation, while IDisposable and using are still necessary for resources such as streams and database connections.",
+    vocab:["parent class","child class","override","immutable string","attribute","reflection","dependency injection","garbage collector"],
+    tense:'Presente simples para definições e práticas habituais ("inheritance allows", "I use", "attributes add"). Modais como can descrevem possibilidades da linguagem.'},
+  {id:'q20', short:'Query lenta', q:"How would you investigate and improve a slow database query in a .NET application?",
+    model:"First, I would reproduce the problem and capture the SQL generated by the application. Then I would inspect the execution plan and measure where the time is spent. I would look for table scans, missing or ineffective indexes, unnecessary columns, large result sets and N+1 queries in Entity Framework Core. Depending on the evidence, I might add an index, project only the required fields, paginate the result, use AsNoTracking for read-only work, or replace unnecessary lazy loading with an explicit query or eager loading. I would measure again after each change instead of assuming the optimization worked.",
+    vocab:["execution plan","database index","N+1 query","lazy loading","eager loading","AsNoTracking"],
+    tense:'Como a pergunta usa "would", responda com "I would" para descrever o processo hipotético. Use "might" quando a solução depender das evidências.'},
+  {id:'q21', short:'Agile', q:"How do you work in an Agile team, for example with Scrum or Kanban?",
+    model:"I use Agile practices to keep work visible and get feedback early. In Scrum, I help refine the backlog, clarify acceptance criteria, plan realistic sprint work and raise blockers during the daily stand-up. In Kanban, I pay attention to work-in-progress limits and help move the highest-priority item through the flow. In either approach, I collaborate with product, QA and other developers, review outcomes in the retrospective and adapt the process when something is not working.",
+    vocab:["backlog refinement","acceptance criteria","daily stand-up","work-in-progress limit","retrospective"],
+    tense:'Presente simples porque você descreve sua forma habitual de trabalhar ("I help", "I pay attention", "I collaborate").'},
+  {id:'q22', short:'Investigar bug', q:"Walk me through how you investigate a bug, especially in production.",
+    model:"I start by confirming the expected and actual behavior, the impact and the steps that reproduce the bug. For a production issue, I check logs, metrics, correlation IDs and recent changes before touching the code. Then I narrow the problem down by layer, reproduce it safely, use the debugger or focused tests and identify the root cause. I implement the smallest safe fix, add a regression test, review the change and monitor the system after deployment. Finally, I document what happened when the lesson can help the team.",
+    vocab:["reproduction steps","correlation ID","breakpoint","root cause","regression test","to monitor the deployment"],
+    tense:'Presente simples para explicar seu processo padrão ("I start", "I check", "I implement"). Em um exemplo real, mude a narrativa para o passado simples.'},
+  {id:'q23', short:'HTTP status', q:"When would you use HTTP status codes 200, 201, 400, 401, 403, 404, and 500?",
+    model:"I use 200 when a request succeeds and returns the expected response, and 201 when a new resource is created, usually with its location. I use 400 when the request is invalid, 401 when authentication is missing or invalid, and 403 when the caller is authenticated but does not have permission. I use 404 when the requested resource does not exist. A 500 indicates an unexpected server error; I log the details internally but return a safe response without exposing sensitive information.",
+    vocab:["request succeeded","resource created","invalid request","authentication","authorization","unexpected server error"],
+    tense:'Presente simples para regras e decisões recorrentes ("I use", "a 500 indicates"). "When" introduz a condição sem exigir futuro.'},
+  {id:'q24', short:'Angular', q:"What experience do you have with Angular, and how do components, data binding, and services work together?",
+    model:"I have used Angular to build and maintain front-end features that consume .NET APIs. A component controls a focused part of the UI and connects its class to a template. One-way data binding displays state or handles events, while two-way binding can synchronize a form control when appropriate. I put shared business or API logic in services and inject those services into components. For asynchronous data, I usually work with observables, keep subscriptions controlled and try to keep components focused on presentation and coordination.",
+    vocab:["component","template","data binding","service","observable","dependency injection"],
+    tense:'Presente perfeito para sua experiência acumulada ("I have used") e presente simples para explicar como Angular funciona e como você trabalha ("a component controls", "I put").'},
+  {id:'q25', short:'Mensageria', q:"When would you use messaging, such as RabbitMQ or Azure Service Bus, in a .NET system?",
+    model:"I use messaging when work can happen asynchronously or when services need to be decoupled. A queue is useful when one consumer should process each message, while a topic or publish-subscribe model is useful when multiple consumers need the same event. I design consumers to be idempotent, include correlation IDs and configure retries with a dead-letter queue for messages that keep failing. I also monitor processing time and queue depth and make eventual consistency explicit in the business flow.",
+    vocab:["message broker","queue","topic","idempotent consumer","retry policy","dead-letter queue"],
+    tense:'Presente simples para decisões de arquitetura e práticas habituais ("I use", "a queue is", "I design"). "Should" pode indicar o comportamento esperado do consumidor.'},
+  {id:'q26', short:'ASP.NET Core', q:"Can you explain the ASP.NET Core request pipeline, middleware, and the built-in dependency injection container?",
+    model:"ASP.NET Core processes each request through an ordered middleware pipeline. A middleware component can inspect the request, run logic before and after the next component, short-circuit the pipeline or change the response. Order matters, especially for exception handling, routing, authentication and authorization. I register dependencies in the built-in container and inject them through constructors. I choose transient, scoped or singleton lifetimes based on ownership and state; for example, an Entity Framework Core DbContext is normally scoped to the request, and I avoid injecting a scoped service into a singleton.",
+    vocab:["request pipeline","middleware","short-circuit","dependency injection container","scoped service","singleton"],
+    tense:'Presente simples para o funcionamento do framework e sua prática ("ASP.NET Core processes", "I register", "I choose"). Modais como can descrevem o que um middleware é capaz de fazer.'},
   {id:'q14', short:'Código limpo (bônus)', q:"Can you explain clean architecture in your own words and how you apply it?",
     model:"Clean architecture separates business rules from frameworks, databases and external services. The dependencies point toward the core of the application, so the domain does not depend on infrastructure details. In practice, I keep controllers thin, place use cases in the application layer and isolate database access behind interfaces. I also use tests, SOLID principles and code reviews to keep changes safe and maintainable.",
     vocab:["business rules","dependencies","application layer","infrastructure details"],
@@ -427,13 +510,13 @@ const ROUNDS = [
   {name:"Escuta ativa", mode:"Peça para a IA (ou um app de voz) fazer a pergunta em voz alta, sem você ler o texto. Treine reconhecer a pergunta de ouvido antes de responder."},
   {name:"Cronometrada", mode:"Responda em até 45 segundos, sem pausas longas. Se travar, use a frase de pedir repetição e continue — não pare de falar."},
   {name:"Pergunta de acompanhamento", mode:"Depois da resposta principal, peça para a IA fazer uma pergunta de acompanhamento (ex: \"Can you give a specific example?\") e responda também. Se sobrar tempo, treine também a pergunta bônus sobre código limpo."},
-  {name:"Simulação completa", mode:"Responda as 13 perguntas principais seguidas, sem pausa entre elas, como numa entrevista real. No final, adicione a pergunta técnica bônus sobre clean architecture. Não corrija no meio — só continue."},
+  {name:"Simulação completa", mode:"Responda as 25 perguntas principais seguidas, sem pausa entre elas, como numa entrevista real. No final, adicione a pergunta técnica bônus sobre clean architecture. Não corrija no meio — só continue."},
   {name:"Sob pressão + revisão", mode:"Repita a simulação completa (incluindo a pergunta técnica bônus), mas peça para a IA incluir 1 pergunta surpresa no meio. Depois, revise quais respostas ainda deixam você mais inseguro."}
 ];
 
 const FINAL_SPRINT = [
-  {focus:"Revisão leve das 13 respostas", activity:"Releia rapidamente os 13 modelos, o C-A-R e os chips de vocabulário. Sem gravar, sem cronômetro — só relembrar. Repasse também as frases de pedir repetição e a pergunta técnica bônus."},
-  {focus:"Dia da viagem — respire", activity:"Sem treino pesado. Releia uma vez as 13 respostas em silêncio. Você praticou todas elas ao longo das 10 rodadas — confie no que construiu. Boa entrevista e boa viagem."}
+  {focus:"Revisão leve das 25 respostas", activity:"Releia rapidamente os 25 modelos, o C-A-R e os chips de vocabulário. Sem gravar, sem cronômetro — só relembrar. Repasse também as frases de pedir repetição e a pergunta técnica bônus."},
+  {focus:"Dia da viagem — respire", activity:"Sem treino pesado. Releia uma vez as 25 respostas em silêncio. Você praticou todas elas ao longo das 10 rodadas — confie no que construiu. Boa entrevista e boa viagem."}
 ];
 
 const CORE_QUESTIONS = QUESTIONS.filter(q=>!q.bonus);
