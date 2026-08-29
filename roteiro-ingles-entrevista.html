@@ -50,6 +50,12 @@ h1{
   color:var(--sand-dim);font-size:12.5px;
 }
 .selection-tip strong{color:var(--teal);font-weight:600;}
+.flashcards-link{
+  display:inline-flex;align-items:center;gap:8px;min-height:44px;margin:-14px 0 24px;padding:8px 12px;
+  border:1px solid rgba(210,165,68,.45);border-radius:9px;color:var(--gold);font-size:12px;
+  font-weight:600;text-decoration:none;
+}
+.flashcards-link:hover{background:rgba(210,165,68,.08);border-color:var(--gold);}
 
 /* pinned reference card */
 .pin{
@@ -218,7 +224,7 @@ h1{
 /* pronunciation helper shown when the learner selects English text */
 .pronunciation-popover{
   position:fixed;z-index:1000;display:none;width:min(360px,calc(100vw - 24px));
-  padding:10px;background:#203749;border:1px solid var(--teal);border-radius:12px;
+  max-height:calc(100dvh - 24px);overflow-y:auto;padding:10px;background:#203749;border:1px solid var(--teal);border-radius:12px;
   box-shadow:0 14px 38px rgba(0,0,0,.38);color:var(--sand);
 }
 .pronunciation-popover.open{display:block;}
@@ -228,7 +234,7 @@ h1{
   transform:translate(-50%,-5px) rotate(45deg);
 }
 .pronunciation-text{
-  display:block;overflow:hidden;margin:0 30px 8px 2px;color:var(--sand);font-size:12px;
+  display:block;overflow:hidden;margin:0 46px 8px 2px;color:var(--sand);font-size:12px;
   font-weight:600;line-height:1.35;text-overflow:ellipsis;white-space:nowrap;
 }
 .pronunciation-ipa{
@@ -247,15 +253,19 @@ h1{
 .pronunciation-translation-value.loading,.pronunciation-translation-value.unavailable{color:var(--sand-dim);font-size:11.5px;}
 .pronunciation-actions{display:flex;flex-wrap:wrap;gap:6px;}
 .pronunciation-btn{
-  display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:6px 9px;
+  display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:8px 10px;
   background:transparent;border:1px solid var(--line-strong);border-radius:7px;color:var(--sand);
   font:600 11.5px var(--font-body);cursor:pointer;
 }
 .pronunciation-btn:hover{background:var(--card);border-color:var(--teal);}
 .pronunciation-btn:focus-visible{outline:2px solid var(--gold);outline-offset:1px;}
 .pronunciation-btn.accent{color:var(--teal);font-family:var(--font-mono);}
+.pronunciation-btn.flashcard{flex:1 0 100%;border-color:rgba(210,165,68,.55);color:var(--gold);}
+.pronunciation-btn.flashcard:hover:not(:disabled){background:rgba(210,165,68,.08);border-color:var(--gold);}
+.pronunciation-btn.flashcard.saved{border-color:rgba(79,181,166,.55);color:var(--teal);}
+.pronunciation-btn:disabled{opacity:.55;cursor:not-allowed;}
 .pronunciation-close{
-  position:absolute;right:7px;top:6px;width:28px;height:28px;padding:0;background:transparent;
+  position:absolute;right:2px;top:2px;width:44px;height:44px;padding:0;background:transparent;
   border:0;border-radius:6px;color:var(--sand-dim);font-size:19px;line-height:1;cursor:pointer;
 }
 .pronunciation-close:hover{background:var(--card);color:var(--sand);}
@@ -268,6 +278,243 @@ h1{
   .pronunciation-popover{padding:9px;}
   .pronunciation-btn{flex:1;}
 }
+
+/* Presentation Module Styling */
+.intro-module {
+  background: var(--card);
+  border: 1px solid var(--teal);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  margin-bottom: 26px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+.intro-module-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.intro-title {
+  font-family: var(--font-display);
+  font-size: 21px;
+  color: var(--sand);
+  margin: 0 0 6px;
+  font-weight: 600;
+}
+.intro-badge {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--teal);
+  border: 1px solid var(--teal);
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.intro-subtitle {
+  font-size: 13.5px;
+  color: var(--sand-dim);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Pillar cards grid */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 16px 0 22px;
+}
+.pillar-card {
+  background: rgba(236,230,216,0.03);
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  padding: 14px;
+}
+.pillar-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-bottom: 4px;
+}
+.pillar-card h4 {
+  font-family: var(--font-display);
+  font-size: 15px;
+  color: var(--sand);
+  margin: 0 0 6px;
+}
+.pillar-card p {
+  font-size: 12.5px;
+  color: var(--sand-dim);
+  margin: 0;
+  line-height: 1.45;
+}
+
+/* Pitfalls banner */
+.pitfalls-banner {
+  background: rgba(216,121,101,0.08);
+  border: 1px solid rgba(216,121,101,0.3);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 22px;
+  font-size: 13px;
+}
+.pitfalls-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #D87965;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+.pitfalls-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--sand);
+}
+.pitfalls-list li b { color: #D87965; }
+
+/* Tabs for 3 Frameworks */
+.frameworks-header {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin: 0 0 10px;
+}
+.tab-buttons {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+  overflow-x: auto;
+}
+.tab-btn {
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 8px 14px;
+  color: var(--sand-dim);
+  font-family: var(--font-body);
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .2s ease;
+}
+.tab-btn:hover {
+  border-color: var(--teal);
+  color: var(--sand);
+}
+.tab-btn.active {
+  background: rgba(79,181,166,0.14);
+  border-color: var(--teal);
+  color: var(--teal);
+  font-weight: 600;
+}
+
+.framework-panel {
+  display: none;
+  background: rgba(18,32,45,0.6);
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  padding: 18px;
+}
+.framework-panel.active {
+  display: block;
+}
+.fw-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 12.5px;
+  color: var(--sand-dim);
+}
+.fw-structure {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--gold);
+  background: rgba(210,165,68,0.1);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(210,165,68,0.3);
+}
+
+.dont-do-box {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin: 14px 0;
+}
+@media(min-width: 600px){
+  .dont-do-box { grid-template-columns: 1fr 1fr; }
+}
+.dont-card {
+  background: rgba(216,121,101,0.06);
+  border: 1px solid rgba(216,121,101,0.25);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 12.5px;
+}
+.dont-card strong { color: #D87965; display: block; margin-bottom: 4px; font-family: var(--font-mono); font-size: 11px; }
+.do-card {
+  background: rgba(79,181,166,0.06);
+  border: 1px solid rgba(79,181,166,0.25);
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 12.5px;
+}
+.do-card strong { color: var(--teal); display: block; margin-bottom: 4px; font-family: var(--font-mono); font-size: 11px; }
+
+.example-box {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+.example-title {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--sand-dim);
+  margin-bottom: 8px;
+}
+.example-text {
+  font-size: 13.5px;
+  color: var(--sand);
+  line-height: 1.6;
+  background: var(--card);
+  padding: 12px 14px;
+  border-radius: 8px;
+  border-left: 3px solid var(--teal);
+}
+
+/* 90-Second Timer Widget */
+.timer-widget {
+  background: var(--card-hover);
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 20px;
+}
+.timer-clock {
+  font-family: var(--font-mono);
+  font-size: 36px;
+  font-weight: 500;
+  color: var(--teal);
+}
+.timer-clock.warning { color: var(--gold); }
+.timer-clock.expired { color: #D87965; }
 </style>
 </head>
 <body>
@@ -277,7 +524,8 @@ h1{
     <p class="eyebrow">Baseado na sua simulação real de entrevista</p>
     <h1>Pronto para a entrevista, Venilson</h1>
     <p class="hero-sub">Sem gramática solta, sem vocabulário espalhado. As perguntas da sua simulação real e as mais comuns em vagas internacionais, treinadas até saírem naturais.</p>
-    <p class="selection-tip"><span aria-hidden="true">🔊</span><span><strong>Pronúncia e tradução:</strong> selecione qualquer palavra ou frase em inglês.</span></p>
+    <p class="selection-tip"><span aria-hidden="true">🔊</span><span><strong>Pronúncia, tradução e flashcards:</strong> selecione qualquer palavra ou frase em inglês.</span></p>
+    <a class="flashcards-link" href="./flashcards-entrevista.html"><span aria-hidden="true">▣</span> Treinar flashcards <span aria-hidden="true">→</span></a>
   </div>
 
   <div class="pin">
@@ -316,6 +564,201 @@ h1{
     <div class="pin-note"><b>Como treinar:</b> explique cada termo em inglês com uma frase curta e um exemplo em C# antes de consultar a resposta-modelo.</div>
   </section>
 
+  <!-- MÓDULO ESPECIAL: COMO SE APRESENTAR EM ENTREVISTAS (NOTION) -->
+  <section class="intro-module" id="presentationModule" aria-labelledby="presentationModuleTitle">
+    <div class="intro-module-head">
+      <div>
+        <p class="eyebrow" style="margin-bottom:4px;">Guia Estratégico English Club</p>
+        <h2 class="intro-title" id="presentationModuleTitle">Como se Apresentar em Entrevistas ("Tell Me About Yourself")</h2>
+        <p class="intro-subtitle">A primeira impressão define o tom da entrevista. Domine os 3 pilares essenciais e escolha a melhor estrutura para o seu perfil.</p>
+      </div>
+      <span class="intro-badge">Regra dos 90s</span>
+    </div>
+
+    <div class="pitfalls-banner">
+      <p class="pitfalls-title">⚠️ Erros Frequentes na Apresentação</p>
+      <ul class="pitfalls-list">
+        <li><b>Soar genérico demais:</b> Frases soltas sem contexto ("Hi, I'm X. I'm developer. I want job.").</li>
+        <li><b>Falar demais:</b> Ultrapassar 3 minutos e perder o foco e a atenção do recrutador.</li>
+        <li><b>Falar de menos:</b> Citar apenas nome e cargo sem transmitir conquistas, aprendizados e ambições.</li>
+      </ul>
+    </div>
+
+    <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:8px;">
+      Os 3 Pilares Obrigatórios da sua Apresentação
+    </div>
+    <div class="pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-num">Pilar 01</div>
+        <h4>Quem você é hoje</h4>
+        <p>Contexto atual, transição de carreira, área de atuação e foco técnico (C#, .NET Core, Angular, Azure).</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">Pilar 02</div>
+        <h4>O que você já fez</h4>
+        <p>Projetos práticos, sistemas desenvolvidos ou bagagem prévia (trazendo contexto real, impacto e aprendizados).</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">Pilar 03</div>
+        <h4>O que você busca agora</h4>
+        <p>Primeiro emprego técnico, transição concluída, recolocação ou crescimento em times internacionais em Malta.</p>
+      </div>
+    </div>
+
+    <div class="frameworks-header">Escolha o seu Framework Estratégico</div>
+    <div class="tab-buttons" role="tablist" aria-label="Frameworks de apresentação">
+      <button type="button" class="tab-btn active" role="tab" aria-selected="true" aria-controls="fw-panel-1" id="fw-tab-1" onclick="switchFrameworkTab(1)">
+        Framework 1 · Basic
+      </button>
+      <button type="button" class="tab-btn" role="tab" aria-selected="false" aria-controls="fw-panel-2" id="fw-tab-2" onclick="switchFrameworkTab(2)">
+        Framework 2 · Professional
+      </button>
+      <button type="button" class="tab-btn" role="tab" aria-selected="false" aria-controls="fw-panel-3" id="fw-tab-3" onclick="switchFrameworkTab(3)">
+        Framework 3 · Present → Past → Future
+      </button>
+    </div>
+
+    <!-- Panel 1: Basic -->
+    <div class="framework-panel active" id="fw-panel-1" role="tabpanel" aria-labelledby="fw-tab-1">
+      <div class="fw-meta">
+        <span><b>Para quem é:</b> Iniciantes, treinos iniciais ou quem precisa destravar a fala lendo o roteiro.</span>
+        <span class="fw-structure">Name → Where you're from → What you do → What you're looking for</span>
+      </div>
+      
+      <div class="dont-do-box">
+        <div class="dont-card">
+          <strong>❌ Não fale assim (Genérico)</strong>
+          <p style="margin:0;color:var(--sand-dim);">"Hi, I'm Venilson. I'm from Brazil. I'm developer. I want job."</p>
+        </div>
+        <div class="do-card">
+          <strong>✅ Fale assim (Estruturado & Claro)</strong>
+          <p style="margin:0;color:var(--sand);">"Hi, I'm Venilson. I'm a software developer based in Brazil, currently focusing on backend development with C# and .NET Core..."</p>
+        </div>
+      </div>
+
+      <div class="example-box">
+        <p class="example-title">Modelo Personalizado de Venilson (Basic)</p>
+        <div class="example-text" id="fw1-text-venilson">
+          "Hi, I'm Venilson. I'm a software developer based in Brazil, currently focusing on backend development with C# and .NET Core. I've been building REST APIs and web applications to practice clean code and architecture. Now I'm looking for an opportunity in Malta where I can grow and work on real production systems."
+        </div>
+        <button type="button" class="listen-btn" style="margin-top:10px;" onclick="speakCustomText('fw1-text-venilson')">🔊 Ouvir este modelo</button>
+      </div>
+
+      <div class="example-box" style="margin-top:12px;">
+        <p class="example-title">Outros Exemplos Práticos do Notion</p>
+        <details style="color:var(--sand-dim);font-size:13px;cursor:pointer;">
+          <summary style="color:var(--teal);font-weight:500;">Ver exemplos de transição de Suporte (Laura) e Administrativo (Daniel)</summary>
+          <div style="margin-top:10px;display:grid;gap:10px;">
+            <div style="background:var(--card);padding:10px;border-radius:6px;border:1px solid var(--line);">
+              <strong style="color:var(--gold);display:block;margin-bottom:4px;font-size:11px;">Suporte → Dev (Laura):</strong>
+              "Hi, my name is Laura. I'm currently transitioning into tech after working several years in customer support. I started looking into programming when I realized I enjoyed solving problems and understanding how systems work behind the scenes. Right now, I'm studying web development and building small projects to practice. I'm looking for my first opportunity as a junior developer where I can grow and learn in a real environment."
+            </div>
+            <div style="background:var(--card);padding:10px;border-radius:6px;border:1px solid var(--line);">
+              <strong style="color:var(--gold);display:block;margin-bottom:4px;font-size:11px;">Administrativo/Automação → Dev (Daniel):</strong>
+              "Hi, I'm Daniel. I come from an administrative background, but over the past year I decided to move into software development. This change started after I began automating small tasks at work and got curious about programming. Since then, I've been studying backend development and building practice projects. Now I'm looking for an entry-level role where I can develop real professional experience."
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- Panel 2: Professional -->
+    <div class="framework-panel" id="fw-panel-2" role="tabpanel" aria-labelledby="fw-tab-2">
+      <div class="fw-meta">
+        <span><b>Para quem é:</b> Padrão de mercado, entrevistas com recrutadores (HR screening) e liderança técnica.</span>
+        <span class="fw-structure">Who you are → What you do (stack) → Experience & Impact → What you're looking for</span>
+      </div>
+
+      <div class="example-box">
+        <p class="example-title">Modelo Personalizado de Venilson (Professional — .NET / C# / Azure)</p>
+        <div class="example-text" id="fw2-text-venilson">
+          "Hi, I'm Venilson, a software developer with 4 years of experience specializing in C#, .NET Core, and ASP.NET Core. I've built backend systems, REST APIs, and integrated applications using Angular, SQL Server, and Azure. Recently, I've been focusing on DDD and microservices to write clean and structured code. I'm currently looking for a backend role in an international team in Malta where I can contribute to real production systems."
+        </div>
+        <button type="button" class="listen-btn" style="margin-top:10px;" onclick="speakCustomText('fw2-text-venilson')">🔊 Ouvir este modelo</button>
+      </div>
+
+      <div class="example-box" style="margin-top:12px;">
+        <p class="example-title">Outros Exemplos Práticos do Notion</p>
+        <details style="color:var(--sand-dim);font-size:13px;cursor:pointer;">
+          <summary style="color:var(--teal);font-weight:500;">Ver exemplos de Alex (Java), Kevin (Junior Backend) e Ana (Frontend React)</summary>
+          <div style="margin-top:10px;display:grid;gap:10px;">
+            <div style="background:var(--card);padding:10px;border-radius:6px;border:1px solid var(--line);">
+              <strong style="color:var(--gold);display:block;margin-bottom:4px;font-size:11px;">Alex (Backend Developer Java):</strong>
+              "Hi, I'm Alex, a backend developer. I work with Java and Spring Boot, building APIs and microservices. I have experience working in web applications and system integration. I'm currently looking for opportunities to grow as a backend engineer."
+            </div>
+            <div style="background:var(--card);padding:10px;border-radius:6px;border:1px solid var(--line);">
+              <strong style="color:var(--gold);display:block;margin-bottom:4px;font-size:11px;">Kevin (Junior Backend APIs & Escala):</strong>
+              "Hi, I'm Kevin, a junior backend developer focused on building APIs and backend systems. I've been working mainly with Java and Spring Boot, where I've built projects involving authentication, database design, and REST APIs. One thing I've been focusing on is writing clean and structured code while trying to understand how systems scale beyond just simple applications. I'm currently looking for a junior position where I can work on real production systems and continue improving my backend skills."
+            </div>
+            <div style="background:var(--card);padding:10px;border-radius:6px;border:1px solid var(--line);">
+              <strong style="color:var(--gold);display:block;margin-bottom:4px;font-size:11px;">Ana (Frontend React & UX):</strong>
+              "Hi, I'm Ana, a frontend developer transitioning into professional roles. I've been working with React and JavaScript, building interfaces that consume APIs and focus on user experience. What I've been paying attention to lately is not just building UI, but understanding how frontend communicates with backend systems and how data flows through applications. I'm currently looking for an opportunity where I can grow as a frontend developer in a real production environment."
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- Panel 3: Present-Past-Future -->
+    <div class="framework-panel" id="fw-panel-3" role="tabpanel" aria-labelledby="fw-tab-3">
+      <div class="fw-meta">
+        <span><b>Para quem é:</b> Trajetórias não-lineares, transição de área ou quando você quer contar uma história envolvente.</span>
+        <span class="fw-structure">Present (Hoje) → Past (Como chegou) → Future (Objetivo)</span>
+      </div>
+
+      <div class="example-box">
+        <p class="example-title">Modelo Personalizado de Venilson (Present → Past → Future)</p>
+        <div class="example-text" id="fw3-text-venilson">
+          "Currently, I'm a software developer focusing on C# and .NET Core REST APIs. I started my journey graduating from Uninove in São Paulo and built experience developing web applications, tracing SQL queries, and optimizing performance bottlenecks. Now, I'm looking to take the next step by joining an international team in Malta, where I can apply my backend skills and communicate in English daily."
+        </div>
+        <button type="button" class="listen-btn" style="margin-top:10px;" onclick="speakCustomText('fw3-text-venilson')">🔊 Ouvir este modelo</button>
+      </div>
+
+      <div class="example-box" style="margin-top:12px;">
+        <p class="example-title">Outros Exemplos Práticos do Notion</p>
+        <details style="color:var(--sand-dim);font-size:13px;cursor:pointer;">
+          <summary style="color:var(--teal);font-weight:500;">Ver exemplos P-P-F para Senior, Junior Backend e Frontend</summary>
+          <div style="margin-top:10px;display:grid;gap:10px;">
+            <div style="background:var(--card);padding:10px;border-radius:6px;border:1px solid var(--line);">
+              <strong style="color:var(--gold);display:block;margin-bottom:4px;font-size:11px;">Senior / Transição Internacional:</strong>
+              "Currently, I'm a backend developer working with Java and microservices. I started my journey in tech transitioning from a different field, and over time I built experience in APIs and distributed systems. Now I'm looking to grow in more complex systems and international teams."
+            </div>
+            <div style="background:var(--card);padding:10px;border-radius:6px;border:1px solid var(--line);">
+              <strong style="color:var(--gold);display:block;margin-bottom:4px;font-size:11px;">Backend Junior (Foco em Resolução de Problemas):</strong>
+              "Currently, I'm focusing on becoming a backend developer, working mainly with Java and APIs. My interest in tech started when I realized I enjoyed solving structured problems and building logical solutions, which led me to start learning programming seriously. Since then, I've been building projects like REST APIs and working with databases to understand how real systems behave. Now I'm looking for a junior role where I can work on production systems and continue growing technically in a professional environment."
+            </div>
+            <div style="background:var(--card);padding:10px;border-radius:6px;border:1px solid var(--line);">
+              <strong style="color:var(--gold);display:block;margin-bottom:4px;font-size:11px;">Frontend (Focus on React & UI):</strong>
+              "Currently, I'm transitioning into software development with a focus on frontend engineering. This shift started when I began building small web projects and realized how much I enjoy creating interfaces that people actually use. From there, I started learning React and practicing by building applications that consume real APIs and manage state. Now I'm looking for an entry-level role where I can improve my skills and contribute to real products."
+            </div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- 90-Second Practice Simulator Widget -->
+    <div class="timer-widget">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div>
+          <h3 style="font-family:var(--font-display);font-size:16px;margin:0 0 2px;color:var(--sand);">Simulador de Apresentação de 90 Segundos</h3>
+          <p style="margin:0;font-size:12px;color:var(--sand-dim);">Cronometre e grave sua fala. Se travar, leia o texto de apoio acima!</p>
+        </div>
+        <div class="timer-clock" id="introTimerClock">01:30</div>
+      </div>
+      
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+        <button type="button" class="listen-btn" id="introTimerBtn" style="margin:0;" onclick="toggleIntroTimer()">▶ Iniciar 90s</button>
+        <button type="button" class="listen-btn" style="margin:0;border-color:var(--line-strong);color:var(--sand-dim);" onclick="resetIntroTimer()">↺ Reiniciar Tempo</button>
+      </div>
+      
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--line);">
+        <div id="introRecorderContainer">
+          <!-- Voice recorder dynamically injected for key 'intro-90s' -->
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div class="progress-card">
     <div class="progress-top">
       <span>Progresso geral</span>
@@ -349,7 +792,7 @@ h1{
   <button type="button" class="reset-progress" onclick="resetProgress()">Reiniciar progresso</button>
 </div>
 
-<aside class="pronunciation-popover" id="pronunciationPopover" role="dialog" aria-label="Pronúncia e tradução" aria-hidden="true">
+<aside class="pronunciation-popover" id="pronunciationPopover" role="dialog" aria-label="Pronúncia, tradução e flashcards" aria-hidden="true">
   <button type="button" class="pronunciation-close" id="pronunciationClose" aria-label="Fechar">×</button>
   <span class="pronunciation-text" id="pronunciationText"></span>
   <span class="pronunciation-ipa loading" id="pronunciationIpa">Buscando pronúncia…</span>
@@ -360,6 +803,7 @@ h1{
   <div class="pronunciation-actions">
     <button type="button" class="pronunciation-btn" data-speak="normal">🔊 Normal</button>
     <button type="button" class="pronunciation-btn accent" id="pronunciationAccent" aria-label="Alternar sotaque">US</button>
+    <button type="button" class="pronunciation-btn flashcard" id="pronunciationAddFlashcard" disabled>Tradução necessária</button>
   </div>
   <p class="pronunciation-hint">A pronúncia escrita usa o Alfabeto Fonético Internacional (IPA).</p>
   <span class="pronunciation-live" id="pronunciationLive" aria-live="polite"></span>
@@ -370,6 +814,7 @@ const START_DATE = new Date(2026,7,19); // 19 ago 2026 — dia 1 do plano
 const TRIP_DATE = new Date(2026,9,29); // 29 out 2026 — dia 72, dia da viagem
 const GEMINI_MODEL = 'gemini-3.6-flash';
 const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/'+GEMINI_MODEL+':generateContent';
+const FLASHCARD_STORAGE_KEY = 'studyset.flashcards.v1';
 
 function fmtDate(d){
   const dd = String(d.getDate()).padStart(2,'0');
@@ -384,9 +829,27 @@ function dateForDay(i){
 
 const QUESTIONS = [
   {id:'q1', short:'Sobre você', q:"Could you please introduce yourself?",
-    model:"I'm a software developer with four years of experience. I graduated from Uninove in São Paulo, and I currently work mainly with C#, .NET Core and ASP.NET Core. I also have experience with Angular, Azure and clean architecture. Recently, I've been learning more about microservices and DDD because I want to grow into a senior role in an international team.",
-    vocab:["four years of experience","currently","clean architecture","international team"],
-    tense:'"I have four years of experience", nunca "I have four experience". "Currently" + presente ("I work"). Use presente perfeito contínuo para um estudo recente que continua ("I have been learning").'},
+    multiFramework: true,
+    frameworks: [
+      {
+        name: 'Framework 1 · Basic',
+        structure: 'Name → Where you\'re from → What you do → What you\'re looking for',
+        model: "Hi, I'm Venilson. I'm a software developer based in Brazil, currently focusing on backend development with C# and .NET Core. I've been building REST APIs and web applications to practice clean code and architecture. Now I'm looking for an opportunity in Malta where I can grow and work on real production systems."
+      },
+      {
+        name: 'Framework 2 · Professional',
+        structure: 'Who you are → What you do (stack) → Experience & Impact → What you\'re looking for',
+        model: "Hi, I'm Venilson, a software developer with 4 years of experience specializing in C#, .NET Core, and ASP.NET Core. I've built backend systems, REST APIs, and integrated applications using Angular, SQL Server, and Azure. Recently, I've been focusing on DDD and microservices to write clean and structured code. I'm currently looking for a backend role in an international team in Malta where I can contribute to real production systems."
+      },
+      {
+        name: 'Framework 3 · Present → Past → Future',
+        structure: 'Present (Hoje) → Past (Como construiu a bagagem) → Future (Objetivo)',
+        model: "Currently, I'm a software developer focusing on C# and .NET Core REST APIs. I started my journey graduating from Uninove in São Paulo and built experience developing web applications, tracing SQL queries, and optimizing performance bottlenecks. Now, I'm looking to take the next step by joining an international team in Malta, where I can apply my backend skills and communicate in English daily."
+      }
+    ],
+    model:"Hi, I'm Venilson, a software developer with 4 years of experience specializing in C#, .NET Core, and ASP.NET Core. I've built backend systems, REST APIs, and integrated applications using Angular, SQL Server, and Azure. Recently, I've been focusing on DDD and microservices to write clean and structured code. I'm currently looking for a backend role in an international team in Malta where I can contribute to real production systems.",
+    vocab:["four years of experience","currently","backend development","clean architecture","international team","production systems"],
+    tense:'"I have four years of experience", nunca "I have four experience". "Currently" + presente ("I work / I am focusing"). Use passado simples ("graduated", "built", "traced") para realizações e presente para o contexto atual.'},
   {id:'q2', short:'Projeto profissional', q:"Can you tell me about a recent professional project you worked on? What was the goal, your role, and the outcome?",
     car:{
       context:"Recently, I worked on a reporting feature in a .NET and Angular application. The existing flow was slow and was blocking users during busy periods.",
@@ -651,6 +1114,25 @@ function renderQList(){
 }
 
 function renderAnswerBlock(q){
+  if(q.multiFramework && q.frameworks){
+    let html = '<div class="q-frameworks-box" style="margin-bottom:12px;">'
+      + '<p class="sub-label" style="margin-bottom:6px;">Escolha a estrutura para praticar (3 Frameworks do Notion):</p>'
+      + '<div style="display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;">';
+    q.frameworks.forEach((fw, idx)=>{
+      html += '<button type="button" class="tab-btn'+(idx===1?' active':'')+'" id="qfw-tab-'+q.id+'-'+idx+'" onclick="switchQFramework(\''+q.id+'\','+idx+')" style="font-size:12px;padding:5px 10px;">'+fw.name+'</button>';
+    });
+    html += '</div>';
+    q.frameworks.forEach((fw, idx)=>{
+      html += '<div class="qfw-panel" id="qfw-panel-'+q.id+'-'+idx+'" style="display:'+(idx===1?'block':'none')+';">'
+        + '<p style="font-family:var(--font-mono);font-size:11.5px;color:var(--gold);margin:0 0 6px;">' + fw.structure + '</p>'
+        + '<button type="button" class="listen-btn" onclick="speakTextDirect(\''+escapeHtml(fw.model)+'\')">🔊 Ouvir este modelo</button>'
+        + '<p class="model-answer" style="margin-top:6px;">' + fw.model + '</p>'
+        + '</div>';
+    });
+    html += '</div>';
+    return html;
+  }
+
   const listenButton = '<button type="button" class="listen-btn" onclick="speakAnswer(\''+q.id+'\')">🔊 Ouvir resposta</button>';
   if(q.car){
     return listenButton
@@ -751,7 +1233,12 @@ const pronunciationHelper = {
   text:'',
   lang:'en-US',
   range:null,
-  phonetics:[]
+  phonetics:[],
+  ipa:'',
+  translation:'',
+  pronunciationPending:false,
+  keyboardOpened:false,
+  returnFocus:null
 };
 const pronunciationCache = new Map();
 const translationCache = new Map();
@@ -762,6 +1249,16 @@ function getPreferredEnglishVoice(lang){
   const voices = window.speechSynthesis.getVoices();
   const exact = voices.find(voice=>voice.lang.toLowerCase() === lang.toLowerCase());
   return exact || voices.find(voice=>voice.lang.toLowerCase().startsWith(lang.slice(0,2).toLowerCase())) || null;
+}
+
+async function fetchWithTimeout(url,timeoutMs=10000){
+  const controller = typeof AbortController === 'function' ? new AbortController() : null;
+  const timeout = controller ? window.setTimeout(()=>controller.abort(),timeoutMs) : 0;
+  try{
+    return await fetch(url,controller ? {signal:controller.signal} : undefined);
+  }finally{
+    if(timeout) window.clearTimeout(timeout);
+  }
 }
 
 function speakSelectedText(mode){
@@ -788,13 +1285,17 @@ function displaySelectedPhonetic(){
   const accented = pronunciationHelper.phonetics.find(item=>item.text && accentMarker.test(item.audio || ''));
   const selected = accented || pronunciationHelper.phonetics.find(item=>item.text);
   if(!selected){
+    pronunciationHelper.ipa = '';
     output.textContent = 'Pronúncia escrita não encontrada.';
     output.className = 'pronunciation-ipa unavailable';
     return;
   }
   const phonetic = selected.text.trim();
-  output.textContent = /^[\/\[]/.test(phonetic) ? phonetic : '/'+phonetic+'/';
+  pronunciationHelper.ipa = /^[\/\[]/.test(phonetic) ? phonetic : '/'+phonetic+'/';
+  output.textContent = pronunciationHelper.ipa;
   output.className = 'pronunciation-ipa';
+  syncSelectedFlashcardMetadata();
+  if(pronunciationHelper.translation) updateSelectionFlashcardButton('ready');
 }
 
 async function loadSelectedPronunciation(text){
@@ -802,8 +1303,11 @@ async function loadSelectedPronunciation(text){
   const word = cleanSelectedWord(text);
   const requestId = ++pronunciationRequestId;
   pronunciationHelper.phonetics = [];
+  pronunciationHelper.ipa = '';
+  pronunciationHelper.pronunciationPending = Boolean(word && !/\s/.test(word));
 
   if(!word || /\s/.test(word)){
+    pronunciationHelper.pronunciationPending = false;
     output.textContent = 'Selecione apenas uma palavra para ver a pronúncia escrita.';
     output.className = 'pronunciation-ipa unavailable';
     return;
@@ -814,7 +1318,7 @@ async function loadSelectedPronunciation(text){
   try{
     let entries = pronunciationCache.get(word.toLowerCase());
     if(!entries){
-      const response = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(word));
+      const response = await fetchWithTimeout('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(word));
       if(!response.ok) throw new Error('Palavra não encontrada');
       entries = await response.json();
       pronunciationCache.set(word.toLowerCase(),entries);
@@ -825,11 +1329,15 @@ async function loadSelectedPronunciation(text){
       if(entry.phonetic && !items.some(item=>item.text === entry.phonetic)) items.unshift({text:entry.phonetic,audio:''});
       return items;
     });
+    pronunciationHelper.pronunciationPending = false;
     displaySelectedPhonetic();
+    if(pronunciationHelper.translation) updateSelectionFlashcardButton('ready');
   }catch(error){
     if(requestId !== pronunciationRequestId) return;
+    pronunciationHelper.pronunciationPending = false;
     output.textContent = 'Pronúncia escrita indisponível para esta palavra.';
     output.className = 'pronunciation-ipa unavailable';
+    if(pronunciationHelper.translation) updateSelectionFlashcardButton('ready');
   }
 }
 
@@ -839,16 +1347,156 @@ function decodeTranslation(value){
   return decoder.value.trim();
 }
 
+function normalizeFlashcardText(value){
+  return String(value || '').replace(/\s+/g,' ').trim().toLocaleLowerCase();
+}
+
+function readFlashcardStore(){
+  try{
+    const parsed = JSON.parse(localStorage.getItem(FLASHCARD_STORAGE_KEY));
+    if(parsed && typeof parsed === 'object'){
+      parsed.version = 1;
+      if(!Array.isArray(parsed.customCards)) parsed.customCards = [];
+      if(!parsed.schedules || typeof parsed.schedules !== 'object') parsed.schedules = {};
+      if(!parsed.dailyStats || typeof parsed.dailyStats !== 'object') parsed.dailyStats = {};
+      if(!parsed.settings || typeof parsed.settings !== 'object') parsed.settings = {newPerDay:10};
+      return parsed;
+    }
+  }catch(error){}
+  return {version:1,customCards:[],schedules:{},dailyStats:{},settings:{newPerDay:10}};
+}
+
+function selectedTextAlreadySaved(state){
+  const normalized = normalizeFlashcardText(pronunciationHelper.text);
+  return state.customCards.some(card=>normalizeFlashcardText(card.front) === normalized);
+}
+
+function findSelectedSavedCard(state){
+  const normalized = normalizeFlashcardText(pronunciationHelper.text);
+  return state.customCards.find(card=>normalizeFlashcardText(card.front) === normalized) || null;
+}
+
+function flashcardImportUrl(card){
+  const payload = JSON.stringify(card);
+  const bytes = new TextEncoder().encode(payload);
+  let binary = '';
+  bytes.forEach(byte=>{ binary += String.fromCharCode(byte); });
+  const encoded = btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+  return './flashcards-entrevista.html?add='+encoded;
+}
+
+function syncSelectedFlashcardMetadata(){
+  if(!pronunciationHelper.text || !pronunciationHelper.ipa) return;
+  const state = readFlashcardStore();
+  const normalized = normalizeFlashcardText(pronunciationHelper.text);
+  const saved = state.customCards.find(card=>normalizeFlashcardText(card.front) === normalized);
+  if(!saved) return;
+  saved.ipa = pronunciationHelper.ipa;
+  saved.frontLang = pronunciationHelper.lang;
+  saved.ipaLang = pronunciationHelper.lang;
+  saved.updatedAt = Date.now();
+  try{ localStorage.setItem(FLASHCARD_STORAGE_KEY,JSON.stringify(state)); }catch(error){}
+}
+
+function updateSelectionFlashcardButton(status){
+  const button = document.getElementById('pronunciationAddFlashcard');
+  const mainLink = document.querySelector('.flashcards-link');
+  button.classList.remove('saved');
+  delete button.dataset.openUrl;
+  delete button.dataset.retry;
+  if(mainLink) mainLink.href = './flashcards-entrevista.html';
+  if(status === 'loading'){
+    button.disabled = true;
+    button.textContent = 'Aguarde a tradução…';
+    return;
+  }
+  if(status === 'too-long'){
+    button.disabled = true;
+    button.textContent = 'Seleção longa demais';
+    return;
+  }
+  if(status === 'unavailable' || !pronunciationHelper.translation){
+    button.disabled = false;
+    button.dataset.retry = 'true';
+    button.textContent = '↻ Tentar tradução novamente';
+    return;
+  }
+  const savedCard = findSelectedSavedCard(readFlashcardStore());
+  if(savedCard && pronunciationHelper.pronunciationPending){
+    button.disabled = true;
+    button.classList.add('saved');
+    button.textContent = '✓ Salvo · aguardando pronúncia…';
+    return;
+  }
+  button.disabled = false;
+  button.classList.toggle('saved',Boolean(savedCard));
+  button.textContent = savedCard ? '✓ Salvo · Abrir flashcards' : '＋ Adicionar ao Flashcard';
+  if(savedCard){
+    const openUrl = flashcardImportUrl(savedCard);
+    button.dataset.openUrl = openUrl;
+    if(mainLink) mainLink.href = openUrl;
+  }
+}
+
+function makeFlashcardId(){
+  return 'custom-'+(window.crypto && typeof window.crypto.randomUUID === 'function'
+    ? window.crypto.randomUUID()
+    : Date.now()+'-'+Math.random().toString(16).slice(2));
+}
+
+function saveSelectedFlashcard(){
+  const button = document.getElementById('pronunciationAddFlashcard');
+  if(button.dataset.retry){
+    loadSelectedTranslation(pronunciationHelper.text);
+    return;
+  }
+  if(button.dataset.openUrl){
+    window.location.href = button.dataset.openUrl;
+    return;
+  }
+  if(!pronunciationHelper.text || !pronunciationHelper.translation) return;
+  const state = readFlashcardStore();
+  if(selectedTextAlreadySaved(state)){
+    updateSelectionFlashcardButton('ready');
+    document.getElementById('pronunciationLive').textContent = 'Este conteúdo já está nos seus flashcards.';
+    return;
+  }
+  const card = {
+    id:makeFlashcardId(),
+    themeId:'selected-vocabulary',
+    kind:'vocabulary',
+    front:pronunciationHelper.text,
+    back:pronunciationHelper.translation,
+    ipa:pronunciationHelper.ipa,
+    frontLang:pronunciationHelper.lang,
+    ipaLang:pronunciationHelper.lang,
+    backLang:'pt-BR',
+    source:'roteiro-ingles-entrevista',
+    createdAt:Date.now()
+  };
+  state.customCards.push(card);
+  try{
+    localStorage.setItem(FLASHCARD_STORAGE_KEY,JSON.stringify(state));
+    updateSelectionFlashcardButton('ready');
+    document.getElementById('pronunciationLive').textContent = 'Flashcard adicionado. Abra Treinar flashcards para revisá-lo.';
+  }catch(error){
+    document.getElementById('pronunciationLive').textContent = 'Não foi possível salvar o flashcard neste navegador.';
+  }
+}
+
 async function loadSelectedTranslation(text){
   const output = document.getElementById('pronunciationTranslation');
   const requestId = ++translationRequestId;
   const cacheKey = text;
+  pronunciationHelper.translation = '';
   output.textContent = 'Traduzindo…';
   output.className = 'pronunciation-translation-value loading';
+  updateSelectionFlashcardButton('loading');
 
   if(new TextEncoder().encode(text).length > 500){
     output.textContent = 'Seleção longa demais para traduzir.';
     output.className = 'pronunciation-translation-value unavailable';
+    updateSelectionFlashcardButton('too-long');
     return;
   }
 
@@ -856,7 +1504,7 @@ async function loadSelectedTranslation(text){
     let translation = translationCache.get(cacheKey);
     if(!translation){
       const url = 'https://api.mymemory.translated.net/get?q='+encodeURIComponent(text)+'&langpair=en%7Cpt-BR';
-      const response = await fetch(url);
+      const response = await fetchWithTimeout(url);
       if(!response.ok) throw new Error('Tradução não encontrada');
       const data = await response.json();
       if(Number(data.responseStatus) !== 200 || !data.responseData || !data.responseData.translatedText){
@@ -867,12 +1515,16 @@ async function loadSelectedTranslation(text){
       translationCache.set(cacheKey,translation);
     }
     if(requestId !== translationRequestId) return;
+    pronunciationHelper.translation = translation;
     output.textContent = translation;
     output.className = 'pronunciation-translation-value';
+    updateSelectionFlashcardButton('ready');
   }catch(error){
     if(requestId !== translationRequestId) return;
+    pronunciationHelper.translation = '';
     output.textContent = 'Tradução indisponível no momento.';
     output.className = 'pronunciation-translation-value unavailable';
+    updateSelectionFlashcardButton('unavailable');
   }
   if(pronunciationHelper.range && document.getElementById('pronunciationPopover').classList.contains('open')){
     positionPronunciationPopover(pronunciationHelper.range);
@@ -895,7 +1547,7 @@ function positionPronunciationPopover(range){
   popover.style.setProperty('--arrow-left', Math.max(18,Math.min(width-18,rect.left+rect.width/2-left))+'px');
 }
 
-function openPronunciationForSelection(){
+function openPronunciationForSelection(focusActions=false){
   const selection = window.getSelection();
   const text = selection ? selection.toString().replace(/\s+/g,' ').trim() : '';
   if(!selection || selection.rangeCount === 0 || !text || text.length > 500) return;
@@ -906,16 +1558,27 @@ function openPronunciationForSelection(){
   if(!container || !container.closest('.wrap') || container.closest('button, input, textarea, .pronunciation-popover')) return;
   pronunciationHelper.text = text;
   pronunciationHelper.range = range;
+  pronunciationHelper.keyboardOpened = focusActions;
+  pronunciationHelper.returnFocus = focusActions ? document.activeElement : null;
   document.getElementById('pronunciationText').textContent = '“'+text+'”';
   loadSelectedPronunciation(text);
   loadSelectedTranslation(text);
   positionPronunciationPopover(range);
+  if(focusActions){
+    document.querySelector('#pronunciationPopover [data-speak]').focus({preventScroll:true});
+    document.getElementById('pronunciationLive').textContent = 'Ações de pronúncia, tradução e flashcard abertas.';
+  }
 }
 
 function closePronunciationPopover(stopAudio){
   const popover = document.getElementById('pronunciationPopover');
   popover.classList.remove('open');
   popover.setAttribute('aria-hidden','true');
+  if(pronunciationHelper.keyboardOpened && pronunciationHelper.returnFocus && typeof pronunciationHelper.returnFocus.focus === 'function'){
+    pronunciationHelper.returnFocus.focus({preventScroll:true});
+  }
+  pronunciationHelper.keyboardOpened = false;
+  pronunciationHelper.returnFocus = null;
   if(stopAudio && 'speechSynthesis' in window){
     speechSequenceId++;
     window.speechSynthesis.cancel();
@@ -937,6 +1600,11 @@ document.addEventListener('mouseup',event=>{
 document.addEventListener('touchend',event=>{
   if(!event.target.closest('.pronunciation-popover')) window.setTimeout(openPronunciationForSelection,120);
 },{passive:true});
+document.addEventListener('keyup',event=>{
+  if(event.shiftKey && ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key)){
+    window.setTimeout(()=>openPronunciationForSelection(true),0);
+  }
+});
 document.addEventListener('keydown',event=>{
   if(event.key === 'Escape') closePronunciationPopover(true);
 });
@@ -944,6 +1612,11 @@ document.addEventListener('mousedown',event=>{
   if(event.target.closest('.pronunciation-popover')) event.preventDefault();
 });
 document.getElementById('pronunciationPopover').addEventListener('click',event=>{
+  const flashcardButton = event.target.closest('#pronunciationAddFlashcard');
+  if(flashcardButton){
+    saveSelectedFlashcard();
+    return;
+  }
   const speakButton = event.target.closest('[data-speak]');
   if(speakButton) speakSelectedText(speakButton.dataset.speak);
 });
@@ -1046,6 +1719,15 @@ function setEvaluationMessage(key, message, isError=false){
 }
 
 function evaluationContextForKey(key){
+  if(key === 'intro-90s'){
+    return {
+      question: 'Tell me about yourself (90-second interview presentation)',
+      reference: 'Should cover 3 pillars in under 90s: 1. Who you are today (C# .NET developer), 2. What you\'ve done (built REST APIs, web apps, SQL optimization), 3. What you\'re looking for (opportunities in Malta / international team).',
+      vocabulary: 'software developer, .NET Core, C#, REST APIs, clean architecture, Malta, international team',
+      tense: '\'Currently\' + present tense, \'Recently/In my last role\' + past tense. Concise and structured.',
+      round: 'Treino de Apresentação de 90 segundos'
+    };
+  }
   if(key.startsWith('r-')){
     const globalIndex = Number(key.slice(2));
     const q = ALL_DAYS[globalIndex-1] && ALL_DAYS[globalIndex-1].question;
@@ -1499,11 +2181,114 @@ function selectSprintDay(key){
   detail.scrollIntoView({behavior:'smooth', block:'nearest'});
 }
 
+function switchFrameworkTab(tabNum){
+  for(let i=1; i<=3; i++){
+    const tab = document.getElementById('fw-tab-'+i);
+    const panel = document.getElementById('fw-panel-'+i);
+    if(tab && panel){
+      const isActive = i === tabNum;
+      tab.classList.toggle('active', isActive);
+      tab.setAttribute('aria-selected', String(isActive));
+      panel.classList.toggle('active', isActive);
+    }
+  }
+}
+
+function switchQFramework(qId, selectedIdx){
+  const q = QUESTIONS.find(question=>question.id === qId);
+  if(!q || !q.frameworks) return;
+  q.frameworks.forEach((fw, idx)=>{
+    const tab = document.getElementById('qfw-tab-'+qId+'-'+idx);
+    const panel = document.getElementById('qfw-panel-'+qId+'-'+idx);
+    if(tab && panel){
+      const isActive = idx === selectedIdx;
+      tab.classList.toggle('active', isActive);
+      panel.style.display = isActive ? 'block' : 'none';
+    }
+  });
+}
+
+function speakCustomText(elementId){
+  const el = document.getElementById(elementId);
+  if(!el) return;
+  const text = el.textContent.trim().replace(/^"|"$/g, '');
+  speakTextDirect(text);
+}
+
+function speakTextDirect(text){
+  if(!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'en-US';
+  window.speechSynthesis.speak(utterance);
+}
+
+// 90-Second Timer Logic
+let introTimerInterval = null;
+let introTimerSeconds = 90;
+let introTimerRunning = false;
+
+function updateIntroTimerDisplay(){
+  const clock = document.getElementById('introTimerClock');
+  if(!clock) return;
+  const m = Math.floor(introTimerSeconds / 60);
+  const s = introTimerSeconds % 60;
+  clock.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  
+  clock.classList.remove('warning', 'expired');
+  if(introTimerSeconds <= 15 && introTimerSeconds > 0){
+    clock.classList.add('warning');
+  } else if(introTimerSeconds === 0){
+    clock.classList.add('expired');
+  }
+}
+
+function toggleIntroTimer(){
+  const btn = document.getElementById('introTimerBtn');
+  if(introTimerRunning){
+    clearInterval(introTimerInterval);
+    introTimerRunning = false;
+    if(btn) btn.textContent = '▶ Continuar 90s';
+  } else {
+    if(introTimerSeconds <= 0) introTimerSeconds = 90;
+    introTimerRunning = true;
+    if(btn) btn.textContent = '⏸ Pausar Tempo';
+    introTimerInterval = setInterval(()=>{
+      if(introTimerSeconds > 0){
+        introTimerSeconds--;
+        updateIntroTimerDisplay();
+      } else {
+        clearInterval(introTimerInterval);
+        introTimerRunning = false;
+        if(btn) btn.textContent = '⏰ Tempo Esgotado! ↺ Reiniciar';
+      }
+    }, 1000);
+  }
+}
+
+function resetIntroTimer(){
+  clearInterval(introTimerInterval);
+  introTimerRunning = false;
+  introTimerSeconds = 90;
+  updateIntroTimerDisplay();
+  const btn = document.getElementById('introTimerBtn');
+  if(btn) btn.textContent = '▶ Iniciar 90s';
+}
+
+function renderVoiceRecorderForIntro(){
+  const container = document.getElementById('introRecorderContainer');
+  if(container){
+    container.innerHTML = renderVoiceRecorder('intro-90s');
+    prepareRecorderForPanel('intro-90s');
+  }
+}
+
 function render(){
   renderQList();
   document.getElementById('roundsContainer').innerHTML =
     ROUNDS.map((r,i)=>renderRound(r,i)).join('') + renderSprint();
   updateProgressUI();
+  renderVoiceRecorderForIntro();
 }
 
 loadProgress();

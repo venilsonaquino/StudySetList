@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#12202D">
+<title>Flashcards .NET — revisão espaçada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12202D;
+  --ink-soft:#152636;
+  --card:#17293A;
+  --card-hover:#1C3040;
+  --sand:#ECE6D8;
+  --sand-dim:#9FB0BE;
+  --teal:#4FB5A6;
+  --gold:#D2A544;
+  --brick:#D87965;
+  --blue:#6E9FC5;
+  --line:rgba(236,230,216,.12);
+  --line-strong:rgba(236,230,216,.24);
+  --radius:16px;
+  --font-display:'Fraunces',serif;
+  --font-body:'Work Sans',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;}
+html{background:var(--ink);scroll-behavior:smooth;}
+body{
+  margin:0;min-height:100svh;background:
+    radial-gradient(circle at 12% -10%,rgba(79,181,166,.12),transparent 34%),
+    radial-gradient(circle at 95% 10%,rgba(210,165,68,.08),transparent 28%),var(--ink);
+  color:var(--sand);font-family:var(--font-body);line-height:1.5;
+}
+button,input,textarea,select{font:inherit;}
+button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;}
+button{color:inherit;}
+a{color:inherit;}
+[hidden]{display:none!important;}
+.app-shell{width:min(100%,720px);min-height:100svh;margin:0 auto;padding:0 18px 112px;}
+.topbar{
+  position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;margin:0 -18px;
+  padding:calc(12px + env(safe-area-inset-top)) 18px 12px;background:rgba(18,32,45,.92);
+  border-bottom:1px solid var(--line);backdrop-filter:blur(14px);
+}
+.back-link{
+  display:inline-grid;place-items:center;width:44px;height:44px;border:1px solid var(--line-strong);
+  border-radius:12px;text-decoration:none;color:var(--sand-dim);font-size:20px;
+}
+.back-link:hover{border-color:var(--teal);color:var(--teal);}
+.brand-mark{
+  display:grid;place-items:center;width:40px;height:40px;border-radius:11px;background:rgba(79,181,166,.12);
+  border:1px solid rgba(79,181,166,.45);color:var(--teal);font:500 11px var(--font-mono);
+}
+.brand-copy{min-width:0;}
+.brand-copy strong{display:block;font-family:var(--font-display);font-size:17px;line-height:1.15;}
+.brand-copy span{display:block;color:var(--sand-dim);font:400 10px var(--font-mono);letter-spacing:.04em;}
+.header-due{margin-left:auto;color:var(--gold);font:500 11px var(--font-mono);white-space:nowrap;}
+.view{padding-top:24px;}
+.eyebrow{margin:0 0 7px;color:var(--teal);font:500 10px var(--font-mono);letter-spacing:.11em;text-transform:uppercase;}
+h1,h2,h3,p{overflow-wrap:anywhere;}
+h1{margin:0;font:600 clamp(28px,8vw,40px)/1.08 var(--font-display);}
+.lead{max-width:53ch;margin:10px 0 20px;color:var(--sand-dim);font-size:14px;}
+.today-panel{
+  position:relative;overflow:hidden;margin:0 0 18px;padding:20px;background:linear-gradient(135deg,rgba(79,181,166,.15),rgba(23,41,58,.96) 60%);
+  border:1px solid rgba(79,181,166,.45);border-radius:var(--radius);
+}
+.today-panel::after{content:"";position:absolute;right:-35px;top:-52px;width:130px;height:130px;border:1px solid rgba(210,165,68,.2);border-radius:50%;}
+.today-copy{position:relative;z-index:1;display:flex;align-items:flex-end;justify-content:space-between;gap:15px;margin-bottom:17px;}
+.today-copy strong{display:block;font:600 24px/1.12 var(--font-display);}
+.today-copy span{display:block;margin-top:3px;color:var(--sand-dim);font-size:12px;}
+.today-count{color:var(--gold);font:500 28px/1 var(--font-mono);}
+.primary-btn,.secondary-btn,.show-answer-btn{
+  display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:11px 16px;border-radius:11px;
+  border:1px solid var(--teal);background:var(--teal);color:var(--ink);font-weight:600;cursor:pointer;text-decoration:none;
+}
+.primary-btn{width:100%;}
+.primary-btn:hover,.show-answer-btn:hover{filter:brightness(1.08);}
+.primary-btn:disabled{opacity:.45;cursor:not-allowed;}
+.secondary-btn{background:transparent;color:var(--sand);border-color:var(--line-strong);}
+.secondary-btn:hover{border-color:var(--teal);color:var(--teal);}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:25px;}
+.stat{padding:12px 10px;background:rgba(23,41,58,.78);border:1px solid var(--line);border-radius:12px;}
+.stat strong{display:block;color:var(--sand);font:500 20px/1.1 var(--font-mono);}
+.stat span{display:block;margin-top:5px;color:var(--sand-dim);font-size:10.5px;}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:0 0 11px;}
+.section-head h2{margin:0;font:600 20px var(--font-display);}
+.section-head span{color:var(--sand-dim);font-size:11px;}
+.deck-list{display:grid;gap:10px;}
+.deck-card{
+  width:100%;display:grid;grid-template-columns:46px minmax(0,1fr) auto;align-items:center;gap:12px;
+  padding:14px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;cursor:pointer;
+}
+.deck-card:hover{transform:translateY(-1px);background:var(--card-hover);border-color:var(--line-strong);}
+.deck-code{display:grid;place-items:center;width:46px;height:46px;border-radius:12px;background:rgba(79,181,166,.1);color:var(--teal);font:500 10px var(--font-mono);}
+.deck-card[data-theme="csharp-dotnet-fundamentals"] .deck-code{background:rgba(210,165,68,.1);color:var(--gold);}
+.deck-card[data-theme="dotnet-common-questions"] .deck-code{background:rgba(110,159,197,.12);color:var(--blue);}
+.deck-card[data-theme="selected-vocabulary"] .deck-code{background:rgba(216,121,101,.12);color:var(--brick);}
+.deck-info{min-width:0;}
+.deck-info strong{display:block;font-size:14px;line-height:1.3;}
+.deck-info span{display:block;margin-top:3px;color:var(--sand-dim);font-size:11px;}
+.deck-due{text-align:right;}
+.deck-due strong{display:block;color:var(--gold);font:500 17px var(--font-mono);}
+.deck-due span{color:var(--sand-dim);font-size:9.5px;text-transform:uppercase;letter-spacing:.05em;}
+.storage-note{margin:18px 2px 0;color:var(--sand-dim);font-size:10.5px;}
+.study-top{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.icon-btn{
+  flex:0 0 auto;display:grid;place-items:center;width:44px;height:44px;background:transparent;border:1px solid var(--line-strong);
+  border-radius:11px;cursor:pointer;color:var(--sand-dim);
+}
+.icon-btn:hover{border-color:var(--teal);color:var(--teal);}
+.study-title{min-width:0;flex:1;}
+.study-title span{display:block;color:var(--teal);font:500 9.5px var(--font-mono);text-transform:uppercase;letter-spacing:.08em;}
+.study-title strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px;}
+.study-position{color:var(--sand-dim);font:500 10.5px var(--font-mono);}
+.study-progress{width:100%;height:6px;margin:0 0 18px;border:0;border-radius:4px;overflow:hidden;background:rgba(236,230,216,.1);}
+.study-progress::-webkit-progress-bar{background:rgba(236,230,216,.1);}
+.study-progress::-webkit-progress-value{background:var(--teal);}
+.study-progress::-moz-progress-bar{background:var(--teal);}
+.flashcard{
+  position:relative;min-height:330px;padding:22px 20px;background:linear-gradient(155deg,var(--card),var(--ink-soft));
+  border:1px solid var(--line-strong);border-radius:20px;box-shadow:0 18px 42px rgba(0,0,0,.2);
+}
+.card-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:24px;}
+.card-side{color:var(--teal);font:500 9.5px var(--font-mono);letter-spacing:.1em;text-transform:uppercase;}
+.speak-btn{min-height:44px;padding:8px 11px;background:transparent;border:1px solid var(--line);border-radius:9px;color:var(--sand-dim);font-size:11px;cursor:pointer;}
+.speak-btn:hover{border-color:var(--teal);color:var(--teal);}
+.card-front{margin:0;font:500 clamp(22px,6.8vw,30px)/1.3 var(--font-display);}
+.card-ipa{display:block;margin-top:12px;color:var(--gold);font:500 14px var(--font-mono);}
+.answer-block{margin-top:25px;padding-top:21px;border-top:1px solid var(--line);}
+.answer-block p{margin:0;color:var(--sand);font-size:16px;line-height:1.55;}
+.answer-note{margin-top:14px!important;padding:10px 12px;border-left:2px solid var(--gold);background:rgba(210,165,68,.07);color:var(--sand-dim)!important;font-size:12px!important;}
+.show-answer-btn{width:100%;margin-top:14px;}
+.rating-copy{margin:17px 0 8px;text-align:center;color:var(--sand-dim);font-size:11px;}
+.rating-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+.rating-btn{min-height:56px;padding:8px;background:var(--card);border:1px solid var(--line-strong);border-radius:11px;cursor:pointer;}
+.rating-btn strong{display:block;font-size:12px;}
+.rating-btn span{display:block;margin-top:2px;color:var(--sand-dim);font:400 9.5px var(--font-mono);}
+.rating-btn[data-rating="again"]:hover{border-color:var(--brick);}
+.rating-btn[data-rating="hard"]:hover{border-color:var(--gold);}
+.rating-btn[data-rating="good"]:hover{border-color:var(--teal);}
+.rating-btn[data-rating="easy"]:hover{border-color:var(--blue);}
+.session-done{padding:34px 20px;text-align:center;background:var(--card);border:1px solid var(--line);border-radius:18px;}
+.done-mark{display:grid;place-items:center;width:62px;height:62px;margin:0 auto 16px;border-radius:50%;background:rgba(79,181,166,.12);border:1px solid var(--teal);color:var(--teal);font-size:27px;}
+.session-done h2{margin:0;font:600 26px var(--font-display);}
+.session-done p{margin:8px auto 20px;color:var(--sand-dim);font-size:13px;max-width:38ch;}
+.done-actions{display:grid;gap:8px;}
+.manage-intro h1{font-size:30px;}
+.manage-card{margin-top:18px;padding:16px;background:var(--card);border:1px solid var(--line);border-radius:14px;}
+.manage-card h2{margin:0 0 13px;font:600 18px var(--font-display);}
+.field{display:grid;gap:5px;margin-bottom:11px;}
+.field label{color:var(--sand-dim);font-size:11px;}
+.field input,.field textarea,.field select,.search-input{
+  width:100%;padding:11px 12px;background:var(--ink);border:1px solid var(--line-strong);border-radius:9px;color:var(--sand);outline:none;
+}
+.field textarea{min-height:86px;resize:vertical;}
+.field input:focus,.field textarea:focus,.field select:focus,.search-input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(79,181,166,.1);}
+.form-actions{display:flex;gap:8px;}
+.form-actions .primary-btn{flex:1;width:auto;}
+.form-actions .secondary-btn{flex:0 0 auto;}
+.custom-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:24px 0 10px;}
+.custom-tools h2{margin:0;font:600 20px var(--font-display);}
+.custom-count{color:var(--sand-dim);font:400 10px var(--font-mono);}
+.search-input{margin-bottom:10px;}
+.custom-list{display:grid;gap:8px;}
+.custom-item{padding:13px;background:var(--card);border:1px solid var(--line);border-radius:12px;}
+.custom-item-head{display:flex;align-items:start;justify-content:space-between;gap:10px;}
+.custom-item-copy{min-width:0;}
+.custom-item-copy strong{display:block;color:var(--sand);font-size:13px;}
+.custom-item-copy p{margin:4px 0 0;color:var(--sand-dim);font-size:11px;}
+.theme-pill{display:inline-block;margin-top:8px;padding:3px 6px;border-radius:5px;background:rgba(79,181,166,.09);color:var(--teal);font:400 8.5px var(--font-mono);}
+.item-actions{display:flex;gap:5px;flex:0 0 auto;}
+.mini-btn{min-height:44px;padding:8px 10px;background:transparent;border:1px solid var(--line);border-radius:8px;color:var(--sand-dim);font-size:10px;cursor:pointer;}
+.mini-btn:hover{border-color:var(--teal);color:var(--teal);}
+.mini-btn.danger:hover{border-color:var(--brick);color:var(--brick);}
+.empty-list{padding:22px;text-align:center;color:var(--sand-dim);font-size:12px;border:1px dashed var(--line-strong);border-radius:12px;}
+.bottom-nav{
+  position:fixed;z-index:30;left:50%;bottom:0;transform:translateX(-50%);width:min(100%,720px);display:grid;grid-template-columns:repeat(3,1fr);
+  padding:7px 12px calc(7px + env(safe-area-inset-bottom));background:rgba(18,32,45,.96);border-top:1px solid var(--line);backdrop-filter:blur(16px);
+}
+.nav-btn{min-height:54px;background:transparent;border:0;border-radius:11px;color:var(--sand-dim);font-size:10px;cursor:pointer;}
+.nav-btn span{display:block;margin-bottom:1px;font-size:17px;line-height:1;}
+.nav-btn.active{background:rgba(79,181,166,.1);color:var(--teal);}
+.toast{
+  position:fixed;z-index:50;left:50%;bottom:calc(80px + env(safe-area-inset-bottom));transform:translate(-50%,16px);
+  width:min(calc(100% - 32px),520px);padding:12px 14px;background:#203749;border:1px solid var(--teal);border-radius:11px;
+  color:var(--sand);font-size:12px;opacity:0;pointer-events:none;transition:.2s ease;
+}
+.toast.open{opacity:1;transform:translate(-50%,0);}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--gold);outline-offset:2px;}
+@media (min-width:580px){
+  .app-shell{padding-left:28px;padding-right:28px;}
+  .topbar{margin-left:-28px;margin-right:-28px;padding-left:28px;padding-right:28px;}
+  .deck-list{grid-template-columns:1fr 1fr;}
+  .deck-card{grid-template-columns:46px minmax(0,1fr);}
+  .deck-due{grid-column:2;text-align:left;display:flex;align-items:baseline;gap:5px;}
+  .rating-grid{grid-template-columns:repeat(4,1fr);}
+  .flashcard{min-height:360px;padding:28px;}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important;}.deck-card:hover{transform:none;}}
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <a class="back-link" href="./roteiro-ingles-entrevista.html" aria-label="Voltar ao roteiro de entrevista">←</a>
+    <span class="brand-mark" aria-hidden="true">.NET</span>
+    <div class="brand-copy"><strong>Flashcards .NET</strong><span>repetição espaçada</span></div>
+    <span class="header-due" id="headerDue">0 hoje</span>
+  </header>
+
+  <main>
+    <section class="view" id="homeView" aria-labelledby="homeTitle">
+      <p class="eyebrow">Treino inteligente para entrevistas</p>
+      <h1 id="homeTitle">Revise menos.<br>Retenha mais.</h1>
+      <p class="lead">Os cartões voltam no momento certo conforme suas respostas. Comece pelos vencidos e avance no seu ritmo.</p>
+
+      <div class="today-panel">
+        <div class="today-copy">
+          <div><strong>Sessão de hoje</strong><span id="todayMessage">Sua revisão está pronta.</span></div>
+          <div class="today-count" id="todayTotal">0</div>
+        </div>
+        <button type="button" class="primary-btn" id="startAllButton">Começar revisão</button>
+      </div>
+
+      <div class="stats-grid" aria-label="Resumo do aprendizado">
+        <div class="stat"><strong id="dueStat">0</strong><span>para revisar</span></div>
+        <div class="stat"><strong id="newStat">0</strong><span>novos hoje</span></div>
+        <div class="stat"><strong id="streakStat">0</strong><span>dias de sequência</span></div>
+      </div>
+
+      <div class="section-head"><h2>Temas</h2><span id="learnedSummary">0 aprendidos</span></div>
+      <div class="deck-list" id="deckList"></div>
+      <p class="storage-note">Seu progresso e seus cartões ficam salvos neste navegador. Abra as duas páginas pelo mesmo site (HTTP/HTTPS); por duplo clique, o navegador pode separar os dados entre arquivos. Não há sincronização automática entre aparelhos.</p>
+    </section>
+
+    <section class="view" id="studyView" aria-labelledby="studyDeckTitle" hidden>
+      <div class="study-top">
+        <button type="button" class="icon-btn" id="studyBackButton" aria-label="Voltar ao início">←</button>
+        <div class="study-title"><span>Revisão</span><strong id="studyDeckTitle">Todos os temas</strong></div>
+        <span class="study-position" id="studyPosition">1 de 1</span>
+      </div>
+      <progress class="study-progress" id="studyProgress" value="0" max="1" aria-label="Progresso desta sessão"></progress>
+
+      <div id="activeStudy">
+        <article class="flashcard" id="studyCard">
+          <div class="card-meta">
+            <span class="card-side" id="cardTheme">Pergunta</span>
+            <button type="button" class="speak-btn" id="speakFrontButton" aria-label="Ouvir pergunta em inglês">🔊 Ouvir</button>
+          </div>
+          <h2 class="card-front" id="cardFront" lang="en" tabindex="-1"></h2>
+          <span class="card-ipa" id="cardIpa" hidden></span>
+          <div class="answer-block" id="answerBlock" role="region" aria-label="Resposta do flashcard" tabindex="-1" hidden>
+            <div class="card-meta">
+              <span class="card-side">Resposta</span>
+              <button type="button" class="speak-btn" id="speakBackButton" aria-label="Ouvir resposta">🔊 Ouvir</button>
+            </div>
+            <p id="cardBack"></p>
+            <p class="answer-note" id="cardNote" hidden></p>
+          </div>
+        </article>
+        <button type="button" class="show-answer-btn" id="showAnswerButton">Mostrar resposta</button>
+        <div id="ratingArea" hidden>
+          <p class="rating-copy">Como foi lembrar desta resposta?</p>
+          <div class="rating-grid" id="ratingGrid" role="group" aria-label="Avalie esta lembrança"></div>
+        </div>
+      </div>
+
+      <div class="session-done" id="sessionDone" hidden>
+        <div class="done-mark" aria-hidden="true">✓</div>
+        <h2 id="sessionDoneTitle" tabindex="-1">Tudo em dia</h2>
+        <p id="doneMessage">Você concluiu a sessão de agora. Os cartões retornarão conforme os intervalos escolhidos.</p>
+        <div class="done-actions">
+          <button type="button" class="primary-btn" id="doneHomeButton">Voltar ao início</button>
+          <button type="button" class="secondary-btn" id="doneCustomButton">Ver minhas palavras</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="manageView" aria-labelledby="manageTitle" hidden>
+      <div class="manage-intro">
+        <p class="eyebrow">Seu vocabulário pessoal</p>
+        <h1 id="manageTitle">Meus flashcards</h1>
+        <p class="lead">Palavras selecionadas no roteiro aparecem aqui. Você também pode criar ou corrigir cartões manualmente.</p>
+      </div>
+
+      <form class="manage-card" id="customCardForm">
+        <h2 id="formTitle">Novo flashcard</h2>
+        <div class="field"><label for="customFront">Frente</label><input id="customFront" required maxlength="500" placeholder="Palavra ou pergunta em inglês"></div>
+        <div class="field"><label for="customBack">Verso</label><textarea id="customBack" required maxlength="1200" placeholder="Tradução ou resposta"></textarea></div>
+        <div class="field"><label for="customBackLang">Idioma do verso</label><select id="customBackLang"><option value="pt-BR">Português</option><option value="en-US">Inglês</option></select></div>
+        <div class="field"><label for="customTheme">Tema</label><select id="customTheme"></select></div>
+        <div class="form-actions">
+          <button type="submit" class="primary-btn" id="saveCustomButton">Adicionar</button>
+          <button type="button" class="secondary-btn" id="cancelEditButton" hidden>Cancelar</button>
+        </div>
+      </form>
+
+      <div class="custom-tools"><h2>Cartões adicionados</h2><span class="custom-count" id="customCount">0 cartões</span></div>
+      <label class="sr-only" for="customSearch">Buscar nos meus cartões</label>
+      <input class="search-input" id="customSearch" type="search" placeholder="Buscar palavra ou resposta…">
+      <div class="custom-list" id="customList"></div>
+    </section>
+  </main>
+</div>
+
+<nav class="bottom-nav" aria-label="Navegação dos flashcards">
+  <button type="button" class="nav-btn active" data-view="home"><span aria-hidden="true">⌂</span>Início</button>
+  <button type="button" class="nav-btn" data-view="study"><span aria-hidden="true">▣</span>Estudar</button>
+  <button type="button" class="nav-btn" data-view="manage"><span aria-hidden="true">＋</span>Meus cards</button>
+</nav>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<span class="sr-only" id="studyLive" aria-live="polite"></span>
+
+<script>
+const STORAGE_KEY = 'studyset.flashcards.v1';
+const NEW_PER_DAY = 10;
+const MINUTE = 60 * 1000;
+const DAY = 24 * 60 * MINUTE;
+const MIN_EASE = 1.3;
+const MAX_EASE = 3.5;
+const MAX_INTERVAL = 3650;
+
+const THEMES = [
+  {id:'dotnet-interview',name:'.NET Interview',code:'INT',description:'Respostas comportamentais em inglês'},
+  {id:'csharp-dotnet-fundamentals',name:'Fundamentos C# e .NET',code:'C#',description:'Conceitos essenciais explicados com clareza'},
+  {id:'dotnet-common-questions',name:'Perguntas mais frequentes para Dev .NET',code:'DEV',description:'Cenários técnicos comuns em entrevistas'},
+  {id:'selected-vocabulary',name:'Minhas palavras',code:'VOC',description:'Palavras e frases que você adicionou',custom:true}
+];
+
+const SEED_CARDS = [
+  {id:'int-introduce',themeId:'dotnet-interview',front:'Could you please introduce yourself?',back:"I'm a software developer with four years of experience. I currently work mainly with C#, .NET Core and ASP.NET Core, and I want to grow in an international team.",note:'Estrutura: experiência + stack principal + objetivo profissional.'},
+  {id:'int-project',themeId:'dotnet-interview',front:'Can you tell me about a recent professional project you worked on?',back:'I improved a slow reporting feature by tracing API requests, reviewing SQL queries, optimizing the backend flow and adding tests. The report became faster and more reliable.',note:'Responda com Contexto, Ação e Resultado.'},
+  {id:'int-pressure',themeId:'dotnet-interview',front:"When you're under pressure to deliver, how do you usually handle that?",back:'I break the problem into small steps, confirm the highest priority and communicate early when I see a risk. That keeps the team aligned and helps me focus.',note:'Use presente simples para descrever seu comportamento habitual.'},
+  {id:'int-learning',themeId:'dotnet-interview',front:'Tell me about a time when you had to learn something fast for a project.',back:'I studied the request flow, used SQL Profiler to trace stored-procedure execution and asked focused questions. I solved the issue and documented the process.',note:'Conte uma situação real no passado e termine com o aprendizado atual.'},
+  {id:'int-role',themeId:'dotnet-interview',front:'Why do you want this role?',back:'The role matches my C#, .NET Core and Angular experience and gives me opportunities to work with Azure, clean architecture and an international team.',note:'Conecte sua experiência às necessidades da vaga.'},
+  {id:'int-strengths',themeId:'dotnet-interview',front:'What are your strengths?',back:'One of my strengths is taking ownership. I clarify the expected result, investigate dependencies and keep the team updated until the task is delivered.',note:'Escolha uma força e mostre como ela aparece no trabalho.'},
+  {id:'int-weakness',themeId:'dotnet-interview',front:"What's your biggest weakness?",back:"I'm improving how early I speak up when a requirement is unclear. Now I ask focused questions, confirm priorities and share progress sooner.",note:'Mostre uma melhoria real, a ação tomada e o resultado.'},
+  {id:'int-questions',themeId:'dotnet-interview',front:'Do you have any questions for us?',back:"What would success look like during my first three months? What are the main technical challenges the team is working on right now?",note:'Tenha pelo menos duas perguntas relevantes preparadas.'},
+
+  {id:'fund-inheritance',themeId:'csharp-dotnet-fundamentals',front:'What is inheritance in C#?',back:'Inheritance allows a child class to reuse or extend the behavior of a parent class.',note:'Use inheritance when there is a genuine “is-a” relationship.'},
+  {id:'fund-polymorphism',themeId:'csharp-dotnet-fundamentals',front:'What is polymorphism in C#?',back:'Polymorphism lets the same contract call different overridden implementations at runtime.',note:'Um contrato, comportamentos diferentes.'},
+  {id:'fund-interface-abstract',themeId:'csharp-dotnet-fundamentals',front:'When would you use an interface instead of an abstract class?',back:'I use an interface to define a contract and an abstract class when related types also need shared behavior or state.',note:'Interfaces favorecem contratos; classes abstratas também podem compartilhar implementação.'},
+  {id:'fund-stringbuilder',themeId:'csharp-dotnet-fundamentals',front:'Why would you use StringBuilder in C#?',back:'Strings are immutable, so StringBuilder avoids creating many intermediate string objects during heavy concatenation.',note:'Para poucas concatenações, interpolação normalmente continua simples e adequada.'},
+  {id:'fund-overload-override',themeId:'csharp-dotnet-fundamentals',front:'What is the difference between overloading and overriding?',back:'Overloading uses the same method name with different parameter lists. Overriding replaces a virtual or abstract implementation in a derived class.',note:'Overload: resolução em compilação. Override: polimorfismo em execução.'},
+  {id:'fund-attributes',themeId:'csharp-dotnet-fundamentals',front:'What are attributes and reflection in .NET?',back:'Attributes add metadata to code. Reflection lets an application inspect types, members and that metadata at runtime.',note:'Frameworks usam isso em serialização, validação e descoberta de componentes.'},
+  {id:'fund-di',themeId:'csharp-dotnet-fundamentals',front:'What does dependency injection help you achieve?',back:'Dependency injection keeps classes loosely coupled by receiving dependencies from the outside instead of constructing them internally.',note:'Melhora substituição, testes e controle do ciclo de vida.'},
+  {id:'fund-gc',themeId:'csharp-dotnet-fundamentals',front:'What does the .NET garbage collector manage, and when is IDisposable still needed?',back:'The garbage collector reclaims managed memory by generation. IDisposable and using are still needed for unmanaged or scarce resources such as streams and database connections.',note:'GC não substitui a liberação determinística de recursos externos.'},
+
+  {id:'dev-slow-query',themeId:'dotnet-common-questions',front:'How would you investigate and improve a slow database query in a .NET application?',back:'I reproduce the issue, capture the generated SQL, inspect the execution plan and check indexes, result size and N+1 queries. Then I change one thing and measure again.',note:'Otimize com evidências, não por suposição.'},
+  {id:'dev-production-bug',themeId:'dotnet-common-questions',front:'How do you investigate a bug in production?',back:'I confirm the impact and reproduction steps, check logs, metrics, correlation IDs and recent changes, identify the root cause, add a regression test and monitor the fix.',note:'Priorize observabilidade e a menor correção segura.'},
+  {id:'dev-http',themeId:'dotnet-common-questions',front:'When would you use HTTP status codes 200, 201, 400, 401, 403, 404 and 500?',back:'200 means success; 201 created; 400 invalid request; 401 unauthenticated; 403 forbidden; 404 not found; and 500 an unexpected server error.',note:'Não exponha detalhes sensíveis em respostas 500.'},
+  {id:'dev-messaging',themeId:'dotnet-common-questions',front:'When would you use RabbitMQ or Azure Service Bus in a .NET system?',back:'I use messaging for asynchronous work or to decouple services. Consumers should be idempotent and use correlation IDs, retries and a dead-letter queue.',note:'Explique também a consistência eventual do fluxo.'},
+  {id:'dev-pipeline',themeId:'dotnet-common-questions',front:'How does the ASP.NET Core request pipeline work?',back:'Each request passes through ordered middleware. Middleware can run before and after the next component, short-circuit the pipeline or change the response.',note:'A ordem importa para erros, roteamento, autenticação e autorização.'},
+  {id:'dev-lifetimes',themeId:'dotnet-common-questions',front:'What is the difference between transient, scoped and singleton lifetimes?',back:'Transient creates a new instance each time, scoped shares one instance within a request, and singleton uses one instance for the application lifetime.',note:'DbContext normalmente é scoped; evite injetar scoped em singleton.'},
+  {id:'dev-clean-architecture',themeId:'dotnet-common-questions',front:'How do you apply clean architecture in a .NET project?',back:'I keep business rules independent from frameworks and infrastructure, keep controllers thin, place use cases in the application layer and isolate data access behind interfaces.',note:'As dependências apontam para o núcleo da aplicação.'},
+  {id:'dev-agile',themeId:'dotnet-common-questions',front:'How do you work in an Agile development team?',back:'I clarify acceptance criteria, keep work visible, raise blockers early, collaborate with product and QA, and use retrospectives to improve the process.',note:'Foque na colaboração e no feedback, não apenas nas cerimônias.'}
+];
+
+function emptyStore(){
+  return {version:1,customCards:[],schedules:{},dailyStats:{},settings:{newPerDay:NEW_PER_DAY}};
+}
+
+function loadStore(){
+  try{
+    const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if(!parsed || typeof parsed !== 'object') return emptyStore();
+    return {
+      version:1,
+      customCards:Array.isArray(parsed.customCards) ? parsed.customCards.filter(card=>card && card.id && card.front && card.back) : [],
+      schedules:parsed.schedules && typeof parsed.schedules === 'object' ? parsed.schedules : {},
+      dailyStats:parsed.dailyStats && typeof parsed.dailyStats === 'object' ? parsed.dailyStats : {},
+      settings:{newPerDay:Number(parsed.settings && parsed.settings.newPerDay) || NEW_PER_DAY}
+    };
+  }catch(error){
+    return emptyStore();
+  }
+}
+
+let store = loadStore();
+let activeDeckId = 'all';
+let currentCard = null;
+let answerVisible = false;
+let sessionAnswered = 0;
+let sessionTotal = 0;
+let editingCardId = null;
+let toastTimer = 0;
+let reviewWakeTimer = 0;
+let reviewCountdownTimer = 0;
+let homeRefreshTimer = 0;
+
+function saveStore(){
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(store));
+    return true;
+  }catch(error){
+    showToast('Não foi possível salvar neste navegador.');
+    return false;
+  }
+}
+
+function getAllCards(){
+  return SEED_CARDS.concat(store.customCards.map(card=>({
+    ...card,
+    themeId:card.themeId || 'selected-vocabulary',
+    frontLang:card.frontLang || 'en-US',
+    backLang:card.backLang || ((card.themeId || 'selected-vocabulary') === 'selected-vocabulary' ? 'pt-BR' : 'en-US')
+  })));
+}
+
+function defaultSchedule(){
+  return {state:'new',dueAt:null,learningStep:0,intervalDays:0,ease:2.5,pendingIntervalDays:null,reviewCount:0,lapseCount:0,lastReviewedAt:null};
+}
+
+function getSchedule(cardId){
+  return {...defaultSchedule(),...(store.schedules[cardId] || {})};
+}
+
+function localDayKey(date = new Date()){
+  return date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0');
+}
+
+function getTodayStats(){
+  const key = localDayKey();
+  if(!store.dailyStats[key]) store.dailyStats[key] = {answers:0,newIntroduced:0,again:0,hard:0,good:0,easy:0};
+  return store.dailyStats[key];
+}
+
+function cardsForDeck(deckId){
+  const cards = getAllCards();
+  return deckId === 'all' ? cards : cards.filter(card=>card.themeId === deckId);
+}
+
+function queueForDeck(deckId){
+  const now = Date.now();
+  const cards = cardsForDeck(deckId);
+  const due = cards.filter(card=>{
+    const schedule = getSchedule(card.id);
+    return schedule.state !== 'new' && schedule.state !== 'suspended' && Number(schedule.dueAt) <= now;
+  }).sort((a,b)=>{
+    const priority = state=>state === 'learning' || state === 'relearning' ? 0 : 1;
+    const sa = getSchedule(a.id), sb = getSchedule(b.id);
+    return priority(sa.state)-priority(sb.state) || Number(sa.dueAt)-Number(sb.dueAt);
+  });
+  const remainingNew = Math.max(0,(store.settings.newPerDay || NEW_PER_DAY)-getTodayStats().newIntroduced);
+  const fresh = cards.filter(card=>getSchedule(card.id).state === 'new').slice(0,remainingNew);
+  return due.concat(fresh);
+}
+
+function dueCount(deckId='all'){
+  const now = Date.now();
+  return cardsForDeck(deckId).filter(card=>{
+    const schedule = getSchedule(card.id);
+    return schedule.state !== 'new' && schedule.state !== 'suspended' && Number(schedule.dueAt) <= now;
+  }).length;
+}
+
+function newAvailable(deckId='all'){
+  const remaining = Math.max(0,(store.settings.newPerDay || NEW_PER_DAY)-getTodayStats().newIntroduced);
+  return Math.min(remaining,cardsForDeck(deckId).filter(card=>getSchedule(card.id).state === 'new').length);
+}
+
+function learnedCount(deckId='all'){
+  return cardsForDeck(deckId).filter(card=>{
+    const state = getSchedule(card.id).state;
+    return state === 'review' || state === 'relearning';
+  }).length;
+}
+
+function calculateStreak(){
+  let cursor = new Date();
+  const todayAnswers = (store.dailyStats[localDayKey(cursor)] || {}).answers || 0;
+  if(!todayAnswers) cursor.setDate(cursor.getDate()-1);
+  let streak = 0;
+  while(streak < 365){
+    const stats = store.dailyStats[localDayKey(cursor)];
+    if(!stats || !stats.answers) break;
+    streak++;
+    cursor.setDate(cursor.getDate()-1);
+  }
+  return streak;
+}
+
+function themeById(id){
+  return THEMES.find(theme=>theme.id === id) || THEMES[3];
+}
+
+function renderHome(){
+  const due = dueCount();
+  const fresh = newAvailable();
+  const total = due + fresh;
+  document.getElementById('headerDue').textContent = total+' hoje';
+  document.getElementById('todayTotal').textContent = total;
+  document.getElementById('dueStat').textContent = due;
+  document.getElementById('newStat').textContent = fresh;
+  document.getElementById('streakStat').textContent = calculateStreak();
+  document.getElementById('learnedSummary').textContent = learnedCount()+' em revisão';
+  document.getElementById('todayMessage').textContent = total ? 'Sua revisão está pronta.' : 'Você está em dia por enquanto.';
+  const start = document.getElementById('startAllButton');
+  start.disabled = total === 0;
+  start.textContent = total ? 'Começar revisão · '+total : 'Tudo em dia';
+
+  const list = document.getElementById('deckList');
+  list.textContent = '';
+  THEMES.forEach(theme=>{
+    const totalCards = cardsForDeck(theme.id).length;
+    if(theme.custom && totalCards === 0) return;
+    const reviews = dueCount(theme.id);
+    const fresh = newAvailable(theme.id);
+    const available = reviews+fresh;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'deck-card';
+    button.dataset.theme = theme.id;
+    button.setAttribute('aria-label',theme.name+': '+available+' cartões para hoje');
+
+    const code = document.createElement('span');
+    code.className = 'deck-code';
+    code.textContent = theme.code;
+    const info = document.createElement('span');
+    info.className = 'deck-info';
+    const name = document.createElement('strong');
+    name.textContent = theme.name;
+    const description = document.createElement('span');
+    description.textContent = theme.description+' · '+totalCards+' cartões';
+    info.append(name,description);
+    const dueBox = document.createElement('span');
+    dueBox.className = 'deck-due';
+    const dueNumber = document.createElement('strong');
+    dueNumber.textContent = reviews ? reviews+' rev.' : fresh+' novos';
+    const dueLabel = document.createElement('span');
+    dueLabel.textContent = reviews && fresh ? '+ '+fresh+' novos' : (fresh ? 'se escolher' : 'disponíveis');
+    dueBox.append(dueNumber,dueLabel);
+    button.append(code,info,dueBox);
+    button.addEventListener('click',()=>startStudy(theme.id));
+    list.appendChild(button);
+  });
+  scheduleHomeRefresh();
+}
+
+function preferredScrollBehavior(){
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+}
+
+function focusAndReveal(element){
+  if(!element) return;
+  element.focus({preventScroll:true});
+  element.scrollIntoView({block:'start',behavior:preferredScrollBehavior()});
+}
+
+function clearReviewTimers(){
+  window.clearTimeout(reviewWakeTimer);
+  window.clearInterval(reviewCountdownTimer);
+  reviewWakeTimer = 0;
+  reviewCountdownTimer = 0;
+}
+
+function clearHomeRefreshTimer(){
+  window.clearTimeout(homeRefreshTimer);
+  homeRefreshTimer = 0;
+}
+
+function nextLearningDue(deckId){
+  const now = Date.now();
+  return cardsForDeck(deckId).map(card=>getSchedule(card.id)).filter(schedule=>
+    (schedule.state === 'learning' || schedule.state === 'relearning') && Number(schedule.dueAt) > now
+  ).reduce((nearest,schedule)=>Math.min(nearest,Number(schedule.dueAt)),Infinity);
+}
+
+function scheduleHomeRefresh(){
+  clearHomeRefreshTimer();
+  if(document.getElementById('homeView').hidden) return;
+  const dueAt = nextLearningDue('all');
+  if(!Number.isFinite(dueAt)) return;
+  homeRefreshTimer = window.setTimeout(()=>{
+    homeRefreshTimer = 0;
+    if(!document.getElementById('homeView').hidden) renderHome();
+  },Math.max(0,dueAt-Date.now()+100));
+}
+
+function scheduleReviewWake(baseMessage){
+  clearReviewTimers();
+  const dueAt = nextLearningDue(activeDeckId);
+  if(!Number.isFinite(dueAt)) return;
+  const updateMessage = ()=>{
+    const remaining = dueAt-Date.now();
+    if(remaining <= 0){
+      clearReviewTimers();
+      loadNextCard('O próximo cartão já está disponível.');
+      return;
+    }
+    document.getElementById('doneMessage').textContent = baseMessage+' Próximo cartão em '+formatDelay(remaining)+'.';
+  };
+  updateMessage();
+  reviewCountdownTimer = window.setInterval(updateMessage,15000);
+  reviewWakeTimer = window.setTimeout(updateMessage,Math.max(0,dueAt-Date.now()+100));
+}
+
+function showView(name){
+  if(name !== 'study') clearReviewTimers();
+  if(name !== 'home') clearHomeRefreshTimer();
+  document.getElementById('homeView').hidden = name !== 'home';
+  document.getElementById('studyView').hidden = name !== 'study';
+  document.getElementById('manageView').hidden = name !== 'manage';
+  document.querySelectorAll('.nav-btn').forEach(button=>{
+    const active = button.dataset.view === name;
+    button.classList.toggle('active',active);
+    if(active) button.setAttribute('aria-current','page');
+    else button.removeAttribute('aria-current');
+  });
+  if(name === 'home') renderHome();
+  if(name === 'manage') renderCustomCards();
+  window.scrollTo({top:0,behavior:preferredScrollBehavior()});
+}
+
+function startStudy(deckId='all'){
+  activeDeckId = deckId;
+  sessionAnswered = 0;
+  const queue = queueForDeck(deckId);
+  sessionTotal = queue.length;
+  const title = deckId === 'all' ? 'Todos os temas' : themeById(deckId).name;
+  document.getElementById('studyDeckTitle').textContent = title;
+  showView('study');
+  loadNextCard();
+}
+
+function loadNextCard(announcement=''){
+  clearReviewTimers();
+  const queue = queueForDeck(activeDeckId);
+  currentCard = queue[0] || null;
+  answerVisible = false;
+  sessionTotal = Math.max(sessionTotal,sessionAnswered+queue.length);
+  const active = document.getElementById('activeStudy');
+  const done = document.getElementById('sessionDone');
+  if(!currentCard){
+    active.hidden = true;
+    done.hidden = false;
+    document.getElementById('studyPosition').textContent = sessionAnswered+' feitos';
+    document.getElementById('studyProgress').max = Math.max(1,sessionAnswered);
+    document.getElementById('studyProgress').value = sessionAnswered;
+    const summary = sessionAnswered
+      ? 'Você revisou '+sessionAnswered+' cartão'+(sessionAnswered === 1 ? '' : 'ões')+'. Eles voltarão conforme os intervalos escolhidos.'
+      : 'Não há cartões vencidos ou novos disponíveis neste tema agora.';
+    document.getElementById('doneMessage').textContent = summary;
+    scheduleReviewWake(summary);
+    document.getElementById('studyLive').textContent = (announcement ? announcement+' ' : '')+'Sessão concluída.';
+    renderHome();
+    focusAndReveal(document.getElementById('sessionDoneTitle'));
+    return;
+  }
+
+  active.hidden = false;
+  done.hidden = true;
+  const theme = themeById(currentCard.themeId);
+  document.getElementById('cardTheme').textContent = theme.name;
+  document.getElementById('cardFront').textContent = currentCard.front;
+  document.getElementById('cardFront').lang = (currentCard.frontLang || 'en-US').slice(0,2);
+  document.getElementById('cardBack').textContent = currentCard.back;
+  document.getElementById('cardBack').lang = (currentCard.backLang || 'en-US').slice(0,2);
+  const ipa = document.getElementById('cardIpa');
+  ipa.textContent = currentCard.ipa || '';
+  ipa.hidden = !currentCard.ipa;
+  const note = document.getElementById('cardNote');
+  note.textContent = currentCard.note || '';
+  note.hidden = !currentCard.note;
+  document.getElementById('answerBlock').hidden = true;
+  document.getElementById('showAnswerButton').hidden = false;
+  document.getElementById('ratingArea').hidden = true;
+  document.getElementById('studyPosition').textContent = (sessionAnswered+1)+' de '+Math.max(1,sessionTotal);
+  document.getElementById('studyProgress').max = Math.max(1,sessionTotal);
+  document.getElementById('studyProgress').value = sessionAnswered;
+  document.getElementById('speakBackButton').setAttribute('aria-label',(currentCard.backLang || 'en-US').startsWith('pt') ? 'Ouvir resposta em português' : 'Ouvir resposta em inglês');
+  focusAndReveal(document.getElementById('cardFront'));
+  document.getElementById('studyLive').textContent = (announcement ? announcement+' ' : '')+'Novo cartão: '+currentCard.front;
+}
+
+function showAnswer(){
+  if(!currentCard || answerVisible) return;
+  answerVisible = true;
+  document.getElementById('answerBlock').hidden = false;
+  document.getElementById('showAnswerButton').hidden = true;
+  document.getElementById('ratingArea').hidden = false;
+  renderRatings();
+  focusAndReveal(document.getElementById('answerBlock'));
+  document.getElementById('studyLive').textContent = 'Resposta exibida. Avalie como foi lembrar.';
+}
+
+function clampInterval(days){
+  return Math.min(MAX_INTERVAL,Math.max(1,Math.round(days)));
+}
+
+function scheduleForRating(schedule,rating,now=Date.now()){
+  const next = {...defaultSchedule(),...schedule};
+  let delay = MINUTE;
+  const setReview = days=>{
+    next.state = 'review';
+    next.intervalDays = clampInterval(days);
+    next.learningStep = 0;
+    next.pendingIntervalDays = null;
+    delay = next.intervalDays * DAY;
+    next.dueAt = now + delay;
+  };
+
+  if(next.state === 'new' || next.state === 'learning'){
+    if(rating === 'again'){
+      next.state = 'learning';next.learningStep = 0;delay = MINUTE;next.dueAt = now+delay;
+    }else if(rating === 'hard'){
+      next.state = 'learning';delay = next.learningStep > 0 ? 15*MINUTE : 6*MINUTE;next.dueAt = now+delay;
+    }else if(rating === 'good'){
+      if(next.state === 'learning' && next.learningStep > 0) setReview(1);
+      else{next.state = 'learning';next.learningStep = 1;delay = 10*MINUTE;next.dueAt = now+delay;}
+    }else{
+      setReview(4);
+      next.ease = Math.min(MAX_EASE,next.ease+.15);
+    }
+  }else if(next.state === 'relearning'){
+    if(rating === 'again'){delay = 10*MINUTE;next.dueAt = now+delay;}
+    else if(rating === 'hard'){delay = 30*MINUTE;next.dueAt = now+delay;}
+    else if(rating === 'good') setReview(next.pendingIntervalDays || 1);
+    else setReview(Math.max(2,Math.round((next.pendingIntervalDays || 1)*1.5)));
+  }else{
+    const currentInterval = Math.max(1,next.intervalDays || 1);
+    if(rating === 'again'){
+      next.state = 'relearning';
+      next.ease = Math.max(MIN_EASE,next.ease-.2);
+      next.pendingIntervalDays = Math.max(1,Math.round(currentInterval*.2));
+      next.lapseCount += 1;
+      delay = 10*MINUTE;next.dueAt = now+delay;
+    }else if(rating === 'hard'){
+      next.ease = Math.max(MIN_EASE,next.ease-.15);
+      setReview(Math.max(currentInterval+1,Math.round(currentInterval*1.2)));
+    }else if(rating === 'good'){
+      setReview(Math.max(currentInterval+1,Math.round(currentInterval*next.ease)));
+    }else{
+      next.ease = Math.min(MAX_EASE,next.ease+.15);
+      setReview(Math.max(currentInterval+2,Math.round(currentInterval*next.ease*1.3)));
+    }
+  }
+  next.reviewCount += 1;
+  next.lastReviewedAt = now;
+  return {schedule:next,delay};
+}
+
+function formatDelay(ms){
+  if(ms < 60*MINUTE) return Math.max(1,Math.round(ms/MINUTE))+' min';
+  if(ms < DAY) return Math.max(1,Math.round(ms/(60*MINUTE)))+' h';
+  const days = Math.max(1,Math.round(ms/DAY));
+  return days+' dia'+(days === 1 ? '' : 's');
+}
+
+function renderRatings(){
+  const grid = document.getElementById('ratingGrid');
+  grid.textContent = '';
+  const schedule = getSchedule(currentCard.id);
+  const ratings = [
+    {id:'again',label:'Errei'},
+    {id:'hard',label:'Difícil'},
+    {id:'good',label:'Bom'},
+    {id:'easy',label:'Fácil'}
+  ];
+  ratings.forEach(rating=>{
+    const preview = scheduleForRating(schedule,rating.id);
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'rating-btn';
+    button.dataset.rating = rating.id;
+    const label = document.createElement('strong');
+    label.textContent = rating.label;
+    const interval = document.createElement('span');
+    interval.textContent = formatDelay(preview.delay);
+    button.append(label,interval);
+    button.addEventListener('click',()=>rateCurrent(rating.id));
+    grid.appendChild(button);
+  });
+}
+
+function rateCurrent(rating){
+  if(!currentCard || !answerVisible) return;
+  const snapshot = JSON.stringify(store);
+  const previous = getSchedule(currentCard.id);
+  const result = scheduleForRating(previous,rating);
+  store.schedules[currentCard.id] = result.schedule;
+  const stats = getTodayStats();
+  stats.answers += 1;
+  stats[rating] = (stats[rating] || 0)+1;
+  if(previous.state === 'new') stats.newIntroduced += 1;
+  if(!saveStore()){
+    store = JSON.parse(snapshot);
+    return;
+  }
+  sessionAnswered += 1;
+  renderHome();
+  loadNextCard('Avaliação registrada. Próxima revisão em '+formatDelay(result.delay)+'.');
+}
+
+function speak(text,lang){
+  if(!text || !('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined'){
+    showToast('A reprodução de voz não está disponível.');
+    return;
+  }
+  speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = lang || 'en-US';
+  utterance.rate = .92;
+  const exact = speechSynthesis.getVoices().find(voice=>voice.lang.toLowerCase() === utterance.lang.toLowerCase());
+  if(exact) utterance.voice = exact;
+  speechSynthesis.speak(utterance);
+}
+
+function normalizeText(value){
+  return String(value || '').replace(/\s+/g,' ').trim().toLocaleLowerCase();
+}
+
+function fillThemeSelect(){
+  const select = document.getElementById('customTheme');
+  select.textContent = '';
+  THEMES.forEach(theme=>{
+    const option = document.createElement('option');
+    option.value = theme.id;
+    option.textContent = theme.name;
+    if(theme.id === 'selected-vocabulary') option.selected = true;
+    select.appendChild(option);
+  });
+}
+
+function renderCustomCards(){
+  const query = normalizeText(document.getElementById('customSearch').value);
+  const cards = store.customCards.filter(card=>!query || normalizeText(card.front+' '+card.back).includes(query));
+  document.getElementById('customCount').textContent = store.customCards.length+' cartão'+(store.customCards.length === 1 ? '' : 'ões');
+  const list = document.getElementById('customList');
+  list.textContent = '';
+  if(!cards.length){
+    const empty = document.createElement('div');
+    empty.className = 'empty-list';
+    empty.textContent = query ? 'Nenhum cartão corresponde à busca.' : 'Selecione uma palavra no roteiro ou crie seu primeiro cartão acima.';
+    list.appendChild(empty);
+    return;
+  }
+  cards.sort((a,b)=>(b.createdAt || 0)-(a.createdAt || 0)).forEach(card=>{
+    const item = document.createElement('article');
+    item.className = 'custom-item';
+    const head = document.createElement('div');
+    head.className = 'custom-item-head';
+    const copy = document.createElement('div');
+    copy.className = 'custom-item-copy';
+    const front = document.createElement('strong');
+    front.textContent = card.front;
+    const back = document.createElement('p');
+    back.textContent = card.back;
+    const pill = document.createElement('span');
+    pill.className = 'theme-pill';
+    pill.textContent = themeById(card.themeId).name;
+    copy.append(front,back,pill);
+    const actions = document.createElement('div');
+    actions.className = 'item-actions';
+    const edit = document.createElement('button');
+    edit.type = 'button';edit.className = 'mini-btn';edit.textContent = 'Editar';
+    edit.setAttribute('aria-label','Editar '+card.front);
+    edit.addEventListener('click',()=>editCustomCard(card.id));
+    const remove = document.createElement('button');
+    remove.type = 'button';remove.className = 'mini-btn danger';remove.textContent = 'Excluir';
+    remove.setAttribute('aria-label','Excluir '+card.front);
+    remove.addEventListener('click',()=>deleteCustomCard(card.id));
+    actions.append(edit,remove);
+    head.append(copy,actions);
+    item.appendChild(head);
+    list.appendChild(item);
+  });
+}
+
+function resetCustomForm(){
+  editingCardId = null;
+  document.getElementById('customCardForm').reset();
+  document.getElementById('customTheme').value = 'selected-vocabulary';
+  document.getElementById('customBackLang').value = 'pt-BR';
+  document.getElementById('formTitle').textContent = 'Novo flashcard';
+  document.getElementById('saveCustomButton').textContent = 'Adicionar';
+  document.getElementById('cancelEditButton').hidden = true;
+}
+
+function editCustomCard(id){
+  const card = store.customCards.find(item=>item.id === id);
+  if(!card) return;
+  editingCardId = id;
+  document.getElementById('customFront').value = card.front;
+  document.getElementById('customBack').value = card.back;
+  document.getElementById('customBackLang').value = card.backLang || ((card.themeId || 'selected-vocabulary') === 'selected-vocabulary' ? 'pt-BR' : 'en-US');
+  document.getElementById('customTheme').value = card.themeId || 'selected-vocabulary';
+  document.getElementById('formTitle').textContent = 'Editar flashcard';
+  document.getElementById('saveCustomButton').textContent = 'Salvar';
+  document.getElementById('cancelEditButton').hidden = false;
+  document.getElementById('customFront').focus();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function deleteCustomCard(id){
+  const card = store.customCards.find(item=>item.id === id);
+  if(!card || !window.confirm('Excluir o flashcard “'+card.front+'”?')) return;
+  const snapshot = JSON.stringify(store);
+  store.customCards = store.customCards.filter(item=>item.id !== id);
+  delete store.schedules[id];
+  if(!saveStore()){
+    store = JSON.parse(snapshot);
+    return;
+  }
+  if(editingCardId === id) resetCustomForm();
+  renderCustomCards();
+  renderHome();
+  showToast('Flashcard excluído.');
+}
+
+function makeId(){
+  return 'custom-'+(window.crypto && typeof window.crypto.randomUUID === 'function'
+    ? window.crypto.randomUUID()
+    : Date.now()+'-'+Math.random().toString(16).slice(2));
+}
+
+function saveCustomForm(event){
+  event.preventDefault();
+  const front = document.getElementById('customFront').value.replace(/\s+/g,' ').trim();
+  const back = document.getElementById('customBack').value.trim();
+  const backLang = document.getElementById('customBackLang').value;
+  const themeId = document.getElementById('customTheme').value;
+  if(!front || !back) return;
+  const duplicate = store.customCards.find(card=>card.id !== editingCardId && normalizeText(card.front) === normalizeText(front));
+  if(duplicate){showToast('Esta frente já existe nos seus flashcards.');return;}
+  const snapshot = JSON.stringify(store);
+  let successMessage = '';
+  if(editingCardId){
+    const card = store.customCards.find(item=>item.id === editingCardId);
+    if(card){
+      if(normalizeText(card.front) !== normalizeText(front)) card.ipa = '';
+      card.front = front;
+      card.back = back;
+      card.themeId = themeId;
+      card.backLang = backLang;
+      card.updatedAt = Date.now();
+    }
+    successMessage = 'Flashcard atualizado.';
+  }else{
+    store.customCards.push({id:makeId(),themeId,kind:'custom',front,back,frontLang:'en-US',backLang,createdAt:Date.now(),source:'manual'});
+    successMessage = 'Flashcard adicionado.';
+  }
+  if(!saveStore()){
+    store = JSON.parse(snapshot);
+    return;
+  }
+  resetCustomForm();
+  renderCustomCards();
+  renderHome();
+  showToast(successMessage);
+}
+
+function showToast(message){
+  const toast = document.getElementById('toast');
+  window.clearTimeout(toastTimer);
+  toast.textContent = message;
+  toast.classList.add('open');
+  toastTimer = window.setTimeout(()=>toast.classList.remove('open'),2600);
+}
+
+function importFlashcardFromUrl(){
+  const encoded = new URLSearchParams(window.location.search).get('add');
+  if(!encoded) return '';
+  let message = '';
+  try{
+    const base64 = encoded.replace(/-/g,'+').replace(/_/g,'/')+'='.repeat((4-encoded.length%4)%4);
+    const binary = atob(base64);
+    const bytes = Uint8Array.from(binary,char=>char.charCodeAt(0));
+    const incoming = JSON.parse(new TextDecoder().decode(bytes));
+    const front = String(incoming.front || '').replace(/\s+/g,' ').trim().slice(0,500);
+    const back = String(incoming.back || '').trim().slice(0,1200);
+    if(!front || !back) throw new Error('invalid-card');
+    const duplicate = store.customCards.find(card=>normalizeText(card.front) === normalizeText(front));
+    if(duplicate){
+      message = 'Este flashcard já estava salvo.';
+    }else{
+      const snapshot = JSON.stringify(store);
+      const requestedId = String(incoming.id || '');
+      const idExists = getAllCards().some(card=>card.id === requestedId);
+      store.customCards.push({
+        id:requestedId && !idExists ? requestedId : makeId(),
+        themeId:'selected-vocabulary',
+        kind:'vocabulary',
+        front,
+        back,
+        ipa:String(incoming.ipa || '').slice(0,120),
+        frontLang:['en-US','en-GB'].includes(incoming.frontLang) ? incoming.frontLang : 'en-US',
+        backLang:'pt-BR',
+        source:'roteiro-ingles-entrevista',
+        createdAt:Number(incoming.createdAt) || Date.now()
+      });
+      if(!saveStore()){
+        store = JSON.parse(snapshot);
+        message = 'Não foi possível importar o flashcard.';
+      }else{
+        message = 'Flashcard importado do roteiro.';
+      }
+    }
+  }catch(error){
+    message = 'Não foi possível importar o flashcard.';
+  }
+  try{ window.history.replaceState(null,'',window.location.pathname+window.location.hash); }catch(error){}
+  return message;
+}
+
+document.getElementById('startAllButton').addEventListener('click',()=>startStudy('all'));
+document.getElementById('studyBackButton').addEventListener('click',()=>showView('home'));
+document.getElementById('showAnswerButton').addEventListener('click',showAnswer);
+document.getElementById('speakFrontButton').addEventListener('click',()=>currentCard && speak(currentCard.front,currentCard.frontLang || 'en-US'));
+document.getElementById('speakBackButton').addEventListener('click',()=>currentCard && speak(currentCard.back,currentCard.backLang || 'en-US'));
+document.getElementById('doneHomeButton').addEventListener('click',()=>showView('home'));
+document.getElementById('doneCustomButton').addEventListener('click',()=>showView('manage'));
+document.getElementById('customCardForm').addEventListener('submit',saveCustomForm);
+document.getElementById('cancelEditButton').addEventListener('click',resetCustomForm);
+document.getElementById('customSearch').addEventListener('input',renderCustomCards);
+document.querySelectorAll('.nav-btn').forEach(button=>button.addEventListener('click',()=>{
+  if(button.dataset.view === 'study') startStudy('all');
+  else showView(button.dataset.view);
+}));
+document.addEventListener('keydown',event=>{
+  if(document.getElementById('studyView').hidden || !currentCard) return;
+  if((event.key === ' ' || event.key === 'Enter') && !answerVisible && event.target === document.body){event.preventDefault();showAnswer();}
+  if(answerVisible && ['1','2','3','4'].includes(event.key)){
+    const rating = ['again','hard','good','easy'][Number(event.key)-1];
+    rateCurrent(rating);
+  }
+});
+window.addEventListener('storage',event=>{
+  if(event.key !== STORAGE_KEY) return;
+  store = loadStore();
+  renderHome();
+  renderCustomCards();
+});
+window.addEventListener('beforeunload',()=>{
+  clearReviewTimers();
+  clearHomeRefreshTimer();
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+});
+
+const importMessage = importFlashcardFromUrl();
+fillThemeSelect();
+resetCustomForm();
+renderHome();
+renderCustomCards();
+if(importMessage) window.setTimeout(()=>showToast(importMessage),0);
+</script>
+</body>
+</html>
